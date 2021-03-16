@@ -16,6 +16,8 @@ To run Newton type methods (NEWTON-LEARN and DINGO) see [example notebook](https
 To run BFGS see [example notebook](https://github.com/Intelligent-Systems-Phystech/Islamov-BS-Thesis/blob/main/Code/BFGS/BFGS_example_notebook.ipynb)      
 To run gradient type methods see [example notebook](https://github.com/Intelligent-Systems-Phystech/Islamov-BS-Thesis/blob/main/Code/Gradient-type-methods/gradient_type_methods_example_notebook.ipynb)
 
+If you want to learn implementation in more details, please read brief descriptions of methods and oracles.
+
 ***Remark*** We used implementation of BFGS which was written by other people.
 
 ### License
