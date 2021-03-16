@@ -1,7 +1,12 @@
 # Islamov Rustem, Bachelor's degree Thesis
+# Исламов Рустем, Бакалаврский диплом
 
-## Theme: Second-order methods in distributed optimization
+## Theme: Distributed Second Order Methods with Fast Rates  and Compressed Communication.
+## Тема: Распределенные методы второго порядка с быстрой скоростью сходимости и компрессией.
 
 ## Scientific supervisor: Peter Richtárik
+## Научный руководитель: Питер Рихтарик
 
-Современные датасэты растут с невероятной скоростью, однако современные вычислительные способности устройств не позволяют эффективно обрабатывать на одном устройстве. Для этого используется дистрибутивное оптимизация, где worker-ы делают работу параллельно, каждый обрабатывая свой участок датасэта. Однако узким местом такого подхода является передача информации от worker-а к серверу и обратно. Для этого используются различные методы сжатия/кодирования информации. Лидирующие места в современной дистрибутивной оптимизации занимают методы первого порядка, было придумано множество способов эффективно сжимать градиент. В данной работае предлагается использовать информацию второго порядка, чтобы использовать преимуещсвта метода Ньютона, который имеет локальную квадратичную скорость сходимости, чтобы ускорить методы первого порядка. 
+### Abstract:
+
+We develop several new communication-efficient second-order methods for distributed optimization. Our first method, ${\sf NEWTON-STAR}$, is a variant of Newton's method from which it inherits its fast local quadratic rate. However, unlike Newton's method, ${\sf NEWTON-STAR}$ enjoys the same per iteration communication cost as gradient descent. While this method is impractical as it relies on the use of certain unknown parameters characterizing the Hessian of the objective function at the optimum,  it serves as the starting point which enables us design practical variants thereof with strong theoretical guarantees. In particular, we design a stochastic sparsification strategy for learning the unknown parameters in an iterative fashion in a communication efficient manner. Applying this strategy to ${\sf NEWTON-STAR}$ leads to our next method, ${\sf NEWTON-LEARN}$, for which we prove  local linear and superlinear rates independent of the condition number. When applicable, this method can have dramatically superior convergence behavior when compared to state-of-the-art methods. Finally, we develop a globalization strategy using cubic regularization which leads to our next method, ${\sf CUBIC-NEWTON-LEARN}$, for which we prove global sublinear and linear convergence rates, and a fast superlinear rate. Our results are supported with experimental results on real datasets, and show several orders of magnitude improvement on baseline and state-of-the-art methods in terms of communication complexity.
