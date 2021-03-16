@@ -32,7 +32,7 @@ Here you can find implementations of the following methods:
 - [DIANA](https://arxiv.org/abs/1901.09269)
 - [DCGD](https://arxiv.org/abs/1806.06573)
 
-Please read original papers in order to get a closer look at state-of-the-art methods in distributed optimization like ADIANA or DIANA.
+Please read original papers in order to get a closer look at implemented methods.
 
 ### License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
