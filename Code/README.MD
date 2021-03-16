@@ -18,7 +18,7 @@ To run gradient type methods see [example notebook](https://github.com/Intellige
 
 If you want to learn implementation in more details, please read brief descriptions of methods and oracles.
 
-***Remark*** We used implementation of BFGS which was written by other people.
+***Remark:*** We used implementation of BFGS which was written by other people.
 
 ### License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
