@@ -1,18 +1,22 @@
-# This folder was created to store code.
+# Code guidelines
 
-# Basic experiment (файл `Basic_experiment.ipynb`)
+This implementation is based on Python (3.8). 
 
-Для запуска данного файла требуется скачать файл, а также файл с датасэтом (файл `a7a.txt`). Эти два файла должны находится в одном месте на вашем устройстве, где будет производится запуск базового эксперимента. Для запуска базового эксперимента можно использовать `run all ceils` или же запускать каждую ячейку отдельно. Результаты эксперимента отображаются на графике в конце.
+It enables to run simulated distributed optimization with master node on any number of workers. Here you can find implementations of NL1, NL2, CNL, DINGO, BFGS, and gradient type methods (DCGD, DIANA, ADIANA).
 
-Для запуска базового эксперимента не требуется никаких мощных устройств: только наличие среды для запуска Python-файла. Все ячейки в коде пояснены для более детального понимания всего базового эксперимента.
+### Installation
 
+To install requirements
+```sh
+$ pip install -r Requirements.txt
+```
 
-# Final experiment (файл `All_experiments.ipynb`)
+###  Example Notebooks
+To run Newton type methods (NEWTON-LEARN and DINGO) see [example notebook](https://github.com/Rustem-Islamov/MaxNewton/blob/main/Code/NEWTON-LEARN/NL_DINGO_example_notebook.ipynb)     
+To run BFGS see [example notebook](https://github.com/Rustem-Islamov/MaxNewton/blob/main/Code/BFGS/BFGS_example_notebook.ipynb)      
+To run gradient type methods see [example notebook](https://github.com/Rustem-Islamov/MaxNewton/blob/main/Code/Gradient-type-methods/gradient_type_methods_example_notebook.ipynb)
 
-Для запуска данного файла требуется скачать файл, а также файл с датасэтом (файл `a7a.txt`). Можно использовать и другие предложенные датасэты (`a5a.txt`, `a8a.txt`). Все инструкции прописаны непостредственно в самом ноутбуке.
+***Remark*** We used implementation of BFGS which was written by other people.
 
-# Используемые библиотеки
-
-numpy version `1.18.5`
-
-matplotlib `3.2.2`
+### License
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
