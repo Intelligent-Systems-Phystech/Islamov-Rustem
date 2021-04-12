@@ -1,12 +1,7 @@
 \documentclass[12pt]{article}
 
 
-\usepackage{cmap}
-\usepackage[T2A]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath, amsfonts,amssymb}
-\usepackage{graphicx, epsfig}
-\usepackage{color}
+
 %\usepackage{natbib}
 \usepackage[sort, numbers]{natbib}
 \usepackage{algorithm}
@@ -86,7 +81,6 @@
 \usepackage[colorinlistoftodos,bordercolor=orange,backgroundcolor=orange!20,linecolor=orange,textsize=scriptsize]{todonotes}
 
 
-
 \usepackage{microtype}
 \usepackage{subfigure}
 \usepackage{booktabs} % for professional tables
@@ -163,6 +157,7 @@ and Compressed Communication'' \citep{islamov2021distributed} written by Rustem 
 	We develop several new communication-efficient second-order methods for distributed optimization. Our first method, {\sf NEWTON-STAR}, is a variant of Newton's method from which it inherits its fast local quadratic rate. However, unlike Newton's method, {\sf NEWTON-STAR} enjoys the same per iteration communication cost as gradient descent. While this method is impractical as it relies on the use of certain unknown parameters characterizing the Hessian of the objective function at the optimum,  it serves as the starting point which enables us design practical variants thereof with strong theoretical guarantees. In particular, we design a stochastic sparsification strategy for learning the unknown parameters in an iterative fashion in a communication efficient manner. Applying this strategy to {\sf NEWTON-STAR} leads to our next method, {\sf NEWTON-LEARN}, for which we prove  local linear and superlinear rates independent of the condition number. When applicable, this method can have dramatically superior convergence behavior when compared to state-of-the-art methods. Finally, we develop a globalization strategy using cubic regularization which leads to our next method, {\sf CUBIC-NEWTON-LEARN}, for which we prove global sublinear and linear convergence rates, and a fast superlinear rate. Our results are supported with experimental results on real datasets, and show several orders of magnitude improvement on baseline and state-of-the-art methods in terms of communication complexity. 
 \end{abstract}
 
+\clearpage
 {
 %\footnotesize
 \tableofcontents
@@ -236,21 +231,21 @@ We develop {\em several  new  fundamental Newton-type methods} which we hope mak
 			\begin{tabular}{|c | ccc | cc|}
 				\hline
 				                     & \multicolumn{3}{c|}{\bf Convergence} &  &   \\
-				  {\bf Method} &  {\bf result} ${}^\dagger$   &  {\bf type}  & {\bf rate}  & \begin{tabular}{c}{ \bf Rate} \\ {\bf independent of the}\\ {\bf condition number?}  \end{tabular} & {\bf Theorem }\\
+				  {\bf Method} &  {\bf result} ${}^\dagger$   &  {\bf type}  & {\bf rate}  & \begin{tabular}{c}{ \bf Rate} \\ {\bf  of the}\\ {\bf condition number?}  \end{tabular} & {\bf Theorem }\\
 				\hline
-				\begin{tabular}{c} {\sf NEWTON-STAR (NS)} \\ \eqref{eq:Newton-star} \end{tabular} & $r_{k+1}\leq c r_k^2$   & local & quadratic & \cmark &  \ref{th:localquadratic}\\ \hline	
+				\begin{tabular}{c} {\sf NEWTON-STAR} \\ \eqref{eq:Newton-star} \end{tabular} & $r_{k+1}\leq c r_k^2$   & local & quadratic & \cmark &  \ref{th:localquadratic}\\ \hline	
 %%%%%%%%%%%%%%%%%%%%					
-				\begin{tabular}{c} {\sf MAX-NEWTON (MN)} \\ Algorithm~\ref{alg:maxnewton} \end{tabular} &  $r_{k+1}\leq c r_k^2$      &local & quadratic & \cmark &  \ref{th:maxnewton}		\\	 \hline				
+				\begin{tabular}{c} {\sf MAX-NEWTON} \\ Algorithm~\ref{alg:maxnewton} \end{tabular} &  $r_{k+1}\leq c r_k^2$      &local & quadratic & \cmark &  \ref{th:maxnewton}		\\	 \hline				
 %%%%%%%%%%%%%%%%%%%%			 				
-			 \multirow{2}{*}{ \begin{tabular}{c} {\sf NEWTON-LEARN (NL1)}  \\ Algorithm~\ref{alg:NL1} \end{tabular}  } 
+			 \multirow{2}{*}{ \begin{tabular}{c} {\sf NEWTON-LEARN}  \\ Algorithm~\ref{alg:NL1} \end{tabular}  } 
 			 &  $\Phi^k_1 \leq \theta_1^k \Phi_1^0$ & local & linear & \cmark &  \ref{th:lambda>0}\\ 
 			 &  $r_{k+1} \leq c \theta_1^k  r_k$ & local & superlinear & \cmark &  \ref{th:lambda>0}\\ \hline	
 %%%%%%%%%%%%%%%%%%%%			 
-			 \multirow{2}{*}{ 	\begin{tabular}{c} {\sf NEWTON-LEARN (NL2)} \\ Algorithm~\ref{alg:NL2} \end{tabular}  } 
+			 \multirow{2}{*}{ 	\begin{tabular}{c} {\sf NEWTON-LEARN} \\ Algorithm~\ref{alg:NL2} \end{tabular}  } 
 			 &   $\Phi^k_2 \leq \theta_2^k \Phi_2^0$  & local & linear & \cmark &  \ref{th:general}\\ 
 			 &  $r_{k+1} \leq c \theta_2^k  r_k$ & local & superlinear & \cmark &  \ref{th:general}\\  \hline	
 %%%%%%%%%%%%%%%%%%%%	
- \multirow{4}{*}{ \begin{tabular}{c} {\sf CUBIC-NEWTON-LEARN (CNL)} \\ Algorithm~\ref{alg:CNL} \end{tabular}  } 
+ \multirow{4}{*}{ \begin{tabular}{c} {\sf CUBIC-NEWTON-LEARN} \\ Algorithm~\ref{alg:CNL} \end{tabular}  } 
 				 & $\Delta_k \leq \frac{c}{k}$   & global & sublinear & \xmark &  \ref{th:concubic}\\ 
 				 & $\Delta_k \leq c \exp(-k/c)$ & global & linear & \xmark &  \ref{th:stronglyconcubic}\\ 
 				 & $\Phi^k_3 \leq \theta_3^k \Phi^0_3$ & local & linear & \cmark &  \ref{th:cubicsup}\\ 				  
@@ -377,8 +372,8 @@ Indeed, assuming that the server has direct access to all the training data vect
 We now introduce a simple idea which, surprisingly, enables us to {\em remove the need to iteratively communicate any coefficients altogether.}  Assume, for the sake of argument, that we know the values  $\newalpha_{ij}(x^*)$ for all $i,j$. That is, assume the server has access to coefficients $\newalpha_{ij}(x^*)$ for all $i,j$, and that each node $i$ has access to coefficients $\newalpha_{ij}(x^*)$  for $j=1,\dots,m$, i.e., to the vector
 \begin{equation}\label{eq:8f0d8hfd}\newalpha_{i}(x) \eqdef (\newalpha_{i1}(x),\dots, \newalpha_{im}(x)) \in \R^m\end{equation}
 for $x=x^*$.  Next, consider the following new Newton-like method which we call {\sf NEWTON-STAR (NS)}, where the ``star'' points to the method's reliance on the knowledge of the optimal solution $x^*$:
-\begin{eqnarray}  x^{k+1} &=& x^k - \left(\nabla^2 P(x^*) \right)^{-1} \nabla P(x^k) 
-\overset{\eqref{primal}}{=} x^k - \left(\mH(x^*) +\lambda \mI \right)^{-1} \left(\frac{1}{n}\sum_{i=1}^n \nabla f_i(x^k) + \lambda x^k\right).\label{eq:Newton-star}\end{eqnarray}
+\begin{eqnarray}  x^{k+1} &=& x^k - \left(\nabla^2 P(x^*) \right)^{-1} \nabla P(x^k)\notag\\ 
+&\overset{\eqref{primal}}{=}& x^k - \left(\mH(x^*) +\lambda \mI \right)^{-1} \left(\frac{1}{n}\sum_{i=1}^n \nabla f_i(x^k) + \lambda x^k\right).\label{eq:Newton-star}\end{eqnarray}
 
 Since the server knows $\mH(x^*)$, all that the nodes need to communicate are the local gradients $\nabla f_i(x^k)$, which costs $O(d)$ per node. The server then computes $x^{k+1}$, broadcasts it back to the nodes, and the process is repeated. This method has the same per-iteration $O(d)$ communication complexity as GD. However, as we show next, the number of iterations (which is the same as the number of communications) of {\sf NEWTON-STAR} does not depend on the condition number -- a property it borrows from the classical Newton's method. The following theorem says that {\sf NEWTON-STAR} enjoys {\em local quadratic convergence}.
 
@@ -397,12 +392,12 @@ By the first order optimality conditions, we have
 Let $\mH_* \eqdef \mH(x^*)$. Since $\mH_* \succeq \mu^* \mI$, we have $\mH_* +\lambda \mI \succeq (\mu^* +\lambda) \mI$, and hence \begin{equation}\label{eq:b98gdf_9898fd_93} \norm{\left(\mH_* + \lambda \mI\right)^{-1} } \leq \frac{1}{\mu^*+\lambda}.\end{equation} 
 Using \eqref{eq:FOC} and \eqref{eq:b98gdf_9898fd_93}  and subsequently applying Jensen's inequality  to the function $x\mapsto \norm{x}$, we get 
 \begin{eqnarray}
-	\|x^{k+1} - x^*\| &=& \left \| x^k - x^*  - \left(\mH_* +\lambda \mI \right)^{-1} \nabla P(x^k)  \right \|  \notag \\
+	\|x^{k+1} - x^*\| &=&\left \| x^k - x^*  - \left(\mH_* +\lambda \mI \right)^{-1} \nabla P(x^k)  \right \|  \notag \\
 	&\overset{\eqref{eq:FOC}}{=}& \left \| \left(\mH_* +\lambda \mI \right)^{-1} \left[ \left(\mH_* + \lambda \mI \right)(x^k - x^*) - \left(\nabla f(x^k) -\nabla f(x^*)+ \lambda (x^k-x^*)\right)   \right] \right \|  \notag \\ 
 	&\overset{\eqref{eq:b98gdf_9898fd_93}}{\leq} &\frac{1}{\mu^*+\lambda} \left \|  \left(\mH_* + \lambda \mI \right) (x^k - x^*) - \left( \nabla f(x^k) - \nabla f(x^*)   \right) - \lambda (x^k -x^*) \right \|  \notag \\ 
 	&= &\frac{1}{\mu^*+\lambda} \left \|  \frac{1}{n} \sum_{i=1}^{n}  \mH_i(x^*) (x^k - x^*) -  \frac{1}{n}\sum_{i=1}^n \left( \nabla f_i(x^k) - \nabla f_i(x^*)   \right) \right \|  \notag \\ 
 	&\leq & \frac{1}{n (\mu^*+\lambda)} \sum_{i=1}^{n}  \left \|  \mH_i(x^*) (x^k - x^*) -  \left( \nabla f_i(x^k) - \nabla f_i(x^*)   \right) \right \|  \notag \\ 	
-	&\overset{\eqref{eq:H_i}+\eqref{eq:f_and_f_i} }{=} &\frac{1}{n (\mu^*+\lambda)} \sum_{i=1}^{n}  \left \| \frac{1}{m} \sum_{j=1}^m \newalpha_{ij}(x^*) a_{ij} a_{ij}^\top (x^k - x^*) -  \frac{1}{m} \sum_{j=1}^m \left( \nabla f_{ij}(x^k) - \nabla f_{ij}(x^*)   \right) \right \|  . \label{eq:rand-opur-9}
+	&\overset{\eqref{eq:H_i} }{=} &\frac{1}{n (\mu^*+\lambda)} \sum_{i=1}^{n}  \left \| \frac{1}{m} \sum_{j=1}^m \left[\newalpha_{ij}(x^*) a_{ij} a_{ij}^\top (x^k - x^*)- (\nabla f_{ij}(x^k) - \nabla f_{ij}(x^*))\right] \right \|  . \label{eq:rand-opur-9}
 	\end{eqnarray}
 	
 We now use the fundamental theorem of calculus to express difference of gradients $\nabla f_{ij}(x^k) - \nabla f_{ij}(x^*)$ in an integral, obtaining
@@ -412,8 +407,10 @@ We now use the fundamental theorem of calculus to express difference of gradient
 
 Plugging this representation into	\eqref{eq:rand-opur-9} and noting that $ \nabla^2 f_{ij}(x)\equiv \mH_{ij}(x)$ (see \eqref{eq:87ybfd0fd}), we can continue:
 \begin{eqnarray}	
-	\|x^{k+1} - x^*\| 	& \overset{\eqref{eq:rand-opur-9}+\eqref{eq:difnablaf}}{ \leq} & \frac{1}{n (\mu^*+\lambda)} \sum_{i=1}^n \left\|   \frac{1}{m}  \sum_{j=1}^{m} \left(  \newalpha_{ij}(x^*) a_{ij}a_{ij}^\top (x^k - x^*) -  \int_{0}^1 \mH_{ij} (x^* + \tau(x^k - x^*)) (x^k - x^*)d\tau  \right)   \right\|  \notag \\ 
-	&\overset{\eqref{eq:87ybfd0fd}}{=}& \frac{1}{n (\mu^*+\lambda)} \sum_{i=1}^n  \left\| \frac{1}{m} \sum_{j=1}^{m} \left(  \newalpha_{ij}(x^*) a_{ij}a_{ij}^\top (x^k - x^*)  -  \int_{0}^1 \newalpha_{ij} (x^* + \tau(x^k - x^*))a_{ij}a_{ij}^\top (x^k - x^*)d\tau  \right)   \right\| \notag  \\ 
+	\|x^{k+1} - x^*\| 	& \overset{\eqref{eq:rand-opur-9}+\eqref{eq:difnablaf}}{ \leq} & \frac{1}{n (\mu^*+\lambda)} \sum_{i=1}^n \left\|   \frac{1}{m}  \sum_{j=1}^{m} \left(  \newalpha_{ij}(x^*) a_{ij}a_{ij}^\top (x^k - x^*)\right.\right.\notag\\
+	&& \quad \left.\left.-  \int_{0}^1 \mH_{ij} (x^* + \tau(x^k - x^*)) (x^k - x^*)d\tau  \right)   \right\|  \notag \\ 
+	&\overset{\eqref{eq:87ybfd0fd}}{=}& \frac{1}{n (\mu^*+\lambda)} \sum_{i=1}^n  \left\| \frac{1}{m} \sum_{j=1}^{m} \left(  \newalpha_{ij}(x^*) a_{ij}a_{ij}^\top (x^k - x^*)\right.\right.\notag\\
+	&&\quad \left.\left.-  \int_{0}^1 \newalpha_{ij} (x^* + \tau(x^k - x^*))a_{ij}a_{ij}^\top (x^k - x^*)d\tau  \right)\right\| \notag  \\ 
 	&=& \frac{1}{n (\mu^*+\lambda)} \sum_{i=1}^n  \left\| \frac{1}{m} \sum_{j=1}^{m}  a_{ij}a_{ij}^\top (x^k - x^*) \left( \newalpha_{ij}(x^*) - \int_{0}^1 \newalpha_{ij}(x^* + \tau(x^k - x^*))  d\tau \right) \right\|  \notag \\ 
 	&\leq& \frac{ \|x^k - x^*\|}{ (\mu^*+\lambda)} \frac{1}{nm}\sum_{i=1}^n \sum_{j=1}^{m} \|a_{ij}\|^2 \left|   \int_{0}^1  \newalpha_{ij}(x^*) - \newalpha_{ij}(x^* + \tau(x^k - x^*))  d\tau  \right|. \label{eq:b98f9d8gfd}
 \end{eqnarray}
@@ -580,11 +577,11 @@ $$
 \squeeze \frac{1}{nm}\sum \limits_{i=1}^n \sum\limits_{j=1}^m \left( \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma} \cdot (h_{ij}^k + 2\gamma) - 2\gamma \right) a_{ij}a_{ij}^\top, 
 $$
 for  $\beta^k \eqdef \max_{i,j} \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma}$, we get the inequality
-$$
- \frac{1}{nm}\sum_{i=1}^n \sum_{j=1}^m \left[ \beta^k (h_{ij}^k + 2\gamma) - 2\gamma \right] a_{ij}a_{ij}^\top - \nabla^2 f(x^k) 
-= \frac{1}{nm}\sum_{i=1}^n \sum_{j=1}^m \left[  \beta^k - \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma} \right] (h_{ij}^k + 2\gamma) a_{ij}a_{ij}^\top 
+\begin{eqnarray*}
+ &&\frac{1}{nm}\sum_{i=1}^n \sum_{j=1}^m \left[ \beta^k (h_{ij}^k + 2\gamma) - 2\gamma \right] a_{ij}a_{ij}^\top - \nabla^2 f(x^k)\\
+&& \quad = \frac{1}{nm}\sum_{i=1}^n \sum_{j=1}^m \left[  \beta^k - \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma} \right] (h_{ij}^k + 2\gamma) a_{ij}a_{ij}^\top 
 \succeq \mathbf{0},
-$$
+\end{eqnarray*}
 where $\mathbf{0}$ is the $d\times d$ zero matrix, and $\mA \succeq \mB$ means $\mA - \mB$ is positive semidefinite. Thus, if we can maintain the Hessian estimator in the form $$\squeeze \mH^k \eqdef \frac{1}{nm}\sum \limits_{i=1}^n \sum \limits_{j=1}^m \left[ \beta^k (h_{ij}^k + 2\gamma) - 2\gamma \right] a_{ij}a_{ij}^\top,$$ then 
 $
 \mH^k + \lambda \mI \succeq \nabla^2 f(x^k) + \lambda \mI = \nabla^2P(x^k) \succeq \mu \mI,
@@ -1135,15 +1132,16 @@ $$
 First, recall that
 \begin{equation}\label{eq:bu98fg9d_087f98dhf}{\cal H}^{k} =   \sum_{i=1}^n \norm{h_i^{k} - h_i(x^*)}^2 .\end{equation}Since $h_{i}(x^*) \in \R^m_+$ due to convexity of $f_{ij}$, we have \begin{equation} \label{ew:ub98g9fdu_09u9fdf}\norm{[x]_+ - h_i(x^*)}^2 \leq \norm{x - h_i(x^*)}^2, \qquad \text{for all} \qquad x \in \R^m.\end{equation} Then as long as $\eta \leq \frac{1}{\omega+1}$, we have 
 \begin{eqnarray}
-\ExpBr{{\cal H}^{k+1} \;|\; W^k}	&=& \ExpBr{  \sum_{i=1}^n \norm{h_i^{k+1} - h_i(x^*)}^2  \;|\; W^k} \notag \\ 
+&&\ExpBr{{\cal H}^{k+1} \;|\; W^k}	= \ExpBr{  \sum_{i=1}^n \norm{h_i^{k+1} - h_i(x^*)}^2  \;|\; W^k} \notag \\ 
 	&=&  \sum_{i=1}^n\ExpBr{  \norm{ [h^k_i + \eta \cC_i^k(h_i(x^k) - h^k_i)]_+ - h_i(x^*) }^2  \;|\; W^k} \notag  \\ 
 	&\overset{\eqref{ew:ub98g9fdu_09u9fdf}}{\leq} &    \sum_{i=1}^n \ExpBr{\norm{ h^k_i + \eta \cC_i^k(h_i(x^k) - h^k_i) - h_i(x^*) }^2 \;|\; W^k }\notag  \\ 
 	&=& \sum_{i=1}^n  \norm{ h_i^k - h_i(x^*) }^2   + 2 \eta\sum_{i=1}^n \ExpBr{  \langle  \cC_i^k(h_i(x^k) - h_i^k),  h_i^k - h_i(x^*) \rangle \;|\; W^k}\notag  \\
 	&& \qquad + \eta^2 \sum_{i=1}^n \ExpBr{ \norm{\cC_i^k(h_i(x^k) - h_i^k) }^2 \;|\; W^k} \notag \\ 
-	&\overset{\eqref{eq:bu98fg9d_087f98dhf}+\eqref{eq:unbiased} + \eqref{eq:omega-variance}}{\leq} &  {\cal H}^k  + 2\eta \sum_{i=1}^n    \langle  h_i(x^k) - h_i^k, h_i^k - h_i(x^*) \rangle  + \eta^2 \sum_{i=1}^n  (\omega+1) \|h_i(x^k) - h_i^k\|^2 .\label{eq:nbu98fd-09ud9f8hufd-fd}
+	&\overset{\eqref{eq:bu98fg9d_087f98dhf}+\eqref{eq:unbiased} + \eqref{eq:omega-variance}}{\leq} &  {\cal H}^k  + 2\eta \sum_{i=1}^n    \langle  h_i(x^k) - h_i^k, h_i^k - h_i(x^*) \rangle\notag\\
+	&& \quad + \eta^2 \sum_{i=1}^n  (\omega+1) \|h_i(x^k) - h_i^k\|^2 .\label{eq:nbu98fd-09ud9f8hufd-fd}
 	\end{eqnarray}
 	
-Using the stepsize restriction $\eta \leq \frac{1}{\omega+1}$, we can bound $\eta^2 (\omega+1) \leq \eta$. Plugging this back in  \eqref{eq:nbu98fd-09ud9f8hufd-fd}, we get
+\noindent Using the stepsize restriction $\eta \leq \frac{1}{\omega+1}$, we can bound $\eta^2 (\omega+1) \leq \eta$. Plugging this back in  \eqref{eq:nbu98fd-09ud9f8hufd-fd}, we get
 \begin{eqnarray*}
 \ExpBr{{\cal H}^{k+1} \;|\; W^k}
 	&\leq &  {\cal H}^k  + \eta  \sum_{i=1}^n   \langle h_i(x^k) - h_i^k, h_i(x^k) + h_i^k - 2h_i(x^*) \rangle  \\ 
@@ -1172,33 +1170,39 @@ Then we can write
 	&\overset{\eqref{eq:89f8gd9=08yh98fd}}{\leq}& \frac{1}{\lambda} \norm{  (\mH^k + \lambda \mI)(x^k - x^*) - \nabla f(x^k) - \lambda x^k  } \notag \\ 
 	&\overset{(\ref{eq:optx})}{=}& \frac{1}{\lambda} \norm{ \mH^k (x^k - x^*) - (\nabla f(x^k) - \nabla f(x^*)) } \notag \\ 
 	&=& \frac{1}{\lambda} \norm{ \frac{1}{n} \sum_{i=1}^n \left[\mH_i^k (x^k - x^*) - (\nabla f_i(x^k) - \nabla f_i(x^*)) \right]}\notag  \\ 
-	&\leq& \frac{1}{n \lambda} \sum_{i=1}^n \norm{ \mH_i^k (x^k - x^*) - (\nabla f_i(x^k) - \nabla f_i(x^*)) } \notag  \\
-	&\overset{\eqref{eq:b97gfd-ujo_09op}+\eqref{eq:f_and_f_i} }{=}& \frac{1}{n \lambda} \sum_{i=1}^n \norm{ \frac{1}{m} \sum_{j=1}^m  \left[ h_{ij}^k a_{ij} a_{ij}^\top (x^k - x^*) - (\nabla f_{ij}(x^k) - \nabla f_{ij}(x^*)) \right] },\label{eq:pop_us_lop_989f}
+	&\leq& \frac{1}{n \lambda} \sum_{i=1}^n \norm{ \mH_i^k (x^k - x^*) - (\nabla f_i(x^k) - \nabla f_i(x^*)) }.\notag
 	\end{eqnarray}
-	where the last step follows from applying Jensen's inequality to he convex function $x\mapsto \norm{x}$. 
+	where the last step follows from applying Jensen's inequality to he convex function $x\mapsto \norm{x}$. Using~\eqref{eq:b97gfd-ujo_09op} and \eqref{eq:f_and_f_i} we get
+	\begin{eqnarray}
+	\norm{x^{k+1}-x^*} \leq \frac{1}{n \lambda} \sum_{i=1}^n \norm{ \frac{1}{m} \sum_{j=1}^m  \left[ h_{ij}^k a_{ij} a_{ij}^\top (x^k - x^*) - (\nabla f_{ij}(x^k) - \nabla f_{ij}(x^*)) \right] }.\label{eq:pop_us_lop_989f}
+	\end{eqnarray}
+	
 
-We can now express the difference of the gradients in integral form via the fundamental theorem of calculus, obtaining 
+\noindent We can now express the difference of the gradients in integral form via the fundamental theorem of calculus, obtaining 
 \begin{eqnarray*} \nabla f_{ij}(x^k) - \nabla f_{ij}(x^*) &=&   \int_{0}^1 \mH_{ij} (x^* + \tau(x^k - x^*)) (x^k - x^*) \; d\tau \\
 &\overset{\eqref{eq:87ybfd0fd}}{=} & \int_{0}^1 h_{ij}(x^* + \tau(x^k - x^*)) a_{ij}a_{ij}^\top  (x^k - x^*)\; d\tau .\end{eqnarray*}
 We can plug this back into \eqref{eq:pop_us_lop_989f}, which gives
 \begin{eqnarray}	
-\norm{ x^{k+1} - x^* }	&\leq & 
- \frac{1}{n \lambda} \sum_{i=1}^n \frac{1}{m} \norm{  \sum_{j=1}^{m} \left(  h_{ij}^k a_{ij}a_{ij}^\top (x^k - x^*)  -  \int_{0}^1 h_{ij} (x^* + \tau(x^k - x^*))a_{ij}a_{ij}^\top (x^k - x^*)d\tau  \right)   } \notag \\ 
-	&=& \frac{1}{n \lambda} \sum_{i=1}^n \frac{1}{m} \norm{  \sum_{j=1}^{m}  a_{ij}a_{ij}^\top (x^k - x^*) \left( h_{ij}^k - \int_{0}^1 h_{ij}(x^* + \tau(x^k - x^*))  d\tau \right) }\notag \\ 
+&&\norm{ x^{k+1} - x^* }\notag\\
+&\leq & 
+ \frac{1}{n \lambda} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m} \left(  h_{ij}^k a_{ij}a_{ij}^\top (x^k - x^*)-  \int_{0}^1 h_{ij} (x^* + \tau(x^k - x^*))a_{ij}a_{ij}^\top (x^k - x^*)d\tau  \right)   \right\| \notag \\ 
+	&=& \frac{1}{n \lambda} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m}  a_{ij}a_{ij}^\top (x^k - x^*)\left( h_{ij}^k- \int_{0}^1 h_{ij}(x^* + \tau(x^k - x^*))  d\tau \right) \right\|\notag \\ 
 	&\leq& \frac{ \norm{x^k - x^*}}{ \lambda} \frac{1}{nm} \sum_{i=1}^n \sum_{j=1}^{m} \norm{a_{ij}}^2 \left|   \int_{0}^1 h_{ij}^k - h_{ij}(x^* + \tau(x^k - x^*))  d\tau  \right|. \label{petrol-09809fd}
 \end{eqnarray}
 
-From (\ref{eq:alphaijL}), we have 
+\noindent From (\ref{eq:alphaijL}), we have 
 \begin{eqnarray}
-	\left|   \int_{0}^1 h_{ij}^k - h_{ij}(x^* + \tau(x^k - x^*))  d\tau  \right| &\leq& \int_{0}^1 \left|  h_{ij}^k - h_{ij}(x^* + \tau(x^k - x^*))   \right| d\tau \notag \\
+	&&\left|   \int_{0}^1 h_{ij}^k - h_{ij}(x^* + \tau(x^k - x^*))  d\tau  \right|\notag\\
+	&\leq& \int_{0}^1 \left|  h_{ij}^k - h_{ij}(x^* + \tau(x^k - x^*))   \right| d\tau \notag \\
 	&\leq& |h_{ij}^k - h_{ij}(x^*)| + \int_{0}^1 \left|  h_{ij}(x^*) -  h_{ij}(x^* + \tau(x^k - x^*))   \right| d \tau \notag \\ 
 	&\overset{(\ref{eq:alphaijL})}{\leq}&  |h_{ij}^k - h_{ij}(x^*)| + \int_{0}^1 \tau \nu \|a_{ij}\| \cdot \|x^k - x^*\| d\tau  \notag \\ 
 	&=&  |h_{ij}^k - h_{ij}(x^*)| + \frac{\nu \|a_{ij}\|}{2} \|x^k-x^*\|. \label{eq:olive-09u0hfdih}
 \end{eqnarray}
 
-By squaring both sides of \eqref{petrol-09809fd},  applying Jensen's inequality to the function $t\mapsto t^2$ in the form $\left(\frac{1}{nm}\sum_i \sum_j t_{ij}\right)^2 \leq \frac{1}{nm}\sum_i \sum_j t^2_{ij}$, and plugging in the bound \eqref{eq:olive-09u0hfdih}, we get
+\noindent By squaring both sides of \eqref{petrol-09809fd},  applying Jensen's inequality to the function $t\mapsto t^2$ in the form $\left(\frac{1}{nm}\sum_i \sum_j t_{ij}\right)^2 \leq \frac{1}{nm}\sum_i \sum_j t^2_{ij}$, and plugging in the bound \eqref{eq:olive-09u0hfdih}, we get
 \begin{eqnarray*}	
-\norm{ x^{k+1} - x^* }^2	&\overset{}\leq &  \frac{ \norm{x^k - x^*}^2}{ \lambda^2} \left(\frac{1}{nm} \sum_{i=1}^n \sum_{j=1}^{m} \norm{a_{ij}}^2 \left|   \int_{0}^1 h_{ij}^k - h_{ij}(x^* + \tau(x^k - x^*))  d\tau  \right| \right)^2 \\
+&&\norm{ x^{k+1} - x^* }^2\\
+&\leq&  \frac{ \norm{x^k - x^*}^2}{ \lambda^2} \left(\frac{1}{nm} \sum_{i=1}^n \sum_{j=1}^{m} \norm{a_{ij}}^2 \left|   \int_{0}^1 h_{ij}^k - h_{ij}(x^* + \tau(x^k - x^*))  d\tau  \right| \right)^2 \\
 &\leq &\frac{ \norm{x^k - x^*}^2}{ \lambda^2} \frac{1}{nm} \sum_{i=1}^n \sum_{j=1}^{m} \left( \norm{a_{ij}}^2  \left| \int_{0}^1 h_{ij}^k - h_{ij}(x^* + \tau(x^k - x^*))  d\tau  \right|\right)^2 \\
 &\overset{\eqref{eq:olive-09u0hfdih}}{\leq}&  \frac{\|x^k-x^*\|^2}{ \lambda^2} \frac{1}{nm}\sum_{i=1}^n \sum_{j=1}^{m} \|a_{ij}\|^4 \left(   |h_{ij}^k - h_{ij}(x^*)| + \frac{\nu \|a_{ij}\|}{2} \|x^k-x^*\|  \right)^2 \\ 
 &\leq&  \frac{\|x^k-x^*\|^2}{ \lambda^2} \frac{1}{nm}\sum_{i=1}^n \sum_{j=1}^{m} \|a_{ij}\|^4 \left(   2|h_{ij}^k - h_{ij}(x^*)|^2 + \frac{\nu^2 \|a_{ij}\|^2}{2} \|x^k-x^*\|^2  \right) \\
@@ -1207,13 +1211,13 @@ By squaring both sides of \eqref{petrol-09809fd},  applying Jensen's inequality 
 In the last step we have used Young's inequality.\footnote{$(a+b)^2 \leq 2a^2 + 2b^2$.}
 
 
-Since $R\eqdef \max_{i, j} \{ \|a_{ij}\| \}$, we can further bound
+\noindent Since $R\eqdef \max_{i, j} \{ \|a_{ij}\| \}$, we can further bound
 \begin{equation}\label{eq:xk+1iter}
 \|x^{k+1} - x^*\|^2 \leq \frac{2 R^4}{nm\lambda^2}  \cH^k \|x^k-x^*\|^2 + \frac{ \nu^2 R^6}{2\lambda^2}\|x^k-x^*\|^4. 
 \end{equation}
 
 
-Assume $\|x^k - x^*\|^2 \leq \frac{\lambda^2}{12\nu^2R^6}$ for all $k\geq 0$. Then from (\ref{eq:xk+1iter}), we have 
+\noindent Assume $\|x^k - x^*\|^2 \leq \frac{\lambda^2}{12\nu^2R^6}$ for all $k\geq 0$. Then from (\ref{eq:xk+1iter}), we have 
 \begin{eqnarray*}
 	\|x^{k+1} - x^*\|^2 &\leq& \frac{\lambda^2}{12\nu^2 R^6} \cdot \frac{2R^4}{nm\lambda^2} \cH^k + \frac{\lambda^2}{12\nu^2 R^6} \cdot \frac{ \nu^2 R^6\|x^k-x^*\|^2}{2\lambda^2} \\ 
 	&\leq& \frac{1}{6nm \nu^2 R^2} {\cal H}^k + \frac{1}{24} \|x^k - x^*\|^2, 
@@ -1260,12 +1264,12 @@ which implies that
 	&=&  \sum_{i=1}^n \sum_{j=1}^m \left|  \sum_{t=0}^k \rho_t (\newalpha_{ij}(x^t) - \newalpha_{ij}(x^*))  \right|^2 \\ 
 	&\leq&  \sum_{i=1}^n \sum_{j=1}^m  \sum_{t=0}^k \rho_t | \newalpha_{ij}(x^t) - \newalpha_{ij}(x^*) |^2 \\ 
 	&\overset{(\ref{eq:alphaijL})}{\leq}&  \sum_{i=1}^n \sum_{j=1}^m  \sum_{t=0}^k \rho_t \nu^2 \|a_{ij}\|^2 \|x^t - x^*\|^2 \\ 
-	&\overset{\text{Assumption}~\ref{as:learning-1}}{\leq}& \nu^2 R^2 \sum_{i=1}^n \sum_{j=1}^m  \sum_{t=0}^k \rho_t \cdot \frac{\lambda^2}{12\nu^2R^6} \\
+	&\overset{\text{As.}~\ref{as:learning-1}}{\leq}& \nu^2 R^2 \sum_{i=1}^n \sum_{j=1}^m  \sum_{t=0}^k \rho_t \cdot \frac{\lambda^2}{12\nu^2R^6} \\
 	&=& \frac{mn \lambda^2}{12R^4}, 
 \end{eqnarray*}
 for $k\leq K$. 
 
-Combining the above inequality and (\ref{eq:xk+1iter}), we arrive at 
+\noindent Combining the above inequality and (\ref{eq:xk+1iter}), we arrive at 
 \begin{eqnarray*}
 	\|x^{K+1} - x^*\|^2 &\leq& \frac{2\|x^K-x^*\|^2 R^4}{mn\lambda^2} \sum_{i=1}^n \|h_i^K - \newalpha_i(x^*)\|^2 + \frac{ \nu^2 R^6\|x^K-x^*\|^4}{2\lambda^2} \\
 	&\leq&  \frac{2\|x^K-x^*\|^2 R^4}{mn\lambda^2} \cdot  \frac{mn \lambda^2}{12R^4} +  \frac{ \nu^2 R^6\|x^K-x^*\|^4}{2\lambda^2} \\
@@ -1303,12 +1307,13 @@ First, we have
 	&\leq& \frac{1}{\mu} \|  (\mH^k + \lambda \mI)(x^k - x^*) - \nabla f(x^k) - \lambda x^k  \| \\ 
 	&\overset{(\ref{eq:optx})}{=}& \frac{1}{\mu} \| \mH^k (x^k - x^*) - (\nabla f(x^k) - \nabla f(x^*)) \| \\ 
 	&\leq& \frac{1}{n \mu} \sum_{i=1}^n \| \mH_i^k (x^k - x^*) - (\nabla f_i(x^k) - \nabla f_i(x^*)) \| \\
-	&=& \frac{1}{n \mu} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m} \left( \left( \beta^k (h_{ij}^k + 2\gamma) - 2\gamma \right)a_{ij}a_{ij}^\top (x^k - x^*) -  (\nabla f_{ij}(x^k) - \nabla f_{ij}(x^*)) \right)   \right\| 
+	&=& \frac{1}{n \mu} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m} \left( \left( \beta^k (h_{ij}^k + 2\gamma) - 2\gamma \right)a_{ij}a_{ij}^\top (x^k - x^*)\right.\right.\notag\\
+	&&\quad \left.\left.-  (\nabla f_{ij}(x^k) - \nabla f_{ij}(x^*)) \right)   \right\| 
 \end{eqnarray*}
 
 By using 	\eqref{eq:difnablaf}, we further get
 \begin{eqnarray*}
-	\|x^{k+1} - x^*\|
+	&&\|x^{k+1} - x^*\|\\
 	&\overset{(\ref{eq:difnablaf})}{=}& \frac{1}{n \mu} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m} \left( \beta^k (h_{ij}^k + 2\gamma)a_{ij}a_{ij}^\top (x^k - x^*) - 2\gamma a_{ij}a_{ij}^\top (x^k - x^*) \right. \right. \\ 
 	&& \left. \left. -  \int_{0}^1 \mH_{ij} (x^* + \tau(x^k - x^*)) (x^k - x^*)d\tau  \right)   \right\| \\ 
 	&=& \frac{1}{n \mu} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m} \left( \beta^k (h_{ij}^k + 2\gamma)a_{ij}a_{ij}^\top (x^k - x^*) - 2\gamma a_{ij}a_{ij}^\top (x^k - x^*) \right. \right. \\ 
@@ -1326,14 +1331,14 @@ where we use $|h_{ij}^k| \leq \gamma$ in the last inequality. Next, we estimate 
 
 
 
-Let $\{i^k, j^k\} = {\rm argmax}_{i, j} \left\{ \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma}  \right\}$. Then we have 
+\noindent Let $\{i^k, j^k\} = {\rm argmax}_{i, j} \left\{ \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma}  \right\}$. Then we have 
 \begin{eqnarray*}
 	|\beta^k - 1| &=& \left| \frac{\newalpha_{i^kj^k}(x^k) + 2\gamma}{h_{i^kj^k}^k + 2\gamma}   - 1  \right| \\ 
 	&\leq& \max_{i, j} \left\{  \frac{\nu \|a_{ij}\|}{\gamma} \|x^k - x^*\| + \frac{1}{\gamma} |h_{ij}^k - \newalpha_{ij}(x^*)|  \right\} \\ 
 	&\leq& \frac{\nu R}{\gamma} \|x^k - x^*\| + \frac{1}{\gamma} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)| \}.  
 \end{eqnarray*}
 
-For $\left| \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau - 1   \right|$, we have 
+\noindent For $\left| \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau - 1   \right|$, we have 
 
 \begin{eqnarray*}
 	&& \left| \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau - 1   \right| \\ 
@@ -1344,17 +1349,17 @@ For $\left| \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h
 	&=& \frac{1}{\gamma} |h_{ij}^k - \newalpha_{ij}(x^*)|  + \frac{\nu \|a_{ij}\|}{2\gamma} \|x^k - x^*\|. 
 \end{eqnarray*}
 
-Combining the two above inequalities, we can obtain 
-
+\noindent Combining the two above inequalities, we can obtain 
 \begin{eqnarray}
 && \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right| \nonumber \\ 
 &\leq& \frac{\nu R}{\gamma} \|x^k - x^*\| + \frac{1}{\gamma} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)| \} + \frac{1}{\gamma} |h_{ij}^k - \newalpha_{ij}(x^*)|  + \frac{\nu \|a_{ij}\|}{2\gamma} \|x^k - x^*\| \nonumber \\ 
 &\leq&  \frac{2\nu R}{\gamma} \|x^k - x^*\| + \frac{2}{\gamma} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)| \}. \label{eq:betak-2}
 \end{eqnarray}
 
-Thus, we have 
+\noindent Thus, we have 
 \begin{eqnarray}
-\|x^{k+1} - x^*\|^2 &\leq& \frac{9\gamma^2\|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right|^2 \nonumber \\ 
+&&\|x^{k+1} - x^*\|^2\notag\\
+&\leq& \frac{9\gamma^2\|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right|^2 \nonumber \\ 
 &\leq& \frac{9\gamma^2\|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left(  \frac{8\nu^2 R^2}{\gamma^2} \|x^k - x^*\|^2 + \frac{8}{\gamma^2} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)|^2 \}    \right) \nonumber \\ 
 &\leq& \frac{72\|x^k - x^*\|^2 R^4}{\mu^2} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)|^2 \}  +   \frac{72\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2} \label{eq:forinitiallm} \\ 
 &\leq&  \frac{72\|x^k - x^*\|^2 R^4}{\mu^2} \sum_{i=1}^n \|h_i^k - \newalpha_i(x^*)\|^2 +   \frac{72\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2}, \nonumber 
@@ -1365,7 +1370,7 @@ where we use the convexity of $x\mapsto \|x\|^2$ in the first inequality. From t
 \end{equation}
 
 
-Assume $\|x^k - x^*\|^2 \leq \frac{\mu^2}{432m n \nu^2R^6}$ for all $k\geq 0$. Then from (\ref{eq:xk+1-2}), we have 
+\noindent Assume $\|x^k - x^*\|^2 \leq \frac{\mu^2}{432m n \nu^2R^6}$ for all $k\geq 0$. Then from (\ref{eq:xk+1-2}), we have 
 \begin{eqnarray*}
 	\|x^{k+1} - x^*\|^2 &\leq& \frac{\mu^2}{432 mn\nu^2 R^6} \cdot \frac{72R^4}{\mu^2}{\cal H}^k + \frac{\mu^2}{432mn\nu^2 R^6} \cdot \frac{ 72\nu^2 R^6\|x^k-x^*\|^2}{\mu^2} \\ 
 	&\leq& \frac{1}{6mn \nu^2 R^2} {\cal H}^k + \frac{1}{6mn} \|x^k - x^*\|^2, 
@@ -1375,7 +1380,7 @@ and by taking expectation, we have
 \ExpBr{\|x^{k+1} - x^*\|^2} \leq  \frac{1}{6mn \nu^2 R^2} \ExpBr{{\cal H}^k} + \frac{1}{6mn} \ExpBr{ \|x^k - x^*\|^2}. 
 \end{equation}
 
-Let $\Phi_2^k \eqdef \|x^{k} - x^*\|^2 + \frac{1}{3mn\eta  \nu^2 R^2} {\cal H}^{k}$. Combining (\ref{eq:expxk+1-2}) and the evolution of ${\cal H}^k$ in Lemma~\ref{lm:calHk-2}, we arrive at 
+\noindent Let $\Phi_2^k \eqdef \|x^{k} - x^*\|^2 + \frac{1}{3mn\eta  \nu^2 R^2} {\cal H}^{k}$. Combining (\ref{eq:expxk+1-2}) and the evolution of ${\cal H}^k$ in Lemma~\ref{lm:calHk-2}, we arrive at 
 \begin{eqnarray*}
 	\mathbb{E}[\Phi_2^{k+1}] &=& \ExpBr{\|x^{k+1} - x^*\|^2} + \frac{1}{3mn\eta  \nu^2 R^2}  \ExpBr{{\cal H}^{k+1}} \\ 
 	&\leq&  \frac{1}{3mn \eta \nu^2 R^2} \left(  1 - \eta + \frac{\eta}{2}  \right) \mathbb{E}[{\cal H}^k] + \left(  \frac{1}{6mn} + \frac{1}{3}  \right)\ExpBr{\|x^k - x^*\|^2 }\\ 
@@ -1405,12 +1410,12 @@ which implies that
 	|h_{ij}^k - \newalpha_{ij}(x^*)|^2 &=&   \left|  \sum_{t=0}^k \rho_t (\newalpha_{ij}(x^t) - \newalpha_{ij}(x^*))  \right|^2 \\ 
 	&\leq&   \sum_{t=0}^k \rho_t | \newalpha_{ij}(x^t) - \newalpha_{ij}(x^*) |^2 \\ 
 	&\overset{(\ref{eq:alphaijL})}{\leq}&   \sum_{t=0}^k \rho_t \nu^2 \|a_{ij}\|^2 \|x^t - x^*\|^2 \\ 
-	&\overset{Assumption \ref{as:learning-2}}{\leq}& \nu^2 R^2  \sum_{t=0}^k \rho_t \cdot \frac{\mu^2}{432mn \nu^2R^6} \\
+	&\overset{As. \ref{as:learning-2}}{\leq}& \nu^2 R^2  \sum_{t=0}^k \rho_t \cdot \frac{\mu^2}{432mn \nu^2R^6} \\
 	&=& \frac{ \mu^2}{432mnR^4}, 
 \end{eqnarray*}
 for $k\leq K$. 
 
-Combining the above inequality and (\ref{eq:forinitiallm}), we arrive at 
+\noindent Combining the above inequality and (\ref{eq:forinitiallm}), we arrive at 
 \begin{eqnarray*}
 	\|x^{K+1} - x^*\|^2 &\leq& \frac{72\|x^K-x^*\|^2 R^4}{\mu^2} \max_{i, j} \{  | h_{ij}^K - \newalpha_{ij}(x^*) |^2  \}  + \frac{ 72\nu^2 R^6\|x^K-x^*\|^4}{\mu^2} \\
 	&\leq& \frac{72\|x^K-x^*\|^2 R^4}{\mu^2} \cdot  \frac{ \mu^2}{432mnR^4} +  \frac{ 72\nu^2 R^6\|x^K-x^*\|^4}{\mu^2} \\
@@ -1440,7 +1445,7 @@ In {\sf CUBIC-NEWTON-LEARN}, we need to minimize $T(x^k, s)$ at each step. The o
 \nabla P(x^k) + (\mH^k + \lambda \mI)s + \frac{M\|s\|}{2}s = 0. 
 \end{equation}
 
-Let $\mU^T \Lambda \mU$ be the eigenvalue decomposition of $\mH^k + \lambda \mI$. Then we can transform the above equality to 
+\noindent Let $\mU^T \Lambda \mU$ be the eigenvalue decomposition of $\mH^k + \lambda \mI$. Then we can transform the above equality to 
 $$
 \Lambda \mU s + \frac{M\|s\|}{2} \mU s = - \mU \nabla P(x^k). 
 $$
@@ -1463,7 +1468,7 @@ $$
 
 \subsection{Proof of Lemma \ref{lm:global}}
 
-Since $x^{k+1} = x^k + s^k$, from Lemma 1 in \citep{PN2006-cubic}, we have 
+\noindent Since $x^{k+1} = x^k + s^k$, from Lemma 1 in \citep{PN2006-cubic}, we have 
 \begin{eqnarray}
 P(x^{k+1}) &\leq& P(x^k) + \langle \nabla f(x^k) + \lambda x^k, s^k \rangle + \frac{1}{2} \langle (\nabla^2 f(x^k) + \lambda \mI)s^k, s^k \rangle + \frac{M}{6}\|s^k\|^3 \nonumber \\ 
 &\leq&  P(x^k) + \langle \nabla f(x^k) + \lambda x^k, s^k \rangle + \frac{1}{2} \langle (\mH^k + \lambda \mI)s^k, s^k \rangle + \frac{M}{6}\|s^k\|^3 \nonumber \\ 
@@ -1479,12 +1484,12 @@ Since $T(x^k, s^k) = \min_{s}\{  T(x^k, s)  \} \leq T(x^k, 0)=0$, we have $P(x^{
 	&& + \frac{1}{2} \|\mH^k + \lambda \mI - \nabla^2 P(x^k)\| \cdot \|y-x^k\|^2. 
 \end{eqnarray*}
 
-First, by Lemma 1 in \citep{PN2006-cubic}, we can obtain 
+\noindent First, by Lemma 1 in \citep{PN2006-cubic}, we can obtain 
 $$
 \langle \nabla P(x^k), y-x^k \rangle + \frac{1}{2} \langle \nabla^2 P(x^k)(y-x^k), y-x^k \rangle \leq P(y) - P(x^k) + \frac{M}{6}\|y-x^k\|^3. 
 $$
 
-For $ \|\mH^k + \lambda \mI - \nabla^2 P(x^k)\| $, we have 
+\noindent For $ \|\mH^k + \lambda \mI - \nabla^2 P(x^k)\| $, we have 
 \begin{eqnarray*}
 	\|\mH^k + \lambda \mI - \nabla^2 P(x^k)\| &=& \|\mH^k - \nabla^2 f(x^k)\| \\
 	&=& \left\| \frac{1}{n} \sum_{i=1}^n \frac{1}{m} \sum_{j=1}^m \left(  \beta^k (h_{ij}^k + 2\gamma) - 2\gamma - \newalpha_{ij}(x^k)  \right)a_{ij}a_{ij}^\top \right\| \\ 
@@ -1496,7 +1501,7 @@ $$
 \|\mH^k + \lambda \mI - \nabla^2 P(x^k)\| \leq 18\gamma R^2. 
 $$
 
-Then we arrive at 
+\noindent Then we arrive at 
 $$
 P(x^{k+1}) \leq P(y) + 9\gamma R^2 \|y-x^k\|^2 + \frac{M}{3}\|y-x^k\|^3. 
 $$
@@ -1509,12 +1514,12 @@ Recall that $R_x =\sup_{x\in \R^d} \{  \|x-x^*\| : P(x) \leq P(x^0)  \}$. Since 
 C_k = C_0 + \sum_{i=1}^k i^2 \geq C_0 + \int_{0}^k x^2 dx = C_0 + \frac{k^3}{3}. 
 \end{equation}
 
-Let $\sigma_k \eqdef \frac{c_{k+1}}{C_{k+1}}$ for $k\geq 0$. Then $1 - \sigma_k = \frac{C_k}{C_{k+1}}$. We also have $\sigma_k \leq 1$ since 
+\noindent Let $\sigma_k \eqdef \frac{c_{k+1}}{C_{k+1}}$ for $k\geq 0$. Then $1 - \sigma_k = \frac{C_k}{C_{k+1}}$. We also have $\sigma_k \leq 1$ since 
 $$
 \max_{\xi\geq 0} \frac{\xi^2}{C_0 + \frac{\xi^3}{3}} =1. 
 $$
 
-Choose $y = \sigma_k x^* + (1-\sigma_k)x^k$. Then by the convexity of $P$, we have 
+\noindent Choose $y = \sigma_k x^* + (1-\sigma_k)x^k$. Then by the convexity of $P$, we have 
 \begin{eqnarray*}
 	P(x^{k+1}) &\leq& \sigma_k P(x^*) + (1-\sigma_k) P(x^k) + 9\gamma R^2 \sigma_k^2 \|x^k - x^*\|^2 + \frac{M \sigma_k^3}{3}\|x^k-x^*\|^3 \\ 
 	&\leq& \frac{c_{k+1}}{C_{k+1}}P(x^*) + \frac{C_k}{C_{k+1}}P(x^k) + 9\gamma R^2R_x^2 \left(  \frac{c_{k+1}}{C_{k+1}}  \right)^2 + \frac{MR_x^3}{3} \left(  \frac{c_{k+1}}{C_{k+1}}  \right)^3, 
@@ -1524,12 +1529,12 @@ $$
 C_{k+1} [P(x^{k+1}) - P(x^*)] \leq C_k [P(x^k) - P(x^*)] + 9\gamma R^2R_x^2 \frac{c_{k+1}^2}{C_{k+1}} + \frac{MR_x^3}{3} \frac{c_{k+1}^3}{C_{k+1}^2}. 
 $$
 
-Hence, 
+\noindent Hence, 
 $$
 C_k[P(x^k) - P(x^*)] \leq C_0[P(x^0) - P(x^*)] + 9\gamma R^2R_x^2 \sum_{i=1}^k \frac{c_i^2}{C_i} + \frac{MR_x^3}{3} \sum_{i=1}^k \frac{c_i^3}{C_i^2}. 
 $$
 
-Notice that 
+\noindent Notice that 
 $$
 \sum_{i=1}^k \frac{c_i^2}{C_i} \overset{(\ref{eq:Ck})}{\leq} \sum_{i=1}^k \frac{i^4}{C_0 + \frac{1}{3}i^3}\leq 3 \sum_{i=1}^k i \leq 3k^2, 
 $$
@@ -1538,14 +1543,14 @@ $$
 \sum_{i=1}^k \frac{c_i^3}{C_i^2}  \overset{(\ref{eq:Ck})}{\leq}  \sum_{i=1}^k \frac{i^6}{(C_0 + \frac{1}{3}i^3)^2} \leq 9k. 
 $$
 
-Therefore, we arrive at 
+\noindent Therefore, we arrive at 
 \begin{eqnarray*}
 	P(x^k) - P(x^*) &\leq& \frac{1}{C_k} \left(  C_0[P(x^0) - P(x^*)] + 27\gamma R^2R_x^2 k^2 + 3MR_x^3 k \right) \\ 
 	&\overset{(\ref{eq:Ck})}{\leq}& \frac{81\gamma R^2 R_x^2}{k} + \frac{9MR_x^3}{k^2} + \frac{4[P(x^0) - P(x^*)]}{k^3}. 
 \end{eqnarray*}
 
 
-Then in order to guarantee $P(x^k) - P(x^*) \leq \epsilon$, we only need to let 
+\noindent Then in order to guarantee $P(x^k) - P(x^*) \leq \epsilon$, we only need to let 
 $$
 k = O\left( \frac{81\gamma R^2 R_x^2}{\epsilon}  + \sqrt{\frac{MR_x^3}{\epsilon}} + \left(  \frac{P(x^0) - P(x^*)}{\epsilon}  \right)^{1/3}   \right). 
 $$
@@ -1562,12 +1567,12 @@ $$
 R_x^2 \leq \frac{2}{\mu} (P(x^0) - P(x^*)). 
 $$
 
-Combining the above inequality and Theorem~\ref{th:concubic}, we can obtain 
+\noindent Combining the above inequality and Theorem~\ref{th:concubic}, we can obtain 
 $$
 P(x^k) - P(x^*) \leq \left(  \frac{162\gamma R^2}{\mu k} +  \frac{18MR_x}{\mu k^2} + \frac{4}{ k^3}  \right) \cdot \left(  P(x^0) - P(x^*)  \right)
 $$
 
-If we let 
+\noindent If we let 
 $$
 \frac{162\gamma R^2}{\mu k} \leq \frac{1}{6}, \quad  \frac{18MR_x}{\mu k^2} \leq \frac{1}{6}, \quad {\rm and} \frac{4}{ k^3}  \leq \frac{1}{6}, 
 $$
@@ -1594,38 +1599,45 @@ which indicates that
 x^{k+1} = x^k - \left(  \mH^k + \lambda \mI + \frac{M}{2}\|x^{k+1} - x^k\| \right)^{-1} \left(  \nabla f(x^k) + \lambda x^k  \right). 
 \end{equation}
 
-Then we can obtain 
+\noindent Then we can obtain 
 \begin{eqnarray*}
-	\|x^{k+1} - x^*\| &=& \left \| x^k - x^* - \left(\mH^k + \lambda \mI +  \frac{M}{2}\|x^{k+1} - x^k\| \right)^{-1} (\nabla f(x^k) + \lambda x^k) \right\| \\
-	&=& \left\| \left(\mH^k + \lambda \mI + \frac{M}{2}\|x^{k+1} - x^k\| \right)^{-1} \left(  \left( \mH^k + \lambda \mI + \frac{M}{2}\|x^{k+1} - x^k\| \right) (x^k - x^*) - \nabla f(x^k) - \lambda x^k  \right) \right\| \\ 
+	&&\|x^{k+1} - x^*\|\\
+	&=& \left \| x^k - x^* - \left(\mH^k + \lambda \mI +  \frac{M}{2}\|x^{k+1} - x^k\| \right)^{-1} (\nabla f(x^k) + \lambda x^k) \right\| \\
+	&=& \left\| \left(\mH^k + \lambda \mI + \frac{M}{2}\|x^{k+1} - x^k\| \right)^{-1}\left(  \left( \mH^k + \lambda \mI + \frac{M}{2}\|x^{k+1} - x^k\| \right)\right.\right.\\
+	&&\qquad\qquad\qquad\qquad \left.\left.(x^k - x^*) - \nabla f(x^k) - \lambda x^k  \right) \right\| \\ 
 	&\leq& \frac{1}{\mu}  \left\|  \left(\mH^k + \lambda \mI +  \frac{M}{2}\|x^{k+1} - x^k\| \right)(x^k - x^*) - \nabla f(x^k) - \lambda x^k  \right \| \\ 
 	&\overset{(\ref{eq:optx})}{=}& \frac{1}{\mu} \left\| \mH^k (x^k - x^*) - (\nabla f(x^k) - \nabla f(x^*)) +  \frac{M}{2}\|x^{k+1} - x^k\|(x^k - x^*) \right\| \\ 
 	&\leq& \frac{1}{\mu} \left\| \mH^k (x^k - x^*) - (\nabla f(x^k) - \nabla f(x^*)) \right\|  + \frac{M\|x^{k+1} - x^k\|}{2\mu} \| x^k - x^* \|. 
 \end{eqnarray*}
 
-Then same as the analysis in the proof of Theorem~\ref{th:general}, we can obtain 
+\noindent Then same as the analysis in the proof of Theorem~\ref{th:general}, we can obtain 
 \begin{eqnarray*}
 	\|x^{k+1} - x^*\| &\leq& \frac{3\gamma\|x^k - x^*\|}{n \mu} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^2}{m} \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right| \\ 
 	&& +  \frac{M\|x^{k+1} - x^k\|}{2\mu} \| x^k - x^* \|.
 \end{eqnarray*}
 
-Combing the above inequality and (\ref{eq:betak-2}) yields 
+\noindent Combing the above inequality and (\ref{eq:betak-2}) yields 
 \begin{eqnarray*}
-	\|x^{k+1} - x^*\|^2 &\leq& \left(  1 + \frac{1}{3}  \right) \frac{9\gamma^2 \|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right|^2 \\
+	&&\|x^{k+1} - x^*\|^2\\
+	&\leq& \left(  1 + \frac{1}{3}  \right) \frac{9\gamma^2 \|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right|^2 \\
 	&& + (1 + 3) \cdot \frac{M^2\|x^{k+1} - x^k\|^2}{4\mu^2} \| x^k - x^* \|^2 \\
 	&\overset{(\ref{eq:betak-2})}{\leq}& \frac{12 \gamma^2\|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left(  \frac{8\nu^2 R^2}{\gamma^2} \|x^k - x^*\|^2 + \frac{8}{\gamma^2} \max_{i} \{\|h_i^k - \newalpha_i(x^*)\|^2 \}    \right) \\ 
-	&& +  \frac{M^2\|x^{k+1} - x^k\|^2}{\mu^2} \| x^k - x^* \|^2 \\ 
-	&\leq&  \frac{96\|x^k - x^*\|^2 R^4}{\mu^2} \sum_{i=1}^n \|h_i^k - \newalpha_i(x^*)\|^2 +   \frac{96\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2} +  \frac{M^2\|x^{k+1} - x^k\|^2}{\mu^2} \| x^k - x^* \|^2 \\ 
-	&=&  \frac{96\|x^k - x^*\|^2 R^4}{\mu^2}{\cal H}^k  +   \frac{96\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2} +  \frac{M^2\|x^{k+1} - x^k\|^2}{\mu^2} \| x^k - x^* \|^2. 
+	&& +  \frac{M^2\|x^{k+1} - x^k\|^2}{\mu^2} \| x^k - x^* \|^2.
+\end{eqnarray*}
+Then we can continue and get
+\begin{eqnarray*}\|x^{k+1} - x^*\|^2 &\leq&  \frac{96\|x^k - x^*\|^2 R^4}{\mu^2} \sum_{i=1}^n \|h_i^k - \newalpha_i(x^*)\|^2 +   \frac{96\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2}\\
+	&&\quad +  \frac{M^2\|x^{k+1} - x^k\|^2}{\mu^2} \| x^k - x^* \|^2 \\ 
+	&=&  \frac{96\|x^k - x^*\|^2 R^4}{\mu^2}{\cal H}^k  +   \frac{96\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2}+ \frac{M^2\|x^{k+1} - x^k\|^2}{\mu^2} \| x^k - x^* \|^2. 
 \end{eqnarray*}
 
-Then from $\|x^{k+1} - x^k\|^2 \leq 2\|x^{k+1} - x^*\|^2 + 2\|x^k - x^*\|^2$, we can get 
-\begin{equation}\label{eq:xk+1cubic}
-\|x^{k+1} - x^*\|^2 \leq \frac{96\|x^k - x^*\|^2 R^4}{\mu^2}{\cal H}^k + \frac{(96\nu^2 R^6 + 2M^2) \|x^k - x^*\|^4 }{\mu^2} + \frac{2M^2\|x^{k+1} - x^*\|^2}{\mu^2} \| x^k - x^* \|^2. 
-\end{equation}
+\noindent Then from $\|x^{k+1} - x^k\|^2 \leq 2\|x^{k+1} - x^*\|^2 + 2\|x^k - x^*\|^2$, we can get 
+\begin{eqnarray}\label{eq:xk+1cubic}
+\|x^{k+1} - x^*\|^2 &\leq& \frac{96\|x^k - x^*\|^2 R^4}{\mu^2}{\cal H}^k+\frac{(96\nu^2 R^6 + 2M^2) \|x^k - x^*\|^4 }{\mu^2}\notag\\
+&& \quad + \frac{2M^2\|x^{k+1} - x^*\|^2}{\mu^2} \| x^k - x^* \|^2. 
+\end{eqnarray}
 
 
-Assume $\|x^k - x^*\|^2 \leq \frac{\mu^2}{432m n \nu^2R^6}$ for all $k\geq 0$. Then from (\ref{eq:xk+1cubic}) and $M=\nu R^3$, we have 
+\noindent Assume $\|x^k - x^*\|^2 \leq \frac{\mu^2}{432m n \nu^2R^6}$ for all $k\geq 0$. Then from (\ref{eq:xk+1cubic}) and $M=\nu R^3$, we have 
 \begin{eqnarray*}
 	\|x^{k+1} - x^*\|^2 &\leq& \frac{\mu^2}{432mn\nu^2 R^6} \cdot \frac{96R^4}{\mu^2}{\cal H}^k + \frac{\mu^2}{432mn\nu^2 R^6} \cdot \frac{ 100\nu^2 R^6\|x^k-x^*\|^2}{\mu^2} \\ 
 	&\leq& \frac{2}{9mn \nu^2 R^2} {\cal H}^k + \frac{1}{4mn} \|x^k - x^*\|^2, 
@@ -1635,7 +1647,7 @@ and by taking expectation, we have
 \mathbb{E}\|x^{k+1} - x^*\|^2 \leq  \frac{2}{9mn \nu^2 R^2} \mathbb{E}[{\cal H}^k] + \frac{1}{4mn} \|x^k - x^*\|^2. 
 \end{equation}
 
-Let $\Phi_3^k \eqdef \|x^{k} - x^*\|^2 + \frac{4}{9mn\eta  \nu^2 R^2} {\cal H}^{k}$. Combing (\ref{eq:expxk+1-cubic}) and the evolution of ${\cal H}^k$ in Lemma \ref{lm:calHk-2}, we arrive at 
+\noindent Let $\Phi_3^k \eqdef \|x^{k} - x^*\|^2 + \frac{4}{9mn\eta  \nu^2 R^2} {\cal H}^{k}$. Combing (\ref{eq:expxk+1-cubic}) and the evolution of ${\cal H}^k$ in Lemma \ref{lm:calHk-2}, we arrive at 
 \begin{eqnarray*}
 	\mathbb{E}[\Phi_3^{k+1}] &=& \mathbb{E}\|x^{k+1} - x^*\|^2 + \frac{4}{9mn\eta  \nu^2 R^2}  \mathbb{E}[{\cal H}^{k+1}] \\ 
 	&\leq&  \frac{4}{9mn \eta \nu^2 R^2} \left(  1 - \eta + \frac{\eta}{2}  \right) \mathbb{E}[{\cal H}^k] + \left(  \frac{1}{4mn} + \frac{4}{9}  \right) \mathbb{E}\|x^k - x^*\|^2 \\ 
@@ -1671,7 +1683,7 @@ Above, we define $\beta_i^k \eqdef \max\limits_{j \in [m]}\frac{\newalpha_{ij}(x
 	x^{k+1} = x^k - \left(\mH^k + \lambda \mI \right)^{-1}\left(\frac{1}{n}\sum\limits_{i=1}^n \nabla f_i(x^k) +\lambda x^k\right).
 \end{eqnarray*}
 
-The method is summarized as Algorithm~\ref{alg:maxnewton}.
+\noindent The method is summarized as Algorithm~\ref{alg:maxnewton}.
 
 \begin{algorithm}[h]
 	\caption{{\sf MN: MAX-NEWTON}}
@@ -1693,7 +1705,7 @@ The method is summarized as Algorithm~\ref{alg:maxnewton}.
 	\end{algorithmic}
 \end{algorithm} 
 
-We now show that like original Newton's method and {\sf NEWTON-STAR}, {\sf MAX-NEWTON} also converges locally quadratically.
+\noindent We now show that like original Newton's method and {\sf NEWTON-STAR}, {\sf MAX-NEWTON} also converges locally quadratically.
 
 \begin{theorem}[Local quadratic convergence]\label{th:maxnewton}
 	Assume that $f_{ij}$ is convex for all $i,j$ and that we know  $\newalpha_{ij}(x^*)$ for all $i,j$. Furthermore, assume that $\mH_{ij}(x^*) \succeq \mu^* \mI$ for some $\mu^*>0$ for all $i,j$ (for instance, this holds if $f_{ij}$ is $\mu^*$-strongly convex). Then for any starting point $x^0 \in \R^d$, the iterates of {\sf MAX-NEWTON} for solving problem \eqref{primal} satisfy the following inequality
@@ -1718,7 +1730,8 @@ We now show that like original Newton's method and {\sf NEWTON-STAR}, {\sf MAX-N
 		&\leq & \frac{1}{\lambda}\left\|\left(\mH^k+\lambda\mI\right)(x^k-x^*)-\nabla f(x^k) - \lambda x^k\right)\|\\
 		&\overset{(\ref{eq:optx})}{=}& \frac{1}{\lambda}\left\|\mH^k(x^k-x^*) - (\nabla f(x^k) -\nabla f(x^*))\right\| \\
 		&\leq&\frac{1}{n\lambda}\sum\limits_{i=1}^n\left\|\mH_i^k(x^k-x^*) -(\nabla f_i(x^k) - \nabla f_i(x^*))\right\|\\
-		&\leq&\frac{1}{nm\lambda}\sum\limits_{i=1}^n\sum\limits_{j=1}^m\left\|\beta_i^k\newalpha_{ij}(x^*)a_{ij}a_{ij}^\top(x^k-x^*) - \int\limits_0^1\newalpha_{ij}(x^*+\tau(x^k-x^*))a_{ij}a_{ij}^\top(x^k-x^*) d\tau\right\|.
+		&\leq&\frac{1}{nm\lambda}\sum\limits_{i=1}^n\sum\limits_{j=1}^m\bigg\|\beta_i^k\newalpha_{ij}(x^*)a_{ij}a_{ij}^\top(x^k-x^*)\\
+		&&\quad -\int\limits_0^1\newalpha_{ij}(x^*+\tau(x^k-x^*))a_{ij}a_{ij}^\top(x^k-x^*) d\tau\bigg\|.
 	\end{eqnarray*}
 	Finally we obtain
 	\begin{equation}
@@ -1753,7 +1766,7 @@ We now show that like original Newton's method and {\sf NEWTON-STAR}, {\sf MAX-N
 	where we use inequality $\newalpha_{ij}(x^*) \geq \mu^*$.
 \end{proof}
 
-As we can see, the size of convergence area for {\sf NS} is larger than for {\sf MN}, because {\sf NS} depends on $\|a_{ij}\|^3$, while {\sf MN} depends on $\|a_{ij}\|^2\max\limits_{i,j}\|a_{ij}\|$. 
+\noindent As we can see, the size of convergence area for {\sf NS} is larger than for {\sf MN}, because {\sf NS} depends on $\|a_{ij}\|^3$, while {\sf MN} depends on $\|a_{ij}\|^2\max\limits_{i,j}\|a_{ij}\|$. 
 
 
 
@@ -1764,7 +1777,7 @@ As we can see, the size of convergence area for {\sf NS} is larger than for {\sf
 
 
 \addcontentsline{toc}{section}{\protect\numberline{}References}
-\bibliographystyle{ugost2008}
+\bibliographystyle{plainnat}
 \bibliography{references}
 
 
