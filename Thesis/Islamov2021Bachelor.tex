@@ -145,7 +145,7 @@
 and Compressed Communication>> \citep{islamov2021distributed} за авторством Рустема Исламов, Шун
 Кяна  и Питера Рихтарика.
 
-  Мы разработали несколько новых эффективных с точки зрения коммуникации методов второго порядка для распределенной оптимизации. Наш первый метод, NEWTON-STAR, является одним из вариантов метода Ньютона, от которого он наследует свою быструю локальную квадратичную скорость. Однако, в отличие от метода Ньютона, NEWTON-STAR имеет ту же стоимость коммуницирования за одну итерацию, что и градиентный спуск. Хотя этот метод непрактичен, поскольку он опирается на использование некоторых неизвестных параметров, характеризующих Гессиан целевой функции в оптимуме, он служит отправной точкой, которая позволяет нам проектировать практические варианты с доказанными теоретическими гарантиями сходимости. В частности, мы разрабатываем стратегию, основанную на использовании случайной разреженности для изучения неизвестных параметров итеративным способом, сохраняя эффективность с точки зрения коммуникаций. Применение этой стратегии к NEWTON-STAR приводит к нашему следующему методу, NEWTON-LEARN, для которого мы доказали локальные линейные и сверхлинейные скорости сходимости, не зависящие от числа обусловленности функции. Когда эти методы применимы, они имеют значительно более высокие скорости сходимости по сравнению с современными методами. Наконец, мы разработали стратегию глобализации с использованием кубической регуляризации, которая приводит к нашему следующему методу, CUBIC-NEWTON-LEARN, для которого мы доказали глобальные сублинейные и линейные скорости сходимости, а также быструю сверхлинейную скорость сходимости. Наши результаты подтверждаются экспериментальными результатами на реальных наборах данных и показывают улучшение на несколько порядков по сравнению с базовыми и современными методами с точки зрения эффективности коммуницирования.
+  Мы разработали несколько новых эффективных с точки зрения коммуникации методов второго порядка для распределенной оптимизации. Наш первый метод, NEWTON-STAR, является одним из вариантов метода Ньютона, от которого он наследует свою быструю локальную квадратичную скорость. Однако, в отличие от метода Ньютона, NEWTON-STAR имеет ту же стоимость коммуницирования за одну итерацию, что и градиентный спуск. Хотя этот метод непрактичен, поскольку он опирается на использование некоторых неизвестных параметров, характеризующих Гессиан целевой функции в оптимуме, он служит отправной точкой, которая позволяет нам проектировать практические варианты с доказанными теоретическими гарантиями сходимости. В частности, мы разработали стратегию, основанную на использовании стохастической разреженности для изучения неизвестных параметров итеративным способом, сохраняя эффективность с точки зрения коммуникаций. Применение этой стратегии к NEWTON-STAR приводит к нашему следующему методу, NEWTON-LEARN, для которого мы доказали локальные линейные и сверхлинейные скорости сходимости, не зависящие от числа обусловленности функции. Когда эти методы применимы, они имеют значительно более высокие скорости сходимости по сравнению с современными методами. Наши результаты подтверждаются экспериментальными результатами на реальных наборах данных и показывают улучшение на несколько порядков по сравнению с базовыми и современными методами с точки зрения эффективности коммуницирования.
 \end{abstract}
 
 \clearpage
@@ -154,7 +154,7 @@ and Compressed Communication>> \citep{islamov2021distributed} за авторс�
 	This bachelor thesis is based on paper ``Distributed Second Order Methods with Fast Rates
 and Compressed Communication'' \citep{islamov2021distributed} written by Rustem Islamov, Xun Qian, and Peter Richtárik.	
 	
-	We develop several new communication-efficient second-order methods for distributed optimization. Our first method, {\sf NEWTON-STAR}, is a variant of Newton's method from which it inherits its fast local quadratic rate. However, unlike Newton's method, {\sf NEWTON-STAR} enjoys the same per iteration communication cost as gradient descent. While this method is impractical as it relies on the use of certain unknown parameters characterizing the Hessian of the objective function at the optimum,  it serves as the starting point which enables us design practical variants thereof with strong theoretical guarantees. In particular, we design a stochastic sparsification strategy for learning the unknown parameters in an iterative fashion in a communication efficient manner. Applying this strategy to {\sf NEWTON-STAR} leads to our next method, {\sf NEWTON-LEARN}, for which we prove  local linear and superlinear rates independent of the condition number. When applicable, this method can have dramatically superior convergence behavior when compared to state-of-the-art methods. Finally, we develop a globalization strategy using cubic regularization which leads to our next method, {\sf CUBIC-NEWTON-LEARN}, for which we prove global sublinear and linear convergence rates, and a fast superlinear rate. Our results are supported with experimental results on real datasets, and show several orders of magnitude improvement on baseline and state-of-the-art methods in terms of communication complexity. 
+	We develop new communication-efficient second-order method for distributed optimization. Our first method, {\sf NEWTON-STAR}, is a variant of Newton's method from which it inherits its fast local quadratic rate. However, unlike Newton's method, {\sf NEWTON-STAR} enjoys the same per iteration communication cost as gradient descent. While this method is impractical as it relies on the use of certain unknown parameters characterizing the Hessian of the objective function at the optimum,  it serves as the starting point which enables us design practical variants thereof with strong theoretical guarantees. In particular, we design a stochastic sparsification strategy for learning the unknown parameters in an iterative fashion in a communication efficient manner. Applying this strategy to {\sf NEWTON-STAR} leads to our next method, {\sf NEWTON-LEARN}, for which we prove  local linear and superlinear rates independent of the condition number. When applicable, this method can have dramatically superior convergence behavior when compared to state-of-the-art methods. Our results are supported with experimental results on real datasets, and show several orders of magnitude improvement on baseline and state-of-the-art methods in terms of communication complexity. 
 \end{abstract}
 
 \clearpage
@@ -166,8 +166,6 @@ and Compressed Communication'' \citep{islamov2021distributed} written by Rustem 
 
 \clearpage
 \section{Introduction}
-
-
 	The prevalent paradigm for training modern supervised machine learning models is based on (regularized) empirical risk minimization (ERM) \citep{shai_book}, and the most commonly used optimization methods deployed for solving ERM problems belong to the class of  stochastic first order methods \citep{RobbinsMonro:1951,  Nemirovski-Juditsky-Lan-Shapiro-2009}. Since modern training data sets are very large and are becoming larger every year, it is increasingly harder to get by without relying on modern computing architectures which make efficient use of  distributed computing.  However, in order to develop efficient distributed methods, one has to keep in mind that communication among the different parallel workers (e.g. processors or compute nodes) is typically very slow, and almost invariably forms the main bottleneck in deployed optimization software and systems \citep{bekkerman2011scaling}. For this reason, further advances in the area of communication efficient distributed first order optimization methods for solving ERM problems are highly needed, and research in this area constitutes one  of the most important fundamental endeavors in modern machine learning. Indeed, this research  field is very active, and numerous advances  have been made over the past decade \citep{Seide14, Wen17, Alistarh17, Bernstein18, DIANA, Stich19, Tang19}.
  
   \subsection{Distributed optimization}
@@ -213,7 +211,7 @@ and the Hessian of $f$ is given by
 
 \subsection{The curse of the condition number}
  
-All first order methods---distributed or not---suffer from a dependence on an appropriately chosen notion of a {\em condition number\footnote{Example: if one wishes to minimize an $L$-smooth $\mu$-strongly convex function  and one cares about the number of gradient type iterations, the appropriate notion of a condition number is $\kappa \eqdef \frac{L}{\mu}$.}}---a number that describes the difficulty of solving the problem by the method at hand. A condition number is a function of the goal we are trying to achieve (e.g., minimize the number of iterations vs minimize the  number of communications), choice of the loss function, structure of the model we are trying to learn, and last but not least, the size and properties of the training data. In fact, most research in this area is motivated by the desire to design methods that would have a {\em reduced} dependence on the condition number. This is the case for many of the tricks heavily studied in the literature, including minibatching~\citep{pegasos2}, importance sampling~\citep{NeedellWard2015, IProx-SDCA}, random reshuffling~\citep{RR}, variance reduction~\citep{schmidt2017minimizing, johnson2013accelerating, proxSVRG, SAGA}, momentum~\citep{SHB-NIPS, SMOMENTUM}, adaptivity \citep{MM2019}, communication compression~\citep{Alistarh17, Bernstein18, DIANA}, and local computation~\citep{COCOA+journal, localSGD-Stich,localSGD-AISTATS2020}.  Research in this area is becoming saturated, and new ideas are needed to make further progress.
+All first order methods~---distributed or not~---suffer from a dependence on an appropriately chosen notion of a {\em condition number\footnote{Example: if one wishes to minimize an $L$-smooth $\mu$-strongly convex function  and one cares about the number of gradient type iterations, the appropriate notion of a condition number is $\kappa \eqdef \frac{L}{\mu}$.}}~---a number that describes the difficulty of solving the problem by the method at hand. A condition number is a function of the goal we are trying to achieve (e.g., minimize the number of iterations vs minimize the  number of communications), choice of the loss function, structure of the model we are trying to learn, and last but not least, the size and properties of the training data. In fact, most research in this area is motivated by the desire to design methods that would have a {\em reduced} dependence on the condition number. This is the case for many of the tricks heavily studied in the literature, including minibatching~\citep{pegasos2}, importance sampling~\citep{NeedellWard2015, IProx-SDCA}, random reshuffling~\citep{RR}, variance reduction~\citep{schmidt2017minimizing, johnson2013accelerating, proxSVRG, SAGA}, momentum~\citep{SHB-NIPS, SMOMENTUM}, adaptivity \citep{MM2019}, communication compression~\citep{Alistarh17, Bernstein18, DIANA}, and local computation~\citep{COCOA+journal, localSGD-Stich,localSGD-AISTATS2020}.  Research in this area is becoming saturated, and new ideas are needed to make further progress.
 
 \subsection{Newton's method to the rescue?} One of the ideas that undoubtedly crossed everybody's mind is the trivial observation that there {\em is} a very old and simple method which does {\em not} suffer from any conditioning issues: Newton's method. Indeed, when it works, Newton's method has a fast {\em local quadratic convergence rate} which is entirely independent of the condition number of the problem \citep{Beck-book-nonlinear}. While this is a very attractive property, developing  scalable distributed variants of Newton's method that could also {\em provably outperform} gradient based methods remains a largely unsolved problem. To highlight the severity of the issues with extending Newton's method to stochastic and distributed settings common in machine learning, we note that until recently, we did not even have any Newton-type analogue of SGD that could provably work with small minibatch sizes, let alone minibatch size one \citep{SN2019}. In contrast, SGD with minibatch size one is one of the simplest and well understood variants thereof \citep{NeedellWard2015}, and much of modern development in the area of SGD methods is much more sophisticated.  Most variants of Newton's method proposed for deployment in machine learning are heuristics, which is to say that they are not supported with any convergence guarantees, or have convergence guarantees without explicit rates, or suffer from rates that are worse than the rates of first order methods.  
 
@@ -234,22 +232,10 @@ We develop {\em several  new  fundamental Newton-type methods} which we hope mak
 				  {\bf Method} &  {\bf result} ${}^\dagger$   &  {\bf type}  & {\bf rate}  & \begin{tabular}{c}{ \bf Rate} \\ {\bf  of the}\\ {\bf condition number?}  \end{tabular} & {\bf Theorem }\\
 				\hline
 				\begin{tabular}{c} {\sf NEWTON-STAR} \\ \eqref{eq:Newton-star} \end{tabular} & $r_{k+1}\leq c r_k^2$   & local & quadratic & \cmark &  \ref{th:localquadratic}\\ \hline	
-%%%%%%%%%%%%%%%%%%%%					
-				\begin{tabular}{c} {\sf MAX-NEWTON} \\ Algorithm~\ref{alg:maxnewton} \end{tabular} &  $r_{k+1}\leq c r_k^2$      &local & quadratic & \cmark &  \ref{th:maxnewton}		\\	 \hline				
 %%%%%%%%%%%%%%%%%%%%			 				
 			 \multirow{2}{*}{ \begin{tabular}{c} {\sf NEWTON-LEARN}  \\ Algorithm~\ref{alg:NL1} \end{tabular}  } 
 			 &  $\Phi^k_1 \leq \theta_1^k \Phi_1^0$ & local & linear & \cmark &  \ref{th:lambda>0}\\ 
 			 &  $r_{k+1} \leq c \theta_1^k  r_k$ & local & superlinear & \cmark &  \ref{th:lambda>0}\\ \hline	
-%%%%%%%%%%%%%%%%%%%%			 
-			 \multirow{2}{*}{ 	\begin{tabular}{c} {\sf NEWTON-LEARN} \\ Algorithm~\ref{alg:NL2} \end{tabular}  } 
-			 &   $\Phi^k_2 \leq \theta_2^k \Phi_2^0$  & local & linear & \cmark &  \ref{th:general}\\ 
-			 &  $r_{k+1} \leq c \theta_2^k  r_k$ & local & superlinear & \cmark &  \ref{th:general}\\  \hline	
-%%%%%%%%%%%%%%%%%%%%	
- \multirow{4}{*}{ \begin{tabular}{c} {\sf CUBIC-NEWTON-LEARN} \\ Algorithm~\ref{alg:CNL} \end{tabular}  } 
-				 & $\Delta_k \leq \frac{c}{k}$   & global & sublinear & \xmark &  \ref{th:concubic}\\ 
-				 & $\Delta_k \leq c \exp(-k/c)$ & global & linear & \xmark &  \ref{th:stronglyconcubic}\\ 
-				 & $\Phi^k_3 \leq \theta_3^k \Phi^0_3$ & local & linear & \cmark &  \ref{th:cubicsup}\\ 				  
-				 & $r_{k+1} \leq c \theta_3^k r_k$ & local & superlinear & \cmark &  \ref{th:cubicsup}\\ 
 %%%%%%%%%%%%%%%%%%%%					 																
           \hline
 			\end{tabular}
@@ -265,14 +251,12 @@ We develop {\em several  new  fundamental Newton-type methods} which we hope mak
 
 
 \begin{itemize}
-\item {\bf First new method and its local quadratic convergence.} We first show that if we know the Hessian of the objective function at   the optimal solution, then we can use it instead of the typical Hessian appearing in Newton's method, and the resulting algorithm, which we call {\sf NEWTON-STAR (NS)}, inherits  local quadratic convergence behavior of Newton's method (see Theorem~\ref{th:localquadratic}). In a distributed setting with a central orchestrating sever, each compute node only needs to send the local  gradient  to the server  node, and no matrices need to be sent. While this method is not practically useful, it acts as a stepping stone to our next method, in which these deficiencies are removed. This method is described in Section~\ref{sec:3steps}. A somewhat different method with similar properties, which we call {\sf MAX-NEWTON}\footnote{In fact, this was the first method we developed, in Summer 2020, when we embarked on the research which eventually lead to the results presented in this paper.}, is described in Section~\ref{sec:maxNewton}. 
+\item {\bf First new method and its local quadratic convergence.} We first show that if we know the Hessian of the objective function at   the optimal solution, then we can use it instead of the typical Hessian appearing in Newton's method, and the resulting algorithm, which we call {\sf NEWTON-STAR (NS)}, inherits  local quadratic convergence behavior of Newton's method (see Theorem~\ref{th:localquadratic}). In a distributed setting with a central orchestrating sever, each compute node only needs to send the local  gradient  to the server  node, and no matrices need to be sent. While this method is not practically useful, it acts as a stepping stone to our next method, in which these deficiencies are removed. This method is described in Section~\ref{sec:3steps}. 
 
-\item  {\bf Second new method and its local linear and superlinear convergence.} Motivated by the above result, we propose a {\em learning scheme which enables us to learn the Hessian at the optimum iteratively  in a communication efficient manner.} This scheme gives rise to our second new method: {\sf NEWTON-LEARN (NL)}. We analyze this method in two cases: (i) all individual loss functions are convex and $\lambda >0$ (giving rise to the {\sf NL1} method), and (ii) the aggregate loss function $P$ is strongly convex (giving rise to the {\sf NL2} method). Besides the local full gradient, each worker node needs to send additional information to the server node in order to learn the Hessian at the optimum. However, our learning  scheme supports {\em compressed communication} with arbitrary compression level. This level can be chosen so that in each iteration, each node sends an equivalent of a few gradients to the server only. That is, we can achieve $O(d)$ communication complexity in each iteration. In both cases, we prove local linear convergence for a carefully designed Lyapunov function, and  local superlinear convergence for the squared distance to optimum (see Theorems~\ref{th:lambda>0} and \ref{th:general}). Remarkably, all these rates are {\em independent of the condition number.} The {\sf NL1} and {\sf NL2} methods and the associated theory are described in Section~\ref{sec:Newton-learn}.
-
-\item {\bf Third new method and its global convergence.} Next, we equip our learning scheme with a  cubic regularization strategy \citep{Griewank-cubic-1981, PN2006-cubic}, which  leads to a new {\em globally} convergent method: {\sf CUBIC-NEWTON-LEARN (CNL)}. We establish global sublinear and linear convergence (for function values) guarantees for convex and strongly convex problems, respectively. The method can also achieve a fast local linear (for a Lyapunov function) and superlinear (for squared distance to solution) convergence in the strongly convex case.  We describe this method and the associated theory in Section~\ref{sec:CUBIC-NEWTON-LEARN}.
+\item  {\bf Second new method and its local linear and superlinear convergence.} Motivated by the above result, we propose a {\em learning scheme which enables us to learn the Hessian at the optimum iteratively  in a communication efficient manner.} This scheme gives rise to our second new method: {\sf NEWTON-LEARN (NL)}. We analyze this method in the case, when all individual loss functions are convex and $\lambda >0$. Besides the local full gradient, each worker node needs to send additional information to the server node in order to learn the Hessian at the optimum. However, our learning  scheme supports {\em compressed communication} with arbitrary compression level. This level can be chosen so that in each iteration, each node sends an equivalent of a few gradients to the server only. That is, we can achieve $O(d)$ communication complexity in each iteration. We prove local linear convergence for a carefully designed Lyapunov function, and  local superlinear convergence for the squared distance to optimum (see Theorems~\ref{th:lambda>0}). Remarkably, all these rates are {\em independent of the condition number.} The {\sf NL} method and the associated theory are described in Section~\ref{sec:Newton-learn}.
 
 
-\item {\bf Experiments.} Our theory is corroborated with numerical experiments showing the superiority of our methods to several state-of-the-art benchmarks, including DCGD~\citep{KFJ}, DIANA \citep{DIANA, DIANA2}, ADIANA \citep{ADIANA}, BFGS~\cite{Broyden1967, Fletcher1970, Goldfarb1970, shanno1970conditioning}, and DINGO \citep{DINGO2019}.  Our methods can achieve communication complexity which is {\em several orders of magnitude better} than  competing methods (see Section~\ref{sec:experiments}).
+\item {\bf Experiments.} Our theory is corroborated with numerical experiments showing the superiority of our method to several state-of-the-art benchmarks, including DCGD~\citep{KFJ}, DIANA \citep{DIANA, DIANA2}, ADIANA \citep{ADIANA}, BFGS~\cite{Broyden1967, Fletcher1970, Goldfarb1970, shanno1970conditioning}, and DINGO \citep{DINGO2019}.  Our method can achieve communication complexity which is {\em several orders of magnitude better} than  competing methods (see Section~\ref{sec:experiments}).
 \end{itemize}
 
 
@@ -282,7 +266,7 @@ We develop {\em several  new  fundamental Newton-type methods} which we hope mak
 
 \subsection{Related work}
 
-Several distributed Newton-type methods can be found in recent literature. DANE \citep{DANE} is a distributed approximate Newton-type method where each worker node needs to solve a subproblem using the full gradient at each iteration, and the new iterate is the average of these subproblem solutions. The linear convergence of DANE was obtained in the strongly convex case. An inexact DANE method in which the subproblem is solved approximately was proposed and studied by \citet{AIDE}. Moreover, an accelerated version of inexact DANE, called AIDE, was proposed in  \citep{AIDE} by a generic acceleration scheme---catalyst~\citep{lin2015universal}---and an optimal communication complexity can be obtained up to logarithmic factors in specific settings. The DiSCO method, which combines inexact damped Newton method and distributed preconditioned conjugate gradient method, was proposed by \citet{DISCO} and analyzed for self-concordant empirical loss. GIANT \citep{GIANT2018} is a globally improved approximate Newton method which has a better linear convergence rate than first-order methods for quadratic functions, and has local linear-quadratic convergence for strongly convex functions. GIANT and DANE are identical for quadratic programming. The communication cost per iteration of the above methods is $O(d)$. These methods can only achieve linear convergence in the strongly convex case. The comparison of the iteration complexity of the above methods for the ridge regression problem can be found in Table 2 of \citep{GIANT2018}. 
+Several distributed Newton-type methods can be found in recent literature. DANE \citep{DANE} is a distributed approximate Newton-type method where each worker node needs to solve a subproblem using the full gradient at each iteration, and the new iterate is the average of these subproblem solutions. The linear convergence of DANE was obtained in the strongly convex case. An inexact DANE method in which the subproblem is solved approximately was proposed and studied by \citet{AIDE}. Moreover, an accelerated version of inexact DANE, called AIDE, was proposed in  \citep{AIDE} by a generic acceleration scheme~---catalyst~\citep{lin2015universal}~---and an optimal communication complexity can be obtained up to logarithmic factors in specific settings. The DiSCO method, which combines inexact damped Newton method and distributed preconditioned conjugate gradient method, was proposed by \citet{DISCO} and analyzed for self-concordant empirical loss. GIANT \citep{GIANT2018} is a globally improved approximate Newton method which has a better linear convergence rate than first-order methods for quadratic functions, and has local linear-quadratic convergence for strongly convex functions. GIANT and DANE are identical for quadratic programming. The communication cost per iteration of the above methods is $O(d)$. These methods can only achieve linear convergence in the strongly convex case. The comparison of the iteration complexity of the above methods for the ridge regression problem can be found in Table 2 of \citep{GIANT2018}. 
 
 
 
@@ -307,11 +291,9 @@ Several distributed Newton-type methods can be found in recent literature. DANE 
 				\rowcolor{bgcolor} 
 				\begin{tabular}{c} {\sf NEWTON-STAR} \\ {\bf this work}  \end{tabular}   &Local  quadratic & \cmark & $O(d)$ & Centralized \\ \hline 
 				\rowcolor{bgcolor} 
-				\begin{tabular}{c} {\sf MAX-NEWTON} \\ {\bf this work}  \end{tabular}   & Local  quadratic & \cmark & $O(d)$ & Centralized \\ \hline 				
 				\rowcolor{bgcolor} 
 				\begin{tabular}{c} {\sf NEWTON-LEARN} \\ {\bf this work}  \end{tabular}   &Local  superlinear & \cmark & $O(d)$ & Centralized \\ \hline 
 				\rowcolor{bgcolor} 
-				\begin{tabular}{c} {\sf CUBIC-NEWTON-LEARN} \\ {\bf this work}  \end{tabular}   & Superlinear & \cmark & $O(d)$ & Centralized \\ 
 				\bottomrule
 			\end{tabular}
 			\end{threeparttable}
@@ -375,7 +357,7 @@ for $x=x^*$.  Next, consider the following new Newton-like method which we call 
 \begin{eqnarray}  x^{k+1} &=& x^k - \left(\nabla^2 P(x^*) \right)^{-1} \nabla P(x^k)\notag\\ 
 &\overset{\eqref{primal}}{=}& x^k - \left(\mH(x^*) +\lambda \mI \right)^{-1} \left(\frac{1}{n}\sum_{i=1}^n \nabla f_i(x^k) + \lambda x^k\right).\label{eq:Newton-star}\end{eqnarray}
 
-Since the server knows $\mH(x^*)$, all that the nodes need to communicate are the local gradients $\nabla f_i(x^k)$, which costs $O(d)$ per node. The server then computes $x^{k+1}$, broadcasts it back to the nodes, and the process is repeated. This method has the same per-iteration $O(d)$ communication complexity as GD. However, as we show next, the number of iterations (which is the same as the number of communications) of {\sf NEWTON-STAR} does not depend on the condition number -- a property it borrows from the classical Newton's method. The following theorem says that {\sf NEWTON-STAR} enjoys {\em local quadratic convergence}.
+Since the server knows $\mH(x^*)$, all that the nodes need to communicate are the local gradients $\nabla f_i(x^k)$, which costs $O(d)$ per node. The server then computes $x^{k+1}$, broadcasts it back to the nodes, and the process is repeated. This method has the same per-iteration $O(d)$ communication complexity as GD. However, as we show next, the number of iterations (which is the same as the number of communications) of {\sf NEWTON-STAR} does not depend on the condition number~--- a property it borrows from the classical Newton's method. The following theorem says that {\sf NEWTON-STAR} enjoys {\em local quadratic convergence}.
 
 \begin{theorem}[Local quadratic convergence]\label{th:localquadratic}
 Let  Assumption \ref{as:general} hold,  and assume that $\mH(x^*) \succeq \mu^* \mI$ for some $\mu^* \geq 0$ (for instance, this holds if $f$ is $\mu^*$-strongly convex) and that $\mu^*+\lambda >0$. Then for any starting point $x^0 \in \R^d$, the iterates of {\sf NEWTON-STAR} for solving problem \eqref{primal}   satisfy the following inequality:
@@ -432,8 +414,6 @@ Plugging this into \eqref{eq:b98f9d8gfd}, we finally arrive at \eqref{eq:NS-rate
 
 Note that we do not need to assume $f$ to be convex or strongly convex. All we need to assume is positive definiteness of the Hessian at the optimum. This implies local strong convexity, and since our convergence result is local, that is all we need.
 
-{\bf Remark.} Besides  {\sf NEWTON-STAR}, we have designed another new Newton-type method with a local quadratic rate.  This method, which we call {\sf MAX-NEWTON}, is  similar to {\sf NEWTON-STAR} in that it relies on the knowledge of the coefficients $\newalpha_{ij}(x^*)$  for $j=1,\dots,m$. We describe this method in Appendix~\ref{sec:maxNewton}. 
-
 \section{{\sf NEWTON-LEARN}: Learning the Hessian and Local Convergence Theory} \label{sec:Newton-learn}
 
 In Sections~\ref{subsec:Newton}, \ref{subsec:Naive2} and \ref{subsec:Newton-star} we have gone through three steps in our story,  with the first true innovation and contribution of this paper being the {\sf NEWTON-STAR} method and its rate. We have now sufficiently prepared the ground to motivate our first {\em key} contribution: the {\sf NEWTON-LEARN} method. We only outline the basic insights behind this method here; the details are included in Section~\ref{sec:Newton-learn}.  
@@ -451,14 +431,14 @@ and then perform a similar iteration to \eqref{eq:Newton-star}:
 \begin{equation} \label{eq:Newton-learn} x^{k+1} = x^k - \left(\mH^k + \lambda \mI\right)^{-1} \nabla P(x^k).\end{equation}
 
 \subsection{Learning the coefficients: the idea}
-To complete the description of the method, we need to explain how the vectors $h_i^{k+1}$ are updated. This is also the place where we can force the method to be communication efficient. Indeed, if we can design a rule that would enforce the update vectors $h_i^{k+1}-h_i^k$ to be {\em sparse}, say \begin{equation}\label{eq:sparse_update}\|h_i^{k+1}-h_i^k\|_0 \leq s \end{equation} for some $1 \leq s \leq m$ and all $i$ and $k$, then  the upstream communication by each node in each iteration would be of the order $O(s+d)$ only (provided the server has access to all vectors $a_{ij}$)! That is, each node $i$ only needs to communicate $s$ entries of the update vector $h_i^{k+1}-h_i^k$ as the rest are equal to zero, and each node also needs to communicate the $d$ dimensional gradient $\nabla f_i(x^k)$.  Note that $O(s+d)$ can be interpreted as an {\em interpolation} of the $O(m+d)$   per-iteration communication complexity  of the structure-aware implementation of Newton's method from  Section~\ref{subsec:Naive2}, and of the  $O(d)$   per-iteration communication complexity  of {\sf NEWTON-STAR} described in   Section~\ref{subsec:Newton-star}. 
+To complete the description of the method, we need to explain how the vectors $h_i^{k+1}$ are updated. This is also the place where we can force the method to be communication efficient. Indeed, if we can design a rule that would enforce the update vectors $h_i^{k+1}-h_i^k$ to be {\em sparse}, say \begin{equation}\label{eq:sparse_update}\|h_i^{k+1}-h_i^k\|_0 \leq s \end{equation} for some $1 \leq s \leq m$ and all $i$ and $k$, then  the upstream communication by each node in each iteration would be of the order $O(s+d)$ only (provided the server has access to all vectors~$a_{ij}$)! That is, each node $i$ only needs to communicate $s$ entries of the update vector $h_i^{k+1}-h_i^k$ as the rest are equal to zero, and each node also needs to communicate the $d$ dimensional gradient $\nabla f_i(x^k)$.  Note that $O(s+d)$ can be interpreted as an {\em interpolation} of the $O(m+d)$   per-iteration communication complexity  of the structure-aware implementation of Newton's method from  Section~\ref{subsec:Naive2}, and of the  $O(d)$   per-iteration communication complexity  of {\sf NEWTON-STAR} described in   Section~\ref{subsec:Newton-star}. 
 
-In the more realistic regime when the server does {\em not} have access to the data $\{a_{ij}\}$, we ask each worker $i$ to additionally send the corresponding $s$ vectors $a_{ij}$, which costs extra $O(s d)$ in communication per node. However, when $s=O(1)$, this is the same per-iteration communication effort as that of GD.
+In the more realistic regime when the server does {\em not} have access to the data~$\{a_{ij}\}$, we ask each worker $i$ to additionally send the corresponding $s$ vectors~$a_{ij}$, which costs extra $O(s d)$ in communication per node. However, when $s=O(1)$, this is the same per-iteration communication effort as that of GD.
 
-We develop two different update rules defining the evolution of the vectors $h_1^k, \dots, h_n^k$. This first rule (see \eqref{eq: big78fd_8h9fd}) applies to the $\lambda>0$ case and leads to our first variant of {\sf NEWTON-LEARN} which we call {\sf NL1} (see Algorithm~\ref{alg:NL1}). This rule and the method are described in Section~\ref{subsec:NL1}. The second rule applies also to the $\lambda=0$ cases and leads to our second variant of {\sf NEWTON-LEARN} which we call {\sf NL2} (see Algorithm~\ref{alg:NL2}). This rule and the method are described in Section~\ref{subsec:NL2}. 
+We develop the update rule defining the evolution of the vectors $h_1^k, \dots, h_n^k$. This rule (see \eqref{eq: big78fd_8h9fd}) applies to the $\lambda>0$ case and leads to {\sf NEWTON-LEARN} which we call {\sf NL} (see Algorithm~\ref{alg:NL1}). This rule and the method are described in Section~\ref{subsec:NL1}. 
 
 
-\subsection{Outline of fast local convergence theory} We show in Theorem~\ref{th:lambda>0} (covering {\sf NL1}) and Theorem~\ref{th:general} (covering {\sf NL2}) that {\sf NEWTON-LEARN} enjoys a local linear rate wrt a certain Lyapunov function which  involves the term $\|x^k - x^*\|^2$ and also all terms of the form $\|h^k_i - \newalpha_i(x^*)\|^2$. This means that i) the main iteration \eqref{eq:Newton-learn} works, i.e., $x^k$ converges to $x^*$ at a local linear  rate, and that ii) the learning procedure works, and the desired convergence described in \eqref{eq:learn} occurs at a local linear rate. In addition, we also establish a local superlinear rate of $\|x^k - x^*\|^2$. Remarkably,  these rates are {\em independent of any condition number, which is  in sharp contrast with virtually all results on distributed Newton-type methods we are aware of.} 
+\subsection{Outline of fast local convergence theory} We show in Theorem~\ref{th:lambda>0} (covering {\sf NL}) and Theorem~\ref{th:general} (covering {\sf NL2}) that {\sf NEWTON-LEARN} enjoys a local linear rate wrt a certain Lyapunov function which  involves the term $\|x^k - x^*\|^2$ and also all terms of the form $\|h^k_i - \newalpha_i(x^*)\|^2$. This means that i) the main iteration \eqref{eq:Newton-learn} works, i.e., $x^k$ converges to $x^*$ at a local linear  rate, and that ii) the learning procedure works, and the desired convergence described in \eqref{eq:learn} occurs at a local linear rate. In addition, we also establish a local superlinear rate of $\|x^k - x^*\|^2$. Remarkably,  these rates are {\em independent of any condition number, which is  in sharp contrast with virtually all results on distributed Newton-type methods we are aware of.} 
 
 Moreover, we wish to remark that second order methods are not typically analyzed using a Lyapunov style analysis. Indeed, we only know of a couple works that do so.  First, \citet{SN2019} develop stochastic Newton and cubic Newton methods of a different structure and scope from ours. They do not consider distributed optimization nor communication compression. Second, \citet{RBFGS2020} develop a stochastic BFGS method. Again, their method and scope is very different from ours. Hence, {\em our analysis may be of independent interest as it  adds to the arsenal of theoretical tools which could be used in a more precise analysis of other second order methods.}
 
@@ -473,7 +453,7 @@ Instead of merely relying on sparse updates for the vectors $h_i^k$ (see \eqref{
 The identity compressor $\cC(x)\equiv x$ satisfies these relations with $\omega=0$. The larger the variance parameter $\omega$ is allowed to be, the easier it can be to construct a compressor $\cC$ for which the value $\cC(x)$ can be encoded using a small number of bits only. We refer the reader to \citep{biased2020} for a list of several compressors and their properties.
 
 
-\subsection{{\sf NL1} (learning in the $\lambda > 0$ case)} \label{subsec:NL1}
+\subsection{{\sf NL} (learning in the $\lambda > 0$ case)} \label{subsec:NL1}
 
 We now consider  the case where all loss functions $\varphi_{ij}$ are convex and $\lambda >0$.
 \begin{assumption}\label{as:learning-1}
@@ -486,7 +466,7 @@ When combined with  Assumption~\ref{as:general}, Assumption~\ref{as:learning-1} 
  
  
  
-\subsubsection{The learning iteration and the {\sf NL1} algorithm}
+\subsubsection{The learning iteration and the {\sf NL} algorithm}
 
  In particular, in {\sf NEWTON-LEARN} each node $i$  computes the vector $\newalpha_i(x^k)\in \R^m$  of second derivatives defined in \eqref{eq:8f0d8hfd}, and then performs the update
 \begin{equation}\label{eq: big78fd_8h9fd}\boxed{\quad h^{k+1}_i = \left[h^k_i + \eta \cC_i^k(\newalpha_i(x^k) - h^k_i) \right]_+, \quad}\end{equation}
@@ -496,14 +476,14 @@ We remark that it is possible to interpret the learning procedure \eqref{eq: big
 
 
 
-The {\sf NL1} algorithm (Algorithm~\ref{alg:NL1}) arises as the combination of the Newton-like update \eqref{eq:Newton-learn} (adjusted to take account of the explicit regularizer) and the learning procedure \eqref{eq: big78fd_8h9fd}. It is easy to see that the update rule for $\mH^k$ in {\sf NL1} is designed to ensure that $\mH^k$ remains of the form  $\mH^k = \frac{1}{n}\sum_{i=1}^n \mH^k_i$, where $\mH^k_i = \frac{1}{m} \sum_{j=1}^{m} h^k_{ij} a_{ij}a_{ij}^\top$. The update rule for $x^k$, performed by the server, is identical to \eqref{eq:Newton-learn},  with an extra provision for the regularizer. The vector $x^{k+1}$ is broadcasted to all workers. Let us comment on how the key communication step is implemented. If the server does not have direct access to the training data vectors $\{a_{ij} \}$, we choose Option~1, otherwise we choose Option~2. A key property of {\sf NL1} is that the server is able to maintain  copies of the learning vectors $h_i^k$ {\em without the need for these vectors to be communicated by the workers to the server.} Indeed, provided the workers and the server agree on the same set of initial vectors $h_1^0, \dots, h_n^0$, update \eqref{eq: big78fd_8h9fd} can be independently computed by  the server as well from its memory state $h_i^k$ and the compressed message $\cC_i^k (\newalpha_i(x^k) - h^k_i)$ received from node $i$. This strategy is reminiscent of the way the key step in the first-order method DIANA \citep{DIANA, DIANA2} is executed. In this sense, {\sf NL1} can be seen as arising from a successful marriage of Newton's method and the DIANA trick.
+The {\sf NL} algorithm (Algorithm~\ref{alg:NL1}) arises as the combination of the Newton-like update~\eqref{eq:Newton-learn} (adjusted to take account of the explicit regularizer) and the learning procedure~\eqref{eq: big78fd_8h9fd}. It is easy to see that the update rule for $\mH^k$ in {\sf NL} is designed to ensure that $\mH^k$ remains of the form  $\mH^k = \frac{1}{n}\sum_{i=1}^n \mH^k_i$, where $\mH^k_i = \frac{1}{m} \sum_{j=1}^{m} h^k_{ij} a_{ij}a_{ij}^\top$. The update rule for $x^k$, performed by the server, is identical to~\eqref{eq:Newton-learn},  with an extra provision for the regularizer. The vector $x^{k+1}$ is broadcasted to all workers. Let us comment on how the key communication step is implemented. If the server does not have direct access to the training data vectors $\{a_{ij} \}$, we choose Option~1, otherwise we choose Option~2. A key property of {\sf NL} is that the server is able to maintain  copies of the learning vectors $h_i^k$ {\em without the need for these vectors to be communicated by the workers to the server.} Indeed, provided the workers and the server agree on the same set of initial vectors $h_1^0, \dots, h_n^0$, update~\eqref{eq: big78fd_8h9fd} can be independently computed by  the server as well from its memory state $h_i^k$ and the compressed message $\cC_i^k (\newalpha_i(x^k) - h^k_i)$ received from node $i$. This strategy is reminiscent of the way the key step in the first-order method DIANA~\citep{DIANA, DIANA2} is executed. In this sense, {\sf NL} can be seen as arising from a successful marriage of Newton's method and the DIANA trick.
 
 
 
 
 
 \begin{algorithm}[tb]
-	\caption{{\sf NL1: NEWTON-LEARN} ($\lambda>0$ case)}
+	\caption{{\sf NL: NEWTON-LEARN} ($\lambda>0$ case)}
 	\label{alg:NL1}
 \begin{algorithmic}
 		\STATE {\bfseries Parameters:} learning rate $\eta>0$ 
@@ -532,7 +512,7 @@ $$
 \squeeze \Phi_1^k \eqdef \|x^{k} - x^*\|^2 + \frac{1}{3mn\eta  \nu^2 R^2} {\cal H}^{k}, \qquad {\cal H}^k \eqdef \sum_{i=1}^n \|h_i^k - \newalpha_i(x^*)\|^2. 
 $$ Our main theorem follows.
 
-\begin{theorem}[Convergence of {\sf NL1}]\label{th:lambda>0}
+\begin{theorem}[Convergence of {\sf NL}]\label{th:lambda>0}
 Let  Assumptions~\ref{as:general} and  \ref{as:learning-1} hold. Let $\eta\leq \frac{1}{\omega+1}$ and assume that $\|x^k - x^*\|^2 \leq \frac{\lambda^2}{12\nu^2R^6}$ for all $k\geq 0$. Then for Algorithm \ref{alg:NL1} we have the inequalities 
 \begin{eqnarray*}
 \squeeze
@@ -557,248 +537,6 @@ It is easy to verify that if we choose $h_{ij}^0 = \newalpha_{ij}(x^0)$ and use 
 
 
 
-\subsection{{\sf NL2} (learning in the $\lambda \geq 0$ case)} \label{subsec:NL2}
-
-In this subsection, we consider the case where $P$ is $\mu$-strongly convex. Note that we do not require the components $f_{ij}$ to be convex. 
-\begin{assumption}\label{as:learning-2}
- $P$ is $\mu$-strongly convex, $|h_{ij}^k| \leq \gamma$ for $k\geq 0$. \end{assumption}
-
-
-\subsubsection{The learning iteration and the {\sf NL2} algorithm}
-
-As in Algorithm \ref{alg:NL1}, we use a sequence of vectors $\{h_i^k\}_{k\geq 0}$ to learn $\newalpha_i(x^*)$. However, this 
-time we rely on a different technique for enforcing positive definiteness of the Hessian estimator.  Since $\lambda$ can be zero, our previous technique aimed at forcing the coefficients $h_{ij}^k$ to be nonnegative will not work. So, we give up on this, 
-and instead of \eqref{eq: big78fd_8h9fd} we use the simpler update 
-\begin{equation}\label{eq:hikgeneral}
-\boxed{\quad h^{k+1}_i = h^k_i + \eta \cC_i^k(\newalpha_i(x^k) - h^k_i). \quad}
-\end{equation}
-In order to guarantee positive definiteness of  the Hessian estimator $\mH^k + \lambda \mI$ we instead rely on the second part of Assumption~\ref{as:learning-2}. Provided that there exists $\gamma>0$ such that $|h_{ij}^k| \leq \gamma$ for all $i,j$, note that $\frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma}$ is always positive. Noticing that each $a_{ij}a_{ij}^\top$ is positive semidefinite and that $\nabla^2 f(x^k)$ can be expressed in the form
-$$
-\squeeze \frac{1}{nm}\sum \limits_{i=1}^n \sum\limits_{j=1}^m \left( \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma} \cdot (h_{ij}^k + 2\gamma) - 2\gamma \right) a_{ij}a_{ij}^\top, 
-$$
-for  $\beta^k \eqdef \max_{i,j} \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma}$, we get the inequality
-\begin{eqnarray*}
- &&\frac{1}{nm}\sum_{i=1}^n \sum_{j=1}^m \left[ \beta^k (h_{ij}^k + 2\gamma) - 2\gamma \right] a_{ij}a_{ij}^\top - \nabla^2 f(x^k)\\
-&& \quad = \frac{1}{nm}\sum_{i=1}^n \sum_{j=1}^m \left[  \beta^k - \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma} \right] (h_{ij}^k + 2\gamma) a_{ij}a_{ij}^\top 
-\succeq \mathbf{0},
-\end{eqnarray*}
-where $\mathbf{0}$ is the $d\times d$ zero matrix, and $\mA \succeq \mB$ means $\mA - \mB$ is positive semidefinite. Thus, if we can maintain the Hessian estimator in the form $$\squeeze \mH^k \eqdef \frac{1}{nm}\sum \limits_{i=1}^n \sum \limits_{j=1}^m \left[ \beta^k (h_{ij}^k + 2\gamma) - 2\gamma \right] a_{ij}a_{ij}^\top,$$ then 
-$
-\mH^k + \lambda \mI \succeq \nabla^2 f(x^k) + \lambda \mI = \nabla^2P(x^k) \succeq \mu \mI,
-$
-where the last inequality follows from Assumption~\ref{as:learning-2}. To achieve this goal, we use an auxiliary matrix $\mA^k$, and maintain $\mA^k = \frac{1}{nm} \sum_{i=1}^n \sum_{j=1}^{m}(h_{ij}^k + 2\gamma) a_{ij}a_{ij}^\top$, and $\mH^k = \beta^k \mA^k - 2\gamma \cdot\frac{1}{nm} \sum_{i=1}^n  \sum_{j=1}^{m}a_{ij}a_{ij}^\top$. The rest of Algorithm \ref{alg:NL2} is the same as Algorithm \ref{alg:NL1}. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\begin{algorithm}[tb]
-	\caption{{\sf NL2: NEWTON-LEARN} (general case)}
-	\label{alg:NL2}
-\begin{algorithmic}
-		\STATE {\bfseries Parameters:} $\eta>0$; $\gamma>0$ 
-		\STATE {\bfseries Initialization:}
-		$x^0 \in \R^d$; $h^0_i \in \R^{m}_{+}$; $\mA^0 = \frac{1}{nm} \sum \limits_{i=1}^n \sum\limits_{j=1}^{m} (h_{ij}^0 + 2\gamma)a_{ij}a_{ij}^\top \in \R^{d\times d}$
-		\FOR{ $k = 0, 1, 2, \dots$}
-		\STATE broadcast $x^k$ to all workers 
-		\FOR{ $i = 1, \dots, n$} 
-		\STATE  Compute local gradient $\nabla f_i(x^k)$ 
-		\STATE $h^{k+1}_i = h^k_i + \eta \cC_i^k(\newalpha_i(x^k) - h^k_i)$ 
-		\STATE $\beta_i^k = \max_{j\in [m]} \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma}$
-		\STATE Send $\nabla f_i(x^k)$, $\beta_i^k$, and $\eta \cC_i^k(\newalpha_i(x^k) - h^k_i)$ to server 
-		\STATE {\bf Option 1:} Send $\{a_{ij} : h_{ij}^{k+1} - h_{ij}^k \neq 0\}$ to server
-		\STATE {\bf Option 2:} Do nothing if server knows $\{a_{ij} : \forall j\}$
-		\ENDFOR
-		\STATE $\beta^k = \max_{i} \{  \beta_i^k  \}$
-		\STATE $\mH^k = \beta^k \mA^k - 2\gamma \cdot\frac{1}{nm} \sum \limits_{i=1}^n  \sum \limits_{j=1}^{m}a_{ij}a_{ij}^\top \in \R^{d\times d}$
-		\STATE $x^{k+1} = x^k - \left( \mH^k + \lambda \mI \right)^{-1} \left(  \frac{1}{n} \sum \limits_{i=1}^n \nabla f_i(x^k) + \lambda x^k  \right)$
-		\STATE $\mA^{k+1} = \mA^k + \frac{1}{nm} \sum \limits_{i=1}^n  \sum \limits_{j=1}^{m} (\eta \cC_i^k(\newalpha_i(x^k) - h^k_i))_j a_{ij}a_{ij}^\top $
-		\ENDFOR
-	\end{algorithmic}
-\end{algorithm} 
-
-\subsubsection{Theory}
-
-Our analysis of {\sf NL2} relies on the  Lyapunov function 
-$$\squeeze
-\Phi_2^k \eqdef \|x^{k} - x^*\|^2 + \frac{1}{3mn\eta  \nu^2 R^2} {\cal H}^{k}, \qquad {\cal H}^k \eqdef  \sum_{i=1}^n \|h_i^k - \newalpha_i(x^*)\|^2.
-$$
-We now present our main convergence result for {\sf NL2}. 
-
-\begin{theorem}[Convergence of {\sf NL2}]\label{th:general}
-	Let Assumptions \ref{as:general} and \ref{as:learning-2} hold. Assume $\eta\leq \frac{1}{\omega+1}$ and $\|x^k - x^*\|^2 \leq \frac{\mu^2}{432mn \nu^2R^6}$ for all $k\geq 0$. Then for Algorithm \ref{alg:NL2} we have the inequalities 
-\begin{eqnarray*}
-\squeeze
-	\mathbb{E}[\Phi_2^k] &\leq &  \theta_2^k \Phi_2^0 ,\notag\\ 
-	\squeeze  \mathbb{E} \left[  \frac{\|x^{k+1} - x^*\|^2}{\|x^k - x^*\|^2 }  \right] 
-		 &\leq & \theta_2^k  \left(  {3mn\eta} + 1  \right) \frac{72\nu^2 R^6}{\mu^2} \Phi_2^0, 
-\end{eqnarray*}
-where $\theta_2 \eqdef  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{2}  \right\}  $.
-\end{theorem}
-
-
-As before, we give sufficient conditions guaranteeing that the iterates stay in a small neighborhood of the optimum.
-\begin{lemma}\label{lm:initial-2}
-	Let Assumptions \ref{as:general} and \ref{as:learning-2} hold. Assume $h_{ij}^k$ is a convex combination of $\{  \newalpha_{ij}(x^0), \newalpha_{ij}(x^1), ..., \newalpha_{ij}(x^k)  \}$ for all $i,j$ and $k$. Assume $\|x^0 - x^*\|^2 \leq \frac{\mu^2}{432mn \nu^2R^6}$. Then 	$$
-	\|x^k - x^*\|^2 \leq \frac{\mu^2}{432mn \nu^2R^6} \quad \text{for all} \quad k\geq 0. $$
-\end{lemma}
-
-
-If we choose $h_{ij}^0 = \newalpha_{ij}(x^0)$, use a random  compressor with variance $\omega$, and choose stepsize $\eta \leq \frac{1}{\omega + 1}$, then $h_{ij}^k$ is a convex combination of $\{  \newalpha_{ij}(x^0), \newalpha_{ij}(x^1), ..., \newalpha_{ij}(x^k)  \}$ for all $k\geq 0$. Thus, via Lemma \ref{lm:initial-2} we can guarantee all the iterates to be in the small neighborhood required by Theorem \ref{th:general} as long as the initial point $x^0$ is in it.  
-
-
-
-
-
-\section{{\sf CUBIC-NEWTON-LEARN}: Global Convergence Theory via Cubic Regularization} \label{sec:CUBIC-NEWTON-LEARN}
-
-
-
-In this section, we develop the {\sf CUBIC-NEWTON-LEARN} method which can obtain {\em global} convergence and superlinear convergence.  We make the following assumption throughout this section.
-
-\begin{assumption}\label{as:cubic}
-	Assume $|h_{ij}^k| \leq \gamma$ for $k\geq 0$, and $\|a_{ij}\| \leq R$ for all $i,j$. Assume $R_x \eqdef \sup_{x\in \R^d} \{  \|x-x^*\| : P(x) \leq P(x^0)  \} < + \infty$. 
-\end{assumption}
-
-
-Recall that $\mH(x)$ is the Hessian of $f$ at point $x$. For any $x, y \in \R^d$, we have 
-\begin{eqnarray*}
-\|\mH(x) - \mH(y)\|	&= & \left\| \frac{1}{n} \sum \limits_{i=1}^n \frac{1}{m} \sum\limits_{j=1}^{m}( \newalpha_{ij}(x) - \newalpha_{ij}(y) )a_{ij}a_{ij}^\top  \right\| \\ 
-&\leq & \frac{1}{n} \sum\limits_{i=1}^n \frac{1}{m} \sum\limits_{j=1}^{m} \|a_{ij}\|^2 |\newalpha_{ij}(x) - \newalpha_{ij}(y)| \\ 
-&\overset{(\ref{eq:alphaijL})}{\leq} & \frac{1}{n} \sum\limits_{i=1}^n \frac{1}{m} \sum\limits_{j=1}^{m} \nu \|a_{ij}\|^3 \|x-y\| \quad \leq \quad \nu R^3 \|x-y\|. 
-\end{eqnarray*}
-
-Let $M \eqdef \nu R^3$. Then $f$ has $M$-Lipschitz continuous Hessian, and so does $P$. 
-
-\subsection{{\sf CNL}: the algorithm}
-
-
-
-  At a high level, our {\sf CNL} method (Algorithm \ref{alg:CNL}) can be seen as the ``combination'' of  Algorithm \ref{alg:NL2} ({\sf NL2}) and the cubic Newton method of \citet{Griewank-cubic-1981, PN2006-cubic}. We use the same learning procedure for $h_i^k$, and the same construction for obtaining a Hessian estimator $\mH^k$ for $f$ as those used in Algorithm \ref{alg:NL2}. In particular, since $|h_{ij}^k| \leq \gamma$, same as Algorithm \ref{alg:NL2}, we have 
-$$
-\mA^k = \frac{1}{nm} \sum_{i=1}^n \sum_{j=1}^{m}(h_{ij}^k + 2\gamma) a_{ij}a_{ij}^\top
-$$ 
-and  $$\mH^k = \max_{ij} \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma} \frac{1}{n} \sum_{i=1}^n \frac{1}{m}\sum_{j=1}^{m}(h_{ij}^k + 2\gamma) a_{ij}a_{ij}^\top - 2\gamma \cdot \frac{1}{n} \sum_{i=1}^n \frac{1}{m} \sum_{j=1}^{m}a_{ij}a_{ij}^\top \succeq \nabla^2 f(x^k).$$ Thus, $\mH^k + \lambda \mI \succeq \nabla^2 f(x^k) + \lambda \mI = \nabla^2 P(x^k)$. If we let $$\mH_i^k \eqdef \beta^k \frac{1}{m}\sum_{j=1}^{m}(h_{ij}^k + 2\gamma) a_{ij}a_{ij}^\top - 2\gamma \cdot \frac{1}{m} \sum_{j=1}^{m}a_{ij}a_{ij}^\top,$$ then $\mH^k = \frac{1}{n} \sum_{i=1}^n \mH^k_i$.  Since $P$ has $M$-Lipschitz continuous Hessian, we have $$P(x^k+s) \leq P(x^k) + T(x^k, s), \qquad \text{for all} \qquad x\in \R^d,$$ where 
-$$
-T(x^k, s) \eqdef \langle \nabla f(x^k) + \lambda x^k, s \rangle + \frac{1}{2} \langle (\mH^k + \lambda \mI)s, s \rangle + \frac{M}{6}\|s\|^3. 
-$$
-Finally, the search direction $s^k$ is obtained by minimizing $T(x^k, s)$. This subproblem can be solved by computing the eigenvalue decomposition and then solving a one-dimensional nonlinear equation \citep{hanzely2020stochastic,gould2010solving}. The details can be found in Section \ref{sec:subproblem}. 
-
-
-\begin{algorithm}[tb]
-	\caption{{\sf CNL: CUBIC-NEWTON-LEARN}}
-	\label{alg:CNL}
-	\begin{algorithmic}
-		\STATE {\bfseries Parameters:} $\eta>0$; $\gamma>0$
-		\STATE {\bfseries Initialization:}
-		$x^0 \in \R^d$; $h^0_i \in \R^{m}$; $\mA^0 = \frac{1}{nm} \sum \limits_{i=1}^n  \sum\limits_{j=1}^{m} (h_{ij}^0 + 2\gamma)a_{ij}a_{ij}^\top \in \R^{d\times d}$
-		\FOR{ $k = 0, 1, 2, \dots$}
-		\STATE broadcast $x^k$ to all workers 
-		\FOR{ $i = 1, \dots, n$} 
-		\STATE Compute local gradient $\nabla f_i(x^k)$ 
-		\STATE Update the vector of coefficients $h^{k+1}_i = h^k_i + \eta \cC_i^k(\newalpha_i(x^k) - h^k_i)$ 
-		\STATE $\beta_i^k = \max_{j\in [m]} \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma}$
-		\STATE Send $\nabla f_i(x^k)$, $\beta_i^k$, and $\cC_i^k(\newalpha_i(x^k) - h^k_i)$ to server 
-		\STATE {\bf Option 1:} Send $\{a_{ij} : h_{ij}^{k+1} - h_{ij}^k \neq 0\}$ to server
-		\STATE {\bf Option 2:} Do nothing if server knows $\{a_{ij} : \forall j\}$
-		%\STATE {\bf Option:} Send $a_{ij}$ to the server node for all $j\in [m]$ such that $(\cC(\newalpha_i(x^k) - h^k_i))_j \neq 0$
-		\ENDFOR
-		\STATE $\beta^k = \max_{i} \{  \beta_i^k  \}$
-		\STATE $\mH^k = \beta^k \mA^k - 2\gamma \cdot \frac{1}{nm} \sum\limits_{i=1}^n  \sum\limits_{j=1}^{m}a_{ij}a_{ij}^\top \in \R^{d\times d}$
-		\STATE $s^k = {\rm argmin}_{s\in \R^d} T(x^k, s)$
-		\STATE $x^{k+1} = x^k + s^k$
-		\STATE $\mA^{k+1} = \mA^k + \frac{1}{nm} \sum \limits_{i=1}^n \sum\limits_{j=1}^{m} (\eta \cC_i^k(\newalpha_i(x^k) - h^k_i))_j a_{ij}a_{ij}^\top $
-		\ENDFOR
-	\end{algorithmic}
-\end{algorithm} 
-
-
-
-
-
-
-\subsection{Global convergence}
-
-The proof of global convergence of {\sf CUBIC-NEWTON-LEARN} was inspired by that in the stochastic subspace cubic Newton method of \citet{hanzely2020stochastic}. First, we need the following technical lemma, which show the progress for each step of Algorithm \ref{alg:CNL}. 
-
-\begin{lemma}\label{lm:global}
-	Let Assumption \ref{as:general} and Assumption \ref{as:cubic} hold. Then for all $k\geq 0$ and any $y \in \R^d$, we have 
-	$$
-	P(x^{k+1}) \leq P(y) + 9\gamma R^2 \|y-x^k\|^2 + \frac{M}{3}\|y-x^k\|^3. 
-	$$
-\end{lemma}
-
-
-
-We first consider the general convex case. 
-
-\begin{theorem}[Global convergence of {\sf CNL}: convex case]\label{th:concubic}
-	Let Assumption \ref{as:general} and Assumption \ref{as:cubic} hold and further assume that $P$ is convex. Then for all $k\geq 0$ we have 
-	\[
-	P(x^k) - P(x^*) 
-	\leq \frac{81\gamma R^2 R_x^2}{k} + \frac{9MR_x^3}{k^2} + \frac{4[P(x^0) - P(x^*)]}{k^3}.
-	\]  In particular,  
-	$$
-	k = O\left( \frac{81\gamma R^2 R_x^2}{\epsilon}  + \sqrt{\frac{MR_x^3}{\epsilon}} + \left(  \frac{P(x^0) - P(x^*)}{\epsilon}  \right)^{1/3}   \right) \qquad \Rightarrow \qquad P(x^k) - P(x^*) \leq \epsilon.
-	$$
-\end{theorem}
-
-
-In the strongly convex case, we have the following linear convergence result. 
-
-\begin{theorem}[Global convergence of {\sf CNL}: strongly convex case]\label{th:stronglyconcubic}
-	Let Assumption \ref{as:general} and Assumption \ref{as:cubic} hold and assume that $P$ is $\mu$-strongly convex. Then 	$$
-	k = O\left( \left(  \frac{\gamma R^2}{\mu} + \sqrt{\frac{MR_x}{\mu}} + 1 \right) \log \left(  \frac{P(x^0) - P(x^*)}{\epsilon}  \right)   \right) \qquad \Rightarrow \qquad P(x^k) - P(x^*) \leq \epsilon.
-	$$
-\end{theorem}
-
-
-
-
-
-
-\subsection{Superlinear convergence}
-
-
-Let us define the Lyapunov function 
-$$
-\Phi_3^k \eqdef \|x^{k} - x^*\|^2 + \frac{4}{9mn\eta  \nu^2 R^2} {\cal H}^{k}, \qquad {\cal H}^k \eqdef  \sum_{i=1}^n \|h_i^k - \newalpha_i(x^*)\|^2.
-$$
-We now show that this Lyapunov function converges locally linearly, and that the squared distance to the optimum converges locally superlinearly. Both rates are independent of any condition number. Note that this also means that our learning procedure works, i.e., the estimates $h_i^k$ converge to the values $\newalpha_i(x^*)$, which also means that $\mH^k \to \mH(x^*)$. 
-
-\begin{theorem}[Local superlinear convergecne of {\sf CNL}: strongly convex case]\label{th:cubicsup}
-	Let Assumption \ref{as:general} and Assumption \ref{as:cubic} hold. Assume $P$ is $\mu$-strongly convex, and that $\|x^k - x^*\|^2 \leq \frac{\mu^2}{432m n \nu^2R^6}$ for all $k\geq 0$. Then for Algorithm \ref{alg:CNL}, we have the relations
-\begin{eqnarray*}
-	\mathbb{E} \left[\Phi_3^k \right] & \leq &  \theta_3^k \Phi_3^0 \\
-		\mathbb{E} \left[  \frac{\|x^{k+1} - x^*\|^2}{\|x^k - x^*\|^2 }  \right]	&	\leq & \theta_3^k  \left(  {3m n\eta} + 1  \right) \frac{100\nu^2 R^6}{\mu^2} \Phi_3^0, 
-	\end{eqnarray*}
-	where $\theta_3 \eqdef  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{4}  \right\}$.
-\end{theorem}
-
-
-Theorem \ref{th:stronglyconcubic}, Theorem \ref{th:cubicsup}, and the fact that $\frac{\mu}{2} \|x-x^*\|^2 \leq P(x) - P(x^*)$ when $P$ is $\mu$-strongly convex, imply the following corollary. 
-
-\begin{corollary}\label{co:supcubic}
-	Let Assumption \ref{as:general} and Assumption \ref{as:cubic} hold. Assume $P$ is $\mu$-strongly convex. Then 
-	$$
-	\lim\limits_{k\to +\infty} \mathbb{E} \left[  \frac{\|x^{k+1} - x^*\|^2}{\|x^k - x^*\|^2 }  \right] =0. 
-	$$
-\end{corollary}
-
-
-
-
-
-
 
 
 \section{Experiments}
@@ -806,7 +544,7 @@ Theorem \ref{th:stronglyconcubic}, Theorem \ref{th:cubicsup}, and the fact that 
 
 
 
-We now study the empirical performance of our second order methods {\sf NL1}, {\sf NL2} and {\sf CNL}, and compare them with relevant benchmarks and with state-of-the-art methods. We  test on  the regularized logistic regression problem
+We now study the empirical performance of our second order method {\sf NL} and compare it with relevant benchmarks and with state-of-the-art methods. We  test on  the regularized logistic regression problem
 \begin{eqnarray*}\squeeze
 	\min\limits_{x\in\R^d}\left\{\frac{1}{n}\sum\limits_{i=1}^n\frac{1}{m}\sum\limits_{j=1}^m\log\left(1+\exp(-b_{ij}a_{ij}^\top x)\right) + \frac{\lambda}{2}\|x\|^2\right\},
 \end{eqnarray*}
@@ -824,27 +562,27 @@ In our experiments we use five standard datasets from the LIBSVM library:  {\tt 
 
 In all experiments we use the theoretical parameters (e.g., stepsizes) for all the three algorithms: vanilla Distributed Compressed Gradient Descent (DCGD) \citep{KFJ}, DIANA \citep{DIANA}, and ADIANA \citep{ADIANA}. 
 
+
 \begin{table}[h]
-	\caption{Data sets used in the experiments, and the number of worker nodes $n$ used in each case.}
+	\caption{Datasets used in the experiments, and the number of worker nodes $n$ used in each case.}
 	\label{table1}
 	\begin{center}
-		\begin{tabular}{| l | r | r | r |}
-			\toprule
-			{\bf Data set}  & \bf \# workers $n$ &{\bf \# data points} $(=nm)$ & \bf\# features $d$ \\
-			\midrule 
+		\begin{tabular}{|l|r|r|r|}
+			\hline
+			 {\bf Dtasets} & {\bf \# workers} $n$ &{\bf \# data points} $(=nm)$ & \bf\# features $d$ \\ \hline
 			{\tt a2a} & $15$ & $2~265$ & $123$\\ \hline
 			{\tt a7a} & $100$ & $16~100$ & $123$\\ \hline
 			{\tt a9a} & $80$ & $32~560$ & $123$\\ \hline
 			{\tt w8a} & $142$ & $49~700$ & $300$\\ \hline
 			{\tt phishing} & $100$ & $11~000$ & $68$\\ \hline
 			{\tt artificial} & $100$ & $1~000$ & $200$\\
-			\bottomrule
+			\hline
 		\end{tabular}
 	\end{center}
 \end{table}
 
 
-As the initial approximation of the Hessian in BFGS \citep{Broyden1967, Fletcher1970, Goldfarb1970, shanno1970conditioning}, we use $\mH^0 = \nabla^2P(x^0)$, and the stepsize is $1$. We set the same constants in DINGO \citep{DINGO2019} as they did: $\theta=10^{-4}, \phi=10^{-6}, \rho=10^{-4},$ and use backtracking line search for DINGO to select the largest stepsize in $\{1, 2^{-1}, 2^{-2}, 2^{-4},\dots, 2^{-10}\}$. We conduct experiments for three values of the regularization parameter $\lambda$: $10^{-3}, 10^{-4}, 10^{-5}$.  
+As the initial approximation of the Hessian in BFGS \citep{Broyden1967, Fletcher1970, Goldfarb1970, shanno1970conditioning}, we use $\mH^0~=~\nabla^2P(x^0)$, and the stepsize is $1$. We set the same constants in DINGO \citep{DINGO2019} as they did: $\theta=10^{-4}, \phi=10^{-6}, \rho=10^{-4},$ and use backtracking line search for DINGO to select the largest stepsize in $\{1, 2^{-1}, 2^{-2}, 2^{-4},\dots, 2^{-10}\}$. We conduct experiments for three values of the regularization parameter $\lambda$: $10^{-3}, 10^{-4}, 10^{-5}$.  
 In the figures we plot the relation of the optimality gap $P(x^k) - P(x^*)$ and the number of accumulated transmitted bits\footnote{In all plots, ``communicated bits'' refers to the total number of bits sent by all nodes to the server.} or the number of iterations. The optimal value $P(x^*)$ in each case is the function value at the $20$-th iterate of standard Newton's method.  We adopt the realistic setting where the server does not have access to the local data ({\bf Option 1}).
 
 
@@ -853,7 +591,7 @@ In the figures we plot the relation of the optimality gap $P(x^k) - P(x^*)$ and 
 For random-$r$ sparsification, the number of communicated  bits per iteration is $32r+\log_2{\binom{d}{r}}$, and we choose $r = d/4$. For random dithering, we choose $s = \sqrt{d}$, which means the
 number of communicated bits per iteration is $2.8d + 32$. For natural compression, the number of communicated bits per iteration is $9d$ bits. 
 
-For {\sf NL1} and {\sf NL2} we use the random-$r$ sparsification operator with a selection of values of $r$.  For {\sf CNL} we use the random sparsification operator $\cC_p$ (with $p=1/20$)  induced by the random-$r$ compressor with $r=1$. This compressor is also defined below.
+For {\sf NL} we use the random-$r$ sparsification operator with a selection of values of~$r$.  In addition, we use the random sparsification operator $\cC_p$ induced by the random-$r$ compressor. This compressor is also defined below.
 
 
 
@@ -890,12 +628,12 @@ A variant of any compression operator $\cC:\R^m \to \R$ can be constructed as fo
 where $p\in (0, 1]$ is a probability parameter. It is easy to verify that $\cC_p$ is still a compression operator with variance parameter $\omega_p \eqdef \frac{\omega+1}{p} - 1$, where $\omega$ is the variance parameter of the underlying compressor $\cC$.
 
 
-\subsection{Behavior of {\sf NL1} and {\sf NL2}}
+\subsection{Behavior of {\sf NL} }
 
-Before we compare our methods {\sf NL1} and {\sf NL2} with competing baselines,  we investigate how is their performance affected by the choice of the  sparsification parameter $r$ defining the random-$r$ sparsification operator  $\cC$. Likewise, we vary the probability parameter $p$ defining the induced Bernoulli compressor  $\cC_p$.
+Before we compare our method {\sf NL} with competing baselines,  we investigate how is their performance affected by the choice of the  sparsification parameter $r$ defining the random-$r$ sparsification operator  $\cC$. Likewise, we vary the probability parameter $p$ defining the induced Bernoulli compressor  $\cC_p$.
 
 
-According to the results summarized in  Figure~\ref{exp:NL1_NL2}, the best performance of {\sf NL1} is obtained for $r=1$ and $p=1$. However, for {\sf NL2} these parameters are $r=1$ and $p=1/20$. We will use these  parameter settings for {\sf NL1} and {\sf NL2} in our subsequent experiments where we compare our methods with several baselines and state-of-the-art methods.
+According to the results summarized in  Figure~\ref{exp:NL1_NL2}, the best performance of {\sf NL} is obtained for $r=1$ and $p=1$. We will use these  parameter settings for {\sf NL} in our subsequent experiments where we compare our method with several baselines and state-of-the-art methods.
 
 
 \begin{figure}[ht]
@@ -906,15 +644,9 @@ According to the results summarized in  Figure~\ref{exp:NL1_NL2}, the best perfo
 				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nl1_bits_lmb=0.001.pdf}&
 				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nl1_bits_lmb=0.0001.pdf}
 				\\
-				(a) {\tt a2a}, $\lambda=10^{-3}$ &(b) {\tt a2a}, $\lambda=10^{-4}$ & (c) {\tt phishing}, $\lambda=10^{-3}$ &(d) {\tt phishing}, $\lambda=10^{-4}$\\
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_nl2_bits_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_nl2_bits_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nl2_bits_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nl2_bits_lmb=0.0001.pdf}
-				\\
-				(e) {\tt a2a}, $\lambda=10^{-3}$ &(f) {\tt a2a}, $\lambda=10^{-4}$ & (g) {\tt phishing}, $\lambda=10^{-3}$ &(h) {\tt phishing}, $\lambda=10^{-4}$
+				(a) {\tt a2a}, $\lambda=10^{-3}$ &(b) {\tt a2a}, $\lambda=10^{-4}$ & (c) {\tt phishing}, $\lambda=10^{-3}$ &(d) {\tt phishing}, $\lambda=10^{-4}$
 		\end{tabular}}
-		\caption{Performance of {\sf NL1} (first row) and {\sf NL2} (second row) across a few  values of $r$ defining the random-$r$ compressor, and a few values of $p$ defining the induced Bernoulli compressor $\cC_p$. }
+		\caption{Performance of {\sf NL} across a few  values of $r$ defining the random-$r$ compressor, and a few values of $p$ defining the induced Bernoulli compressor $\cC_p$. }
 		\label{exp:NL1_NL2}
 	\end{center}
 	\vskip -0.2in
@@ -923,122 +655,124 @@ According to the results summarized in  Figure~\ref{exp:NL1_NL2}, the best perfo
 
 
 
-\subsection{Comparison of {\sf NL1} and {\sf NL2} with Newton's method}
+\subsection{Comparison of {\sf NL}  with Newton's method}
 
-In our next experiment we compare {\sf NL1} and {\sf NL2} using different values of $r$ for random-$r$ compression, with Newton's method; see Figure~\ref{a9a:alg1_alg2}. We clearly see that Newton's method performs better than {\sf NL1} and {\sf NL2} in terms of iteration complexity, as expected. However, our methods have better communication efficiency than Newton's method, by {\em several orders of magnitude}. Moreover, we see that the smaller $r$ is, the better {\sf NL1} and {\sf NL2} perform in terms of communication complexity. In  Figure~\ref{exp:newton} we perform a similar comparison for several more datasets, but focus on communication complexity only. The conclusions are unchanged: our methods  {\sf NL1} and {\sf NL2} have superior performance.
+In our next experiment we compare {\sf NL} using different values of $r$ for random-$r$ compression, with Newton's method; see Figure~\ref{a9a:alg1_alg2}. We clearly see that Newton's method performs better than {\sf NL} in terms of iteration complexity, as expected. However, our methods have better communication efficiency than Newton's method, by {\em several orders of magnitude}. Moreover, we see that the smaller $r$ is, the better {\sf NL} performs in terms of communication complexity. In  Figure~\ref{exp:newton} we perform a similar comparison for several more datasets, but focus on communication complexity only. The conclusions are unchanged: our methods  {\sf NL} have superior performance.
 
 
 
-\begin{figure}[ht]
+
+
+
+
+\subsection{Comparison of {\sf NL} with BFGS}
+
+In our next test, we compare {\sf NL}  with BFGS in Figure~\ref{exp:bfgs}. As we can see, our methods have better communication efficiency than BFGS, by {\em several orders of magnitude}.
+
+
+
+
+
+
+
+
+
+
+\subsection{Comparison of {\sf NL} with ADIANA}
+
+Next, we compare {\sf NL}with ADIANA~\citep{ADIANA} using three different compression operators: natural compression (DIANA-NC),  random sparsification (DIANA-RS, $r = d/4$) and random dithering (DIANA-RD, $s = \sqrt{d}$); see Figure~\ref{exp:adiana}. Based on the experimental results, we can conclude that {\sf NL} outperforms all three versions ADIANA for all types of compression, often by {\em several degrees of magnitude.}
+
+
+
+
+
+
+
+
+\subsection{Comparison of {\sf NL}  with DINGO}
+
+In our next experiment, we compare {\sf NL} with DINGO~\citep{DINGO2019}. The results, presented  in Figure~\ref{exp:dingo}, show that our method are more communication efficient than DINGO  by {\em many orders of magnitude.} This is true for all  experiments.
+
+\begin{figure}[t]
 	\vskip 0.2in
 	\begin{center}
 		\begin{tabular}{cccc}
-			\includegraphics[width = 0.23 \textwidth]{LogReg/artificial/Lambda=1e-4/artificial_nm_nl1_nl2_iter_lmb=0.0001.pdf}&
-			\includegraphics[width = 0.23 \textwidth]{LogReg/artificial/Lambda=1e-4/artificial_nm_nl1_nl2_bits_lmb=0.0001.pdf}&	
-			\includegraphics[width = 0.23 \textwidth]{LogReg/artificial/Lambda=1e-5/artificial_nm_nl1_nl2_iter_lmb=0.00001.pdf}&
-			\includegraphics[width = 0.23 \textwidth]{LogReg/artificial/Lambda=1e-4/artificial_nm_nl1_nl2_bits_lmb=0.0001.pdf}\\
+			\includegraphics[width = 0.23 \textwidth]{LogReg/artificial/Lambda=1e-4/NL_newton_iter_art_lmb=0_0001.pdf}&
+			\includegraphics[width = 0.23 \textwidth]{LogReg/artificial/Lambda=1e-4/NL_newton_bits_art_lmb=0_0001.pdf}&	
+			\includegraphics[width = 0.23 \textwidth]{LogReg/artificial/Lambda=1e-5/NL_newton_iter_art_lmb=0_00001.pdf}&
+			\includegraphics[width = 0.23 \textwidth]{LogReg/artificial/Lambda=1e-5/NL_newton_bits_art_lmb=0_00001.pdf}\\
 			(a) {\tt artificial} & (b) {\tt artificial} & (c) {\tt artificial} & (d) {\tt artificial}\\
 			$\lambda=10^{-4}$ & $\lambda=10^{-4}$ & $\lambda=10^{-5}$ & $\lambda=10^{-5}$\\
 		\end{tabular}
-		\caption{Comparison of {\sf NL1} and {\sf NL2} with Newton's method in terms of iteration complexity for (a), (c); in terms of communication complexity for (b), (d).}
+		\caption{Comparison of {\sf NL} with Newton's method in terms of iteration complexity for (a), (c); in terms of communication complexity for (b), (d).}
 		\label{a9a:alg1_alg2}
 	\end{center}
 \end{figure}
 
 
 
-\begin{figure}[ht]
+\begin{figure}[t]
 	\begin{center}
 		\centerline{\begin{tabular}{cccc}
-				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nm_nl1_nl2_bits_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nm_nl1_nl2_bits_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nm_nl1_nl2_bits_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nm_nl1_nl2_bits_lmb=0.00001.pdf}
+				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl_newton_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nl_newton_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nl_newton_bits_lmb=0_0001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl_newton_bits_lmb=0_00001.pdf}
 				\\
-				(a) {\tt w8a}, $\lambda=10^{-3}$ &(b) {\tt phishing}, $\lambda=10^{-3}$ & (c) {\tt phishing}, $\lambda=10^{-4}$ &(d) {\tt phishing}, $\lambda=10^{-5}$\\
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nm_nl1_nl2_bits_lmb=0.001.pdf}&
+				(a) {\tt w8a}, $\lambda=10^{-3}$ &(b) {\tt phishing} & (c) {\tt phishing} &(d) {\tt phishing}\\
+				& $\lambda=10^{-3}$ & $\lambda=10^{-4}$ & $\lambda=10^{-5}$\\
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nl_newton_bits_lmb=0_001.pdf}&
 				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_nm_nl1_nl2_bits_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_nm_nl1_nl2_bits_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_nm_nl1_nl2_bits_lmb=0.0001.pdf}
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_nl_newton_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_nl_newton_bits_lmb=0_0001.pdf}
 				\\
 				(e) {\tt a7a}, $\lambda=10^{-3}$ &(f) {\tt a7a}, $\lambda=10^{-3}$ & (g) {\tt a2a}, $\lambda=10^{-3}$ &(h) {\tt a2a}, $\lambda=10^{-4}$
 		\end{tabular}}
-		\caption{Comparison of {\sf NL1}, {\sf NL2} with Newton's method in terms of communication complexity.}
+		\caption{Comparison of {\sf NL} with Newton's method in terms of communication complexity.}
 		\label{exp:newton}
 	\end{center}
 \end{figure}
-
-
-
-\subsection{Comparison of {\sf NL1} and {\sf NL2} with BFGS}
-
-In our next test, we compare {\sf NL1} and {\sf NL2}  with BFGS in Figure~\ref{exp:bfgs}. As we can see, our methods have better communication efficiency than BFGS, by {\em several orders of magnitude}.
-
-
-
-\begin{figure}[ht]
+\begin{figure}[t]
 	\begin{center}
 		\centerline{\begin{tabular}{cccc}
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl1_nl2_bfgs_bits_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl1_nl2_bfgs_bits_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl1_nl2_bfgs_bits_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl1_nl2_bfgs_bits_lmb=0.00001.pdf}
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl_bfgs_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl_bfgs_bits_lmb=0_0001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl_bfgs_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl_bfgs_bits_lmb=0_00001.pdf}
 				\\
 				(a) {\tt a9a}, $\lambda=10^{-3}$ &(b) {\tt a9a}, $\lambda=10^{-4}$ & (c) {\tt w8a}, $\lambda=10^{-3}$ &(d) {\tt phishing}, $\lambda=10^{-5}$\\
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nl1_nl2_bfgs_bits_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_nl1_nl2_bfgs_bits_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_nl1_nl2_bfgs_bits_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_nl1_nl2_bfgs_bits_lmb=0.0001.pdf}
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nl_bfgs_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_nl_bfgs_bits_lmb=0_0001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_nl_bfgs_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_nl_bfgs_bits_lmb=0_0001.pdf}
 				\\
 				(e) {\tt a7a}, $\lambda=10^{-3}$ &(f) {\tt a7a}, $\lambda=10^{-4}$ & (g) {\tt a2a}, $\lambda=10^{-3}$ &(h) {\tt a2a}, $\lambda=10^{-4}$
 		\end{tabular}}
-		\caption{Comparison of {\sf NL1}, {\sf NL2} and BFGS in terms of communication complexity.}
+		\caption{Comparison of {\sf NL} and BFGS in terms of communication complexity.}
 		\label{exp:bfgs}
 	\end{center}
 \end{figure}
 
-
-
-
-
-
-
-
-\subsection{Comparison of {\sf NL1} and {\sf NL2} with ADIANA}
-
-Next, we compare {\sf NL1} and {\sf NL2} with ADIANA~\citep{ADIANA} using three different compression operators: natural compression (DIANA-NC),  random sparsification (DIANA-RS, $r = d/4$) and random dithering (DIANA-RD, $s = \sqrt{d}$); see Figure~\ref{exp:adiana}. Based on the experimental results, we can conclude that {\sf NL1} outperforms all three versions ADIANA for all types of compression, often by {\em several degrees of magnitude.} The same is true for  {\sf NL2}, with the exception of Figure~\ref{exp:adiana} (c) ({\tt w8a} dataset) where two variants of ADIANA are faster.
-
-\begin{figure}[ht]
+\begin{figure}[t]
 	\begin{center}
 		\centerline{\begin{tabular}{cccc}
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl1_nl2_adiana_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl1_nl2_adiana_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl1_nl2_adiana_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl1_nl2_adiana_lmb=0.00001.pdf}
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl_adiana_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl_adiana_bits_lmb=0_0001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl_adiana_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl_adiana_bits_lmb=0_00001.pdf}
 				\\
 				(a) {\tt a9a}, $\lambda=10^{-3}$ &(b) {\tt a9a}, $\lambda=10^{-4}$ & (c) {\tt w8a}, $\lambda=10^{-3}$ &(d) {\tt phishing}, $\lambda=10^{-5}$\\
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nl1_nl2_adiana_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_nl1_nl2_adiana_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nl1_nl2_adiana_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nl1_nl2_adiana_lmb=0.0001.pdf}
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nl_adiana_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_nl_adiana_bits_lmb=0_0001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nl_adiana_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nl_adiana_bits_lmb=0_0001.pdf}
 				\\
 				(e) {\tt a7a}, $\lambda=10^{-3}$ &(f) {\tt a7a}, $\lambda=10^{-4}$ & (g) {\tt phishing}, $\lambda=10^{-3}$ &(h) {\tt phishing}, $\lambda=10^{-4}$
 		\end{tabular}}
-		\caption{Comparison of {\sf NL1}, {\sf NL2} with ADIANA in terms of communication complexity.}
+		\caption{Comparison of {\sf NL} with ADIANA in terms of communication complexity.}
 		\label{exp:adiana}
 	\end{center}
 \end{figure}
-
-
-
-
-
-
-
-\subsection{Comparison of {\sf NL1} and {\sf NL2} with DINGO}
-
-In our next experiment, we compare {\sf NL1} and {\sf NL2} with DINGO~\citep{DINGO2019}. The results, presented  in Figure~\ref{exp:dingo}, show that our methods are more communication efficient than DINGO  by {\em many orders of magnitude.}
-This is true for all  experiments with the exception of Figure~\ref{exp:dingo} (c), where DINGO is slightly better than {\sf NL2}. 
 
 \begin{figure}[ht]
 	\begin{center}
@@ -1056,50 +790,10 @@ This is true for all  experiments with the exception of Figure~\ref{exp:dingo} (
 				\\
 				(e) {\tt a2a}, $\lambda=10^{-3}$ &(f) {\tt a2a}, $\lambda=10^{-4}$ & (g) {\tt phishing}, $\lambda=10^{-3}$ &(h) {\tt phishing}, $\lambda=10^{-4}$
 		\end{tabular}}
-		\caption{Comparison of {\sf NL1}, {\sf NL2} with ADIANA in terms of communication complexity.}
+		\caption{Comparison of {\sf NL} with DINGO in terms of communication complexity.}
 		\label{exp:dingo}
 	\end{center}
 \end{figure}
-
-
-
-
-\subsection{Comparison of {\sf CNL} with  DCGD and DIANA}
-
-We now deploy our {\sf CUBIC-NEWTON-LEARN (CNL)} method equipped with the random sparsification operator $\cC_p$ described in Section~\ref{sec:Bernoulli}. We compare {\sf CNL} against DIANA~\citep{DIANA} and DCGD~\citep{KFJ}, both in two variants: one using natural compression (NC) and one using random sparsification (RS, $r=d/4$). In Figure~\ref{exp:dcgd_diana} we see that for $\lambda=10^{-3}$, {\sf CNL} performs slightly better than the gradient-type methods DIANA and DCGD. However, once the regularization parameter becomes small enough ($\lambda=10^{-4}, 10^{-5}$), the increased condition number hurts the first-order methods, and {\sf CNL} outperforms both DCGD and DIANA significantly.
-
-
-
-
-
-\begin{figure}[ht]
-	\begin{center}
-		\centerline{\begin{tabular}{cccc}
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_cnl_diana_dcgd_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_cnl_diana_dcgd_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_cnl_diana_dcgd_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_cnl_diana_dcgd_lmb=0.0001.pdf}
-				\\
-				(a) {\tt a9a}, $\lambda=10^{-3}$ &(b) {\tt a9a}, $\lambda=10^{-4}$ & (c) {\tt a7a}, $\lambda=10^{-3}$ &(d) {\tt a7a}, $\lambda=10^{-4}$\\
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_cnl_diana_dcgd_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_cnl_diana_dcgd_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_cnl_diana_dcgd_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_cnl_diana_dcgd_lmb=0.00001.pdf}
-				\\
-				(e) {\tt a2a}, $\lambda=10^{-3}$ &(f) {\tt a2a}, $\lambda=10^{-4}$ & (g) {\tt phishing}, $\lambda=10^{-4}$ &(h) {\tt phishing}, $\lambda=10^{-5}$
-		\end{tabular}}
-		\caption{Comparison of {\sf CNL} with DCGD and DIANA in terms of communication complexity.}
-		\label{exp:dcgd_diana}
-	\end{center}
-	\vskip -0.2in
-\end{figure}
-
-
-
-
-
-
-
 
 
 
@@ -1112,7 +806,7 @@ We now deploy our {\sf CUBIC-NEWTON-LEARN (CNL)} method equipped with the random
 
 
 
-\section{Proofs for {\sf NL1} (Section~\ref{subsec:NL1})}
+\section{Proofs for {\sf NL} (Section~\ref{subsec:NL1})}
 
 
 Let $W^k \eqdef (h_1^k, \dots, h_n^k, x^k)$.
@@ -1280,493 +974,6 @@ for $k\leq K$.
 
 
 
-
-
-\clearpage
-\section{Proofs for {\sf NL2} (Section~\ref{subsec:NL2})}
- 
-
-For ${\cal H}^k \eqdef \sum_{i=1}^n \|h_i^k - \newalpha_i(x^*)\|^2$, even though the update of $h_i^k$ in Algorithm~\ref{alg:NL2} is slightly different from that of Algorithm~\ref{alg:NL1}, we also have the following lemma. The proof is almost the same as that of Lemma~\ref{lm:calHk}, hence we omit it. 
-
-\begin{lemma}\label{lm:calHk-2} For $\eta \leq \frac{1}{\omega+1}$, we have 
-	$$
-	\mathbb{E}[{\cal H}^{k+1}] \leq  (1-\eta) \ExpBr{{\cal H}^k} + m n \eta \nu^2 R^2 \ExpBr{\|x^k - x^*\|^2}, 
-	$$
-	for $k\geq 0$. 
-\end{lemma}
-
-
-\subsection{Proof of Theorem~\ref{th:general}}
-
-
-First, we have 
-
-\begin{eqnarray*}
-	\|x^{k+1} - x^*\| &=& \| x^k - x^* - (\mH^k + \lambda \mI)^{-1} (\nabla f(x^k) + \lambda x^k) \| \\
-	&=& \|(\mH^k + \lambda \mI)^{-1} \left(  (\mH^k + \lambda \mI)(x^k - x^*) - \nabla f(x^k) - \lambda x^k  \right) \| \\ 
-	&\leq& \frac{1}{\mu} \|  (\mH^k + \lambda \mI)(x^k - x^*) - \nabla f(x^k) - \lambda x^k  \| \\ 
-	&\overset{(\ref{eq:optx})}{=}& \frac{1}{\mu} \| \mH^k (x^k - x^*) - (\nabla f(x^k) - \nabla f(x^*)) \| \\ 
-	&\leq& \frac{1}{n \mu} \sum_{i=1}^n \| \mH_i^k (x^k - x^*) - (\nabla f_i(x^k) - \nabla f_i(x^*)) \| \\
-	&=& \frac{1}{n \mu} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m} \left( \left( \beta^k (h_{ij}^k + 2\gamma) - 2\gamma \right)a_{ij}a_{ij}^\top (x^k - x^*)\right.\right.\notag\\
-	&&\quad \left.\left.-  (\nabla f_{ij}(x^k) - \nabla f_{ij}(x^*)) \right)   \right\| 
-\end{eqnarray*}
-
-By using 	\eqref{eq:difnablaf}, we further get
-\begin{eqnarray*}
-	&&\|x^{k+1} - x^*\|\\
-	&\overset{(\ref{eq:difnablaf})}{=}& \frac{1}{n \mu} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m} \left( \beta^k (h_{ij}^k + 2\gamma)a_{ij}a_{ij}^\top (x^k - x^*) - 2\gamma a_{ij}a_{ij}^\top (x^k - x^*) \right. \right. \\ 
-	&& \left. \left. -  \int_{0}^1 \mH_{ij} (x^* + \tau(x^k - x^*)) (x^k - x^*)d\tau  \right)   \right\| \\ 
-	&=& \frac{1}{n \mu} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m} \left( \beta^k (h_{ij}^k + 2\gamma)a_{ij}a_{ij}^\top (x^k - x^*) - 2\gamma a_{ij}a_{ij}^\top (x^k - x^*) \right. \right. \\ 
-	&& \left. \left. -  \int_{0}^1 \newalpha_{ij} (x^* + \tau(x^k - x^*))a_{ij}a_{ij}^\top (x^k - x^*)d\tau  \right)   \right\| \\ 
-	&=& \frac{1}{n \mu} \sum_{i=1}^n \frac{1}{m} \left\|  \sum_{j=1}^{m}  (h_{ij}^k + 2\gamma)a_{ij}a_{ij}^\top (x^k - x^*) \left( \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau \right) \right\| \\ 
-	&\leq& \frac{3\gamma\|x^k - x^*\|}{n \mu} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^2}{m} \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right|, 
-\end{eqnarray*}
-where we use $|h_{ij}^k| \leq \gamma$ in the last inequality. Next, we estimate $|\beta^k - 1|$:
-\begin{eqnarray*}
-	\left|  \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma}  - 1  \right| &=& \left|  \frac{\newalpha_{ij}(x^k) - h_{ij}^k}{h_{ij}^k + 2\gamma}  \right| \\ 
-	&\leq& \frac{1}{\gamma} |\newalpha_{ij}(x^k) - \newalpha_{ij}(x^*) + \newalpha_{ij}(x^*) - h_{ij}^k| \\ 
-	&\leq& \frac{1}{\gamma} |\newalpha_{ij}(x^k) - \newalpha_{ij}(x^*)| + \frac{1}{\gamma} |h_{ij}^k - \newalpha_{ij}(x^*)| \\ 
-	&\overset{(\ref{eq:alphaijL})}{\leq}& \frac{\nu \|a_{ij}\|}{\gamma} \|x^k - x^*\| + \frac{1}{\gamma} |h_{ij}^k - \newalpha_{ij}(x^*)|. 
-\end{eqnarray*}
-
-
-
-\noindent Let $\{i^k, j^k\} = {\rm argmax}_{i, j} \left\{ \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma}  \right\}$. Then we have 
-\begin{eqnarray*}
-	|\beta^k - 1| &=& \left| \frac{\newalpha_{i^kj^k}(x^k) + 2\gamma}{h_{i^kj^k}^k + 2\gamma}   - 1  \right| \\ 
-	&\leq& \max_{i, j} \left\{  \frac{\nu \|a_{ij}\|}{\gamma} \|x^k - x^*\| + \frac{1}{\gamma} |h_{ij}^k - \newalpha_{ij}(x^*)|  \right\} \\ 
-	&\leq& \frac{\nu R}{\gamma} \|x^k - x^*\| + \frac{1}{\gamma} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)| \}.  
-\end{eqnarray*}
-
-\noindent For $\left| \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau - 1   \right|$, we have 
-
-\begin{eqnarray*}
-	&& \left| \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau - 1   \right| \\ 
-	&=& \left|  \int_{0}^1  \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) - h_{ij}^k}{ h_{ij}^k + 2\gamma} d\tau  \right| \\ 
-	&\leq& \int_{0}^1 \left|   \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) - h_{ij}^k}{ h_{ij}^k + 2\gamma}  \right| d\tau \\ 
-	&\leq& \frac{1}{\gamma} \int_{0}^1 \left(  |\newalpha_{ij}(x^* + \tau(x^k - x^*)) - \newalpha_{ij}(x^*)| + |h_{ij}^k - \newalpha_{ij}(x^*)|  \right) d\tau \\ 
-	&\overset{(\ref{eq:alphaijL})}{\leq}& \frac{1}{\gamma} |h_{ij}^k - \newalpha_{ij}(x^*)| + \frac{1}{\gamma} \int_{0}^1 \tau \nu \|a_{ij}\| \cdot \|x^k - x^*\| d\tau \\ 
-	&=& \frac{1}{\gamma} |h_{ij}^k - \newalpha_{ij}(x^*)|  + \frac{\nu \|a_{ij}\|}{2\gamma} \|x^k - x^*\|. 
-\end{eqnarray*}
-
-\noindent Combining the two above inequalities, we can obtain 
-\begin{eqnarray}
-&& \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right| \nonumber \\ 
-&\leq& \frac{\nu R}{\gamma} \|x^k - x^*\| + \frac{1}{\gamma} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)| \} + \frac{1}{\gamma} |h_{ij}^k - \newalpha_{ij}(x^*)|  + \frac{\nu \|a_{ij}\|}{2\gamma} \|x^k - x^*\| \nonumber \\ 
-&\leq&  \frac{2\nu R}{\gamma} \|x^k - x^*\| + \frac{2}{\gamma} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)| \}. \label{eq:betak-2}
-\end{eqnarray}
-
-\noindent Thus, we have 
-\begin{eqnarray}
-&&\|x^{k+1} - x^*\|^2\notag\\
-&\leq& \frac{9\gamma^2\|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right|^2 \nonumber \\ 
-&\leq& \frac{9\gamma^2\|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left(  \frac{8\nu^2 R^2}{\gamma^2} \|x^k - x^*\|^2 + \frac{8}{\gamma^2} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)|^2 \}    \right) \nonumber \\ 
-&\leq& \frac{72\|x^k - x^*\|^2 R^4}{\mu^2} \max_{i, j} \{|h_{ij}^k - \newalpha_{ij}(x^*)|^2 \}  +   \frac{72\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2} \label{eq:forinitiallm} \\ 
-&\leq&  \frac{72\|x^k - x^*\|^2 R^4}{\mu^2} \sum_{i=1}^n \|h_i^k - \newalpha_i(x^*)\|^2 +   \frac{72\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2}, \nonumber 
-\end{eqnarray}
-where we use the convexity of $x\mapsto \|x\|^2$ in the first inequality. From the definition of ${\cal H}^k$, we can write 
-\begin{equation}\label{eq:xk+1-2}
-\|x^{k+1} - x^*\|^2 \leq  \frac{72\|x^k - x^*\|^2 R^4}{\mu^2} {\cal H}^k +   \frac{72\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2}. 
-\end{equation}
-
-
-\noindent Assume $\|x^k - x^*\|^2 \leq \frac{\mu^2}{432m n \nu^2R^6}$ for all $k\geq 0$. Then from (\ref{eq:xk+1-2}), we have 
-\begin{eqnarray*}
-	\|x^{k+1} - x^*\|^2 &\leq& \frac{\mu^2}{432 mn\nu^2 R^6} \cdot \frac{72R^4}{\mu^2}{\cal H}^k + \frac{\mu^2}{432mn\nu^2 R^6} \cdot \frac{ 72\nu^2 R^6\|x^k-x^*\|^2}{\mu^2} \\ 
-	&\leq& \frac{1}{6mn \nu^2 R^2} {\cal H}^k + \frac{1}{6mn} \|x^k - x^*\|^2, 
-\end{eqnarray*}
-and by taking expectation, we have 
-\begin{equation}\label{eq:expxk+1-2}
-\ExpBr{\|x^{k+1} - x^*\|^2} \leq  \frac{1}{6mn \nu^2 R^2} \ExpBr{{\cal H}^k} + \frac{1}{6mn} \ExpBr{ \|x^k - x^*\|^2}. 
-\end{equation}
-
-\noindent Let $\Phi_2^k \eqdef \|x^{k} - x^*\|^2 + \frac{1}{3mn\eta  \nu^2 R^2} {\cal H}^{k}$. Combining (\ref{eq:expxk+1-2}) and the evolution of ${\cal H}^k$ in Lemma~\ref{lm:calHk-2}, we arrive at 
-\begin{eqnarray*}
-	\mathbb{E}[\Phi_2^{k+1}] &=& \ExpBr{\|x^{k+1} - x^*\|^2} + \frac{1}{3mn\eta  \nu^2 R^2}  \ExpBr{{\cal H}^{k+1}} \\ 
-	&\leq&  \frac{1}{3mn \eta \nu^2 R^2} \left(  1 - \eta + \frac{\eta}{2}  \right) \mathbb{E}[{\cal H}^k] + \left(  \frac{1}{6mn} + \frac{1}{3}  \right)\ExpBr{\|x^k - x^*\|^2 }\\ 
-	&\leq& \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{2}  \right\}  \right) \ExpBr{\Phi_2^k}, 
-\end{eqnarray*}
-which implies that $\ExpBr{\Phi_2^k}\leq  \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{2}  \right\}  \right)^k \Phi_2^0$. Then we further have $\ExpBr{\|x^k - x^*\|^2} \leq  \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{2}  \right\}  \right)^k \Phi_2^0$ and $\mathbb{E}[{\cal H}^k] \leq  \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{2}  \right\}  \right)^k 3mn\eta \nu^2 R^2 \Phi_2^0$. Assume $x^k \neq x^*$ for all $k$. Then from (\ref{eq:xk+1-2}), we have 
-$$
-\frac{\|x^{k+1} - x^*\|^2}{\|x^k - x^*\|^2 } \leq \frac{72R^4}{ \mu^2} {\cal H}^k + \frac{72 \nu^2 R^6}{\mu^2}\|x^k - x^*\|^2, 
-$$
-and by taking expectation, we can get 
-\begin{eqnarray*}
-	\mathbb{E} \left[  \frac{\|x^{k+1} - x^*\|^2}{\|x^k - x^*\|^2 }  \right] &\leq& \frac{72R^4}{ \mu^2}\ExpBr{{\cal H}^k} + \frac{72 \nu^2 R^6}{\mu^2} \ExpBr{\|x^k - x^*\|^2} \\ 
-	&\leq& \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{2}  \right\}  \right)^k  \left(  {3mn\eta} + 1  \right) \frac{72\nu^2 R^6}{\mu^2} \Phi_2^0. 
-\end{eqnarray*}
-
-
-
-
-\subsection{Proof of Lemma \ref{lm:initial-2}}
-
-We prove this by induction. First, we have $\|x^0 - x^*\|^2 \leq \frac{\mu^2}{432mn \nu^2R^6}$ by the assumption. We assume $\|x^k - x^*\|^2 \leq \frac{\mu^2}{432mn \nu^2R^6}$ holds for all $k \leq K$. For $k\leq K$, since $h_{ij}^k$ is a convex combination of $\{  \newalpha_{ij}(x^0), \newalpha_{ij}(x^1), ..., \newalpha_{ij}(x^k)  \}$ for all $i,j$, we have 
-$$
-h_{ij}^k = \sum_{t=0}^k \rho_t \newalpha_{ij}(x^t), \quad {\rm with}\quad  \sum_{t=0}^k\rho_t = 1, \quad {\rm and} \quad \rho_t \geq 0, 
-$$
-which implies that 
-\begin{eqnarray*}
-	|h_{ij}^k - \newalpha_{ij}(x^*)|^2 &=&   \left|  \sum_{t=0}^k \rho_t (\newalpha_{ij}(x^t) - \newalpha_{ij}(x^*))  \right|^2 \\ 
-	&\leq&   \sum_{t=0}^k \rho_t | \newalpha_{ij}(x^t) - \newalpha_{ij}(x^*) |^2 \\ 
-	&\overset{(\ref{eq:alphaijL})}{\leq}&   \sum_{t=0}^k \rho_t \nu^2 \|a_{ij}\|^2 \|x^t - x^*\|^2 \\ 
-	&\overset{As. \ref{as:learning-2}}{\leq}& \nu^2 R^2  \sum_{t=0}^k \rho_t \cdot \frac{\mu^2}{432mn \nu^2R^6} \\
-	&=& \frac{ \mu^2}{432mnR^4}, 
-\end{eqnarray*}
-for $k\leq K$. 
-
-\noindent Combining the above inequality and (\ref{eq:forinitiallm}), we arrive at 
-\begin{eqnarray*}
-	\|x^{K+1} - x^*\|^2 &\leq& \frac{72\|x^K-x^*\|^2 R^4}{\mu^2} \max_{i, j} \{  | h_{ij}^K - \newalpha_{ij}(x^*) |^2  \}  + \frac{ 72\nu^2 R^6\|x^K-x^*\|^4}{\mu^2} \\
-	&\leq& \frac{72\|x^K-x^*\|^2 R^4}{\mu^2} \cdot  \frac{ \mu^2}{432mnR^4} +  \frac{ 72\nu^2 R^6\|x^K-x^*\|^4}{\mu^2} \\
-	&\leq& \frac{1}{6mn}\|x^K - x^*\|^2 + \frac{ 72\nu^2 R^6\|x^K-x^*\|^4}{\mu^2} \\ \\
-	&\leq& \frac{1}{6mn} \cdot \frac{\mu^2}{432n \nu^2R^6} + \frac{72 \nu^2 R^6}{\mu^2} \cdot \left(\frac{\mu^2}{432mn \nu^2R^6} \right)^2 \\ 
-	&\leq& \frac{\mu^2}{432mn \nu^2R^6}. 
-\end{eqnarray*}
-
-\clearpage
-
-
-
-
-
-
-
-
-\section{Proofs for {\sf CNL} (Section~\ref{sec:CUBIC-NEWTON-LEARN})}
-
-
-%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Solving the Subproblem}\label{sec:subproblem}
-
-In {\sf CUBIC-NEWTON-LEARN}, we need to minimize $T(x^k, s)$ at each step. The optimality condition for this subproblem is 
-\begin{equation}\label{eq:subproblem}
-\nabla P(x^k) + (\mH^k + \lambda \mI)s + \frac{M\|s\|}{2}s = 0. 
-\end{equation}
-
-\noindent Let $\mU^T \Lambda \mU$ be the eigenvalue decomposition of $\mH^k + \lambda \mI$. Then we can transform the above equality to 
-$$
-\Lambda \mU s + \frac{M\|s\|}{2} \mU s = - \mU \nabla P(x^k). 
-$$
-Noticing that $\| \mU s\| = \|s\|$, define $y = \mU s$, then we can get 
-$$
-y = - \left(  \Lambda + \frac{M}{2}\|y\|\mI  \right)^{-1} \mU \nabla P(x^k), 
-$$
-and by taking the norm, we arrive at 
-$$
-\|y\|^2 = \sum_{i=1}^d \frac{\left(  \mU\nabla P(x^k)  \right)_i^2 }{(\Lambda_i + \frac{M}{2}\|y\|)^2}, 
-$$
-which is actually equivalent to a one-dimensional nonlinear equation. By solving this one-dimensional nonlinear equation, we can get $\|s\| = \|\mU s\| = \|y\|$, and then from (\ref{eq:subproblem}), we can obtain the solution 
-$$
-s = - \left(  \mH^k + \lambda \mI + \frac{M\|s\|\mI}{2}  \right)^{-1} \nabla P(x^k) = - \left(  \mH^k + \lambda \mI + \frac{M\|y\|\mI}{2}  \right)^{-1} \nabla P(x^k). 
-$$
-
-
-
-
-
-\subsection{Proof of Lemma \ref{lm:global}}
-
-\noindent Since $x^{k+1} = x^k + s^k$, from Lemma 1 in \citep{PN2006-cubic}, we have 
-\begin{eqnarray}
-P(x^{k+1}) &\leq& P(x^k) + \langle \nabla f(x^k) + \lambda x^k, s^k \rangle + \frac{1}{2} \langle (\nabla^2 f(x^k) + \lambda \mI)s^k, s^k \rangle + \frac{M}{6}\|s^k\|^3 \nonumber \\ 
-&\leq&  P(x^k) + \langle \nabla f(x^k) + \lambda x^k, s^k \rangle + \frac{1}{2} \langle (\mH^k + \lambda \mI)s^k, s^k \rangle + \frac{M}{6}\|s^k\|^3 \nonumber \\ 
-&=& P(x^k) + T(x^k, s^k). \label{eq:decreasingP}
-\end{eqnarray}
-Since $T(x^k, s^k) = \min_{s}\{  T(x^k, s)  \} \leq T(x^k, 0)=0$, we have $P(x^{k+1}) \leq P(x^k)$.  From (\ref{eq:decreasingP}), we have 
-\begin{eqnarray*}
-	P(x^{k+1}) &\leq& P(x^k) + T(x^k, s^k)\\
-	&=& P(x^k) + \min_{s}\{  T(x^k, s)  \}  \\ 
-	&\leq& P(x^k) + T(x^k, y - x^k) \\ 
-	&=& P(x^k) + \langle \nabla P(x^k), y-x^k \rangle + \frac{1}{2} \langle (\mH^k + \lambda \mI)(y-x^k), y-x^k \rangle + \frac{M}{6}\|y-x^k\|^2 \\ 
-	&\leq& P(x^k) + \langle \nabla P(x^k), y-x^k \rangle + \frac{1}{2} \langle \nabla^2 P(x^k)(y-x^k), y-x^k \rangle + \frac{M}{6}\|y-x^k\|^2\\ 
-	&& + \frac{1}{2} \|\mH^k + \lambda \mI - \nabla^2 P(x^k)\| \cdot \|y-x^k\|^2. 
-\end{eqnarray*}
-
-\noindent First, by Lemma 1 in \citep{PN2006-cubic}, we can obtain 
-$$
-\langle \nabla P(x^k), y-x^k \rangle + \frac{1}{2} \langle \nabla^2 P(x^k)(y-x^k), y-x^k \rangle \leq P(y) - P(x^k) + \frac{M}{6}\|y-x^k\|^3. 
-$$
-
-\noindent For $ \|\mH^k + \lambda \mI - \nabla^2 P(x^k)\| $, we have 
-\begin{eqnarray*}
-	\|\mH^k + \lambda \mI - \nabla^2 P(x^k)\| &=& \|\mH^k - \nabla^2 f(x^k)\| \\
-	&=& \left\| \frac{1}{n} \sum_{i=1}^n \frac{1}{m} \sum_{j=1}^m \left(  \beta^k (h_{ij}^k + 2\gamma) - 2\gamma - \newalpha_{ij}(x^k)  \right)a_{ij}a_{ij}^\top \right\| \\ 
-	&\leq&  \frac{1}{n} \sum_{i=1}^n \frac{1}{m} \sum_{j=1}^m R^2 \left| \beta^k (h_{ij}^k + 2\gamma) - 2\gamma - \newalpha_{ij}(x^k) \right| \\ 
-	&\leq&  \frac{1}{n} \sum_{i=1}^n \frac{1}{m} \sum_{j=1}^m R^2 \left| h_{ij}^k + 2\gamma   \right| \cdot \left| \beta^k  - \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma} \right|. 
-\end{eqnarray*}
-Since $|h_{ij}^k| \leq \gamma$ and $|\newalpha_{ij}(x^k)| \leq \gamma$, we have $|h_{ij}^k + 2\gamma| \leq 3\gamma$ and $\left| \frac{\newalpha_{ij}(x^k) + 2\gamma}{h_{ij}^k + 2\gamma} \right| \leq 3$ for any $i,j$.  Thus we can get 
-$$
-\|\mH^k + \lambda \mI - \nabla^2 P(x^k)\| \leq 18\gamma R^2. 
-$$
-
-\noindent Then we arrive at 
-$$
-P(x^{k+1}) \leq P(y) + 9\gamma R^2 \|y-x^k\|^2 + \frac{M}{3}\|y-x^k\|^3. 
-$$
-
-
-\subsection{Proof of Theorem \ref{th:concubic}}
-
-Recall that $R_x =\sup_{x\in \R^d} \{  \|x-x^*\| : P(x) \leq P(x^0)  \}$. Since $P(x^k) \leq P(x^0)$ for all $k\geq 0$, we have $\|x^k - x^*\| \leq R_x$ for $k\geq 0$.  Let $c_k \eqdef k^2$, $C_k = C_0 + \sum_{i=1}^kc_i$ with $C_0=\frac{4}{3}$ for $k\geq 1$. Then we can obtain  
-\begin{equation}\label{eq:Ck}
-C_k = C_0 + \sum_{i=1}^k i^2 \geq C_0 + \int_{0}^k x^2 dx = C_0 + \frac{k^3}{3}. 
-\end{equation}
-
-\noindent Let $\sigma_k \eqdef \frac{c_{k+1}}{C_{k+1}}$ for $k\geq 0$. Then $1 - \sigma_k = \frac{C_k}{C_{k+1}}$. We also have $\sigma_k \leq 1$ since 
-$$
-\max_{\xi\geq 0} \frac{\xi^2}{C_0 + \frac{\xi^3}{3}} =1. 
-$$
-
-\noindent Choose $y = \sigma_k x^* + (1-\sigma_k)x^k$. Then by the convexity of $P$, we have 
-\begin{eqnarray*}
-	P(x^{k+1}) &\leq& \sigma_k P(x^*) + (1-\sigma_k) P(x^k) + 9\gamma R^2 \sigma_k^2 \|x^k - x^*\|^2 + \frac{M \sigma_k^3}{3}\|x^k-x^*\|^3 \\ 
-	&\leq& \frac{c_{k+1}}{C_{k+1}}P(x^*) + \frac{C_k}{C_{k+1}}P(x^k) + 9\gamma R^2R_x^2 \left(  \frac{c_{k+1}}{C_{k+1}}  \right)^2 + \frac{MR_x^3}{3} \left(  \frac{c_{k+1}}{C_{k+1}}  \right)^3, 
-\end{eqnarray*}
-which implies that 
-$$
-C_{k+1} [P(x^{k+1}) - P(x^*)] \leq C_k [P(x^k) - P(x^*)] + 9\gamma R^2R_x^2 \frac{c_{k+1}^2}{C_{k+1}} + \frac{MR_x^3}{3} \frac{c_{k+1}^3}{C_{k+1}^2}. 
-$$
-
-\noindent Hence, 
-$$
-C_k[P(x^k) - P(x^*)] \leq C_0[P(x^0) - P(x^*)] + 9\gamma R^2R_x^2 \sum_{i=1}^k \frac{c_i^2}{C_i} + \frac{MR_x^3}{3} \sum_{i=1}^k \frac{c_i^3}{C_i^2}. 
-$$
-
-\noindent Notice that 
-$$
-\sum_{i=1}^k \frac{c_i^2}{C_i} \overset{(\ref{eq:Ck})}{\leq} \sum_{i=1}^k \frac{i^4}{C_0 + \frac{1}{3}i^3}\leq 3 \sum_{i=1}^k i \leq 3k^2, 
-$$
-and 
-$$
-\sum_{i=1}^k \frac{c_i^3}{C_i^2}  \overset{(\ref{eq:Ck})}{\leq}  \sum_{i=1}^k \frac{i^6}{(C_0 + \frac{1}{3}i^3)^2} \leq 9k. 
-$$
-
-\noindent Therefore, we arrive at 
-\begin{eqnarray*}
-	P(x^k) - P(x^*) &\leq& \frac{1}{C_k} \left(  C_0[P(x^0) - P(x^*)] + 27\gamma R^2R_x^2 k^2 + 3MR_x^3 k \right) \\ 
-	&\overset{(\ref{eq:Ck})}{\leq}& \frac{81\gamma R^2 R_x^2}{k} + \frac{9MR_x^3}{k^2} + \frac{4[P(x^0) - P(x^*)]}{k^3}. 
-\end{eqnarray*}
-
-
-\noindent Then in order to guarantee $P(x^k) - P(x^*) \leq \epsilon$, we only need to let 
-$$
-k = O\left( \frac{81\gamma R^2 R_x^2}{\epsilon}  + \sqrt{\frac{MR_x^3}{\epsilon}} + \left(  \frac{P(x^0) - P(x^*)}{\epsilon}  \right)^{1/3}   \right). 
-$$
-
-
-\subsection{Proof of Theorem \ref{th:stronglyconcubic}}
-
-Since $P$ is $\mu$-strongly convex, we have 
-$
-\frac{\mu}{2} \|x-x^*\|^2 \leq P(x) - P(x^*), 
-$
-and thus 
-$$
-R_x^2 \leq \frac{2}{\mu} (P(x^0) - P(x^*)). 
-$$
-
-\noindent Combining the above inequality and Theorem~\ref{th:concubic}, we can obtain 
-$$
-P(x^k) - P(x^*) \leq \left(  \frac{162\gamma R^2}{\mu k} +  \frac{18MR_x}{\mu k^2} + \frac{4}{ k^3}  \right) \cdot \left(  P(x^0) - P(x^*)  \right)
-$$
-
-\noindent If we let 
-$$
-\frac{162\gamma R^2}{\mu k} \leq \frac{1}{6}, \quad  \frac{18MR_x}{\mu k^2} \leq \frac{1}{6}, \quad {\rm and} \frac{4}{ k^3}  \leq \frac{1}{6}, 
-$$
-which is equivalent to 
-$$
-k \geq O\left(  \frac{\gamma R^2}{\mu} + \sqrt{\frac{MR_x}{\mu}} + 1 \right), 
-$$
-then we can obtain $P(x^k) - P(x^*) \leq \frac{1}{2} (P(x^0) - P(x^*))$. This means that we can reduce the residual $P(x^k)-P(x^*)$ by half after $O\left(  \frac{\gamma R^2}{\mu} + \sqrt{\frac{MR_x}{\mu}} + 1 \right)$ iterations. Thus, we have $P(x^k) - P(x^*) \leq \epsilon$ as long as 
-$$
-k = O\left( \left(  \frac{\gamma R^2}{\mu} + \sqrt{\frac{MR_x}{\mu}} + 1 \right) \log \left(  \frac{P(x^0) - P(x^*)}{\epsilon}  \right)   \right). 
-$$
-
-
-
-\subsection{Proof of Theorem~\ref{th:cubicsup}}
-
-Since $s^k = {\rm argmin}_{s\in\R^d}T(x^k, s)$, from the optimality condition, we have 
-
-$$
-\nabla f(x^k) + \lambda x^k + (\mH^k + \lambda \mI)s^k  + \frac{M}{2}\|s^k\| s^k = 0, 
-$$
-which indicates that 
-\begin{equation}\label{eq:xk+1im}
-x^{k+1} = x^k - \left(  \mH^k + \lambda \mI + \frac{M}{2}\|x^{k+1} - x^k\| \right)^{-1} \left(  \nabla f(x^k) + \lambda x^k  \right). 
-\end{equation}
-
-\noindent Then we can obtain 
-\begin{eqnarray*}
-	&&\|x^{k+1} - x^*\|\\
-	&=& \left \| x^k - x^* - \left(\mH^k + \lambda \mI +  \frac{M}{2}\|x^{k+1} - x^k\| \right)^{-1} (\nabla f(x^k) + \lambda x^k) \right\| \\
-	&=& \left\| \left(\mH^k + \lambda \mI + \frac{M}{2}\|x^{k+1} - x^k\| \right)^{-1}\left(  \left( \mH^k + \lambda \mI + \frac{M}{2}\|x^{k+1} - x^k\| \right)\right.\right.\\
-	&&\qquad\qquad\qquad\qquad \left.\left.(x^k - x^*) - \nabla f(x^k) - \lambda x^k  \right) \right\| \\ 
-	&\leq& \frac{1}{\mu}  \left\|  \left(\mH^k + \lambda \mI +  \frac{M}{2}\|x^{k+1} - x^k\| \right)(x^k - x^*) - \nabla f(x^k) - \lambda x^k  \right \| \\ 
-	&\overset{(\ref{eq:optx})}{=}& \frac{1}{\mu} \left\| \mH^k (x^k - x^*) - (\nabla f(x^k) - \nabla f(x^*)) +  \frac{M}{2}\|x^{k+1} - x^k\|(x^k - x^*) \right\| \\ 
-	&\leq& \frac{1}{\mu} \left\| \mH^k (x^k - x^*) - (\nabla f(x^k) - \nabla f(x^*)) \right\|  + \frac{M\|x^{k+1} - x^k\|}{2\mu} \| x^k - x^* \|. 
-\end{eqnarray*}
-
-\noindent Then same as the analysis in the proof of Theorem~\ref{th:general}, we can obtain 
-\begin{eqnarray*}
-	\|x^{k+1} - x^*\| &\leq& \frac{3\gamma\|x^k - x^*\|}{n \mu} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^2}{m} \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right| \\ 
-	&& +  \frac{M\|x^{k+1} - x^k\|}{2\mu} \| x^k - x^* \|.
-\end{eqnarray*}
-
-\noindent Combing the above inequality and (\ref{eq:betak-2}) yields 
-\begin{eqnarray*}
-	&&\|x^{k+1} - x^*\|^2\\
-	&\leq& \left(  1 + \frac{1}{3}  \right) \frac{9\gamma^2 \|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left|   \beta^k - \int_{0}^1 \frac{\newalpha_{ij}(x^* + \tau(x^k - x^*)) + 2\gamma}{ h_{ij}^k + 2\gamma} d\tau   \right|^2 \\
-	&& + (1 + 3) \cdot \frac{M^2\|x^{k+1} - x^k\|^2}{4\mu^2} \| x^k - x^* \|^2 \\
-	&\overset{(\ref{eq:betak-2})}{\leq}& \frac{12 \gamma^2\|x^k - x^*\|^2}{n \mu^2} \sum_{i=1}^n \sum_{j=1}^{m} \frac{\|a_{ij}\|^4}{m} \left(  \frac{8\nu^2 R^2}{\gamma^2} \|x^k - x^*\|^2 + \frac{8}{\gamma^2} \max_{i} \{\|h_i^k - \newalpha_i(x^*)\|^2 \}    \right) \\ 
-	&& +  \frac{M^2\|x^{k+1} - x^k\|^2}{\mu^2} \| x^k - x^* \|^2.
-\end{eqnarray*}
-Then we can continue and get
-\begin{eqnarray*}\|x^{k+1} - x^*\|^2 &\leq&  \frac{96\|x^k - x^*\|^2 R^4}{\mu^2} \sum_{i=1}^n \|h_i^k - \newalpha_i(x^*)\|^2 +   \frac{96\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2}\\
-	&&\quad +  \frac{M^2\|x^{k+1} - x^k\|^2}{\mu^2} \| x^k - x^* \|^2 \\ 
-	&=&  \frac{96\|x^k - x^*\|^2 R^4}{\mu^2}{\cal H}^k  +   \frac{96\nu^2 R^6\|x^k - x^*\|^4 }{\mu^2}+ \frac{M^2\|x^{k+1} - x^k\|^2}{\mu^2} \| x^k - x^* \|^2. 
-\end{eqnarray*}
-
-\noindent Then from $\|x^{k+1} - x^k\|^2 \leq 2\|x^{k+1} - x^*\|^2 + 2\|x^k - x^*\|^2$, we can get 
-\begin{eqnarray}\label{eq:xk+1cubic}
-\|x^{k+1} - x^*\|^2 &\leq& \frac{96\|x^k - x^*\|^2 R^4}{\mu^2}{\cal H}^k+\frac{(96\nu^2 R^6 + 2M^2) \|x^k - x^*\|^4 }{\mu^2}\notag\\
-&& \quad + \frac{2M^2\|x^{k+1} - x^*\|^2}{\mu^2} \| x^k - x^* \|^2. 
-\end{eqnarray}
-
-
-\noindent Assume $\|x^k - x^*\|^2 \leq \frac{\mu^2}{432m n \nu^2R^6}$ for all $k\geq 0$. Then from (\ref{eq:xk+1cubic}) and $M=\nu R^3$, we have 
-\begin{eqnarray*}
-	\|x^{k+1} - x^*\|^2 &\leq& \frac{\mu^2}{432mn\nu^2 R^6} \cdot \frac{96R^4}{\mu^2}{\cal H}^k + \frac{\mu^2}{432mn\nu^2 R^6} \cdot \frac{ 100\nu^2 R^6\|x^k-x^*\|^2}{\mu^2} \\ 
-	&\leq& \frac{2}{9mn \nu^2 R^2} {\cal H}^k + \frac{1}{4mn} \|x^k - x^*\|^2, 
-\end{eqnarray*}
-and by taking expectation, we have 
-\begin{equation}\label{eq:expxk+1-cubic}
-\mathbb{E}\|x^{k+1} - x^*\|^2 \leq  \frac{2}{9mn \nu^2 R^2} \mathbb{E}[{\cal H}^k] + \frac{1}{4mn} \|x^k - x^*\|^2. 
-\end{equation}
-
-\noindent Let $\Phi_3^k \eqdef \|x^{k} - x^*\|^2 + \frac{4}{9mn\eta  \nu^2 R^2} {\cal H}^{k}$. Combing (\ref{eq:expxk+1-cubic}) and the evolution of ${\cal H}^k$ in Lemma \ref{lm:calHk-2}, we arrive at 
-\begin{eqnarray*}
-	\mathbb{E}[\Phi_3^{k+1}] &=& \mathbb{E}\|x^{k+1} - x^*\|^2 + \frac{4}{9mn\eta  \nu^2 R^2}  \mathbb{E}[{\cal H}^{k+1}] \\ 
-	&\leq&  \frac{4}{9mn \eta \nu^2 R^2} \left(  1 - \eta + \frac{\eta}{2}  \right) \mathbb{E}[{\cal H}^k] + \left(  \frac{1}{4mn} + \frac{4}{9}  \right) \mathbb{E}\|x^k - x^*\|^2 \\ 
-	&\leq& \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{4}  \right\}  \right) \mathbb{E}[\Phi_1^k], 
-\end{eqnarray*}
-which implies that $\mathbb{E}[\Phi_3^k] \leq  \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{4}  \right\}  \right)^k \Phi_3^0$. Then we further have $\mathbb{E}\|x^k - x^*\|^2 \leq  \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{4}  \right\}  \right)^k \Phi_3^0$ and $\mathbb{E}[{\cal H}^k] \leq  \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{4}  \right\}  \right)^k 3mn\eta \nu^2 R^2 \Phi_3^0$. Assume $x^k \neq x^*$ for all $k$. Then from (\ref{eq:xk+1cubic}), we have 
-$$
-\frac{\|x^{k+1} - x^*\|^2}{\|x^k - x^*\|^2 } \leq \frac{96R^4}{ \mu^2} {\cal H}^k + \frac{98 \nu^2 R^6}{\mu^2}\|x^k - x^*\|^2 + \frac{2\nu^2 R^6}{\mu^2} \|x^{k+1} - x^*\|^2, 
-$$
-and by taking expectation, we can get 
-\begin{eqnarray*}
-	\mathbb{E} \left[  \frac{\|x^{k+1} - x^*\|^2}{\|x^k - x^*\|^2 }  \right] &\leq& \frac{96R^4}{ \mu^2} \mathbb{E} [{\cal H}^k] + \frac{98 \nu^2 R^6}{\mu^2} \mathbb{E}\|x^k - x^*\|^2 + \frac{2\nu^2 R^6}{\mu^2}\mathbb{E} \|x^{k+1} - x^*\|^2 \\ 
-	&\leq& \left(  1 - \min \left\{  \frac{\eta}{2}, \frac{1}{4}  \right\}  \right)^k  \left(  {3mn\eta} + 1  \right) \frac{100\nu^2 R^6}{\mu^2} \Phi_3^0. 
-\end{eqnarray*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\clearpage
-\section{Extra Method: {\sf MAX-NEWTON}} \label{sec:maxNewton}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-In this section we propose and analyze one more method, {\sf MAX-NEWTON (MN)}, which should be seen as a variant of  {\sf NEWTON-STAR (NS)}. Like {\sf NS}, {\sf MS} is not practical and is of theoretical interest only. This was the first method we developed, and all subsequent development that eventually lead to the results in this paper started here.
-{\sf MS} differs from {\sf NS} in how we approximate Hessian of $P(x)$. As in {\sf NS}, we also assume that we know all $\newalpha_{ij}(x^*)$ at the optimum. However,  we estimate the Hessian at $x^k$ by $\mH^k = \frac{1}{n}\sum\limits_{i=1}^n\mH_i^k,$ where $\mH_i^k$ is defined differently:
-\begin{eqnarray*}
-	\mH_i^k = \frac{1}{m}\max_{j \in [m]}\left\{\frac{\newalpha_{ij}(x^k)}{\newalpha_{ij}(x^*)}\right\}\sum\limits_{j=1}^m\newalpha_{ij}(x^*)a_{ij}a_{ij}^\top = \frac{\beta^k_i}{m}\sum\limits_{j=1}^m\newalpha_{ij}(x^*)a_{ij}a_{ij}^\top.
-\end{eqnarray*}
-Above, we define $\beta_i^k \eqdef \max\limits_{j \in [m]}\frac{\newalpha_{ij}(x^k)}{\newalpha_{ij}(x^*)}$. Subsequently, we perform a Newton-like  step:
-\begin{eqnarray*}
-	x^{k+1} = x^k - \left(\mH^k + \lambda \mI \right)^{-1}\left(\frac{1}{n}\sum\limits_{i=1}^n \nabla f_i(x^k) +\lambda x^k\right).
-\end{eqnarray*}
-
-\noindent The method is summarized as Algorithm~\ref{alg:maxnewton}.
-
-\begin{algorithm}[h]
-	\caption{{\sf MN: MAX-NEWTON}}
-	\label{alg:maxnewton}
-	\begin{algorithmic}
-		\STATE {\bfseries Initialization:}
-		$x^0 \in \R^d$
-		\FOR{ $k = 0, 1, 2, \dots$}
-		\STATE Broadcast $x^k$ to all workers 
-		\FOR{ $i = 1, \dots, n$} 
-		\STATE Compute $\nabla f_i(x^k)$ 
-		\STATE $\beta_i^k = \max\limits_{j \in [m]}\frac{\newalpha_{ij}(x^k)}{\newalpha_{ij}(x^*)}$ 
-		\STATE Send $\nabla f_i(x^k)$ and $\beta_i^k$ to the server 
-		\ENDFOR
-		\STATE $\mH_i^k = \frac{\beta_i^k}{m}\sum\limits_{j=1}^m\newalpha_{ij}(x^*)a_{ij}a_{ij}^\top$
-		\STATE $\mH^k = \frac{1}{n}\sum\limits_{i=1}^n \mH_i^k$
-		\STATE $x^{k+1} = x^k - \left(\mH^k + \lambda \mI \right)^{-1}\left(\frac{1}{n}\sum\limits_{i=1}^n \nabla f_i(x^k)+ \lambda x^k\right)$
-		\ENDFOR
-	\end{algorithmic}
-\end{algorithm} 
-
-\noindent We now show that like original Newton's method and {\sf NEWTON-STAR}, {\sf MAX-NEWTON} also converges locally quadratically.
-
-\begin{theorem}[Local quadratic convergence]\label{th:maxnewton}
-	Assume that $f_{ij}$ is convex for all $i,j$ and that we know  $\newalpha_{ij}(x^*)$ for all $i,j$. Furthermore, assume that $\mH_{ij}(x^*) \succeq \mu^* \mI$ for some $\mu^*>0$ for all $i,j$ (for instance, this holds if $f_{ij}$ is $\mu^*$-strongly convex). Then for any starting point $x^0 \in \R^d$, the iterates of {\sf MAX-NEWTON} for solving problem \eqref{primal} satisfy the following inequality
-	$$
-	\|x^{k+1}-x^*\| \leq  \left(\frac{\nu}{2\lambda} \frac{1}{nm}\sum\limits_{i=1}^n\sum\limits_{j=1}^m\left\|a_{ij}\right\|^3\left[\frac{\newalpha_{ij}(x^*)R}{\mu^*\|a_{ij}\|}+ 1\right] \right) \|x^k-x^*\|^2,
-	$$
-	where $R\eqdef \max\limits_{ij}\|a_{ij}\|$.
-\end{theorem}
-
-
-
-\begin{proof}
-	Since $\mH_{ij}(x^*) \succeq \mu^*\mI$, then $\newalpha_{ij}(x^*)$ is positive for all $i,j$. We estimate Hessian at $x^k$ by $\mH^k = \frac{1}{n}\sum\limits_{i=1}^n\mH_i^k,$ where 
-	\begin{eqnarray*}
-		\mH_i^k = \frac{1}{m}\max_{j \in [m]}\left\{\frac{\newalpha_{ij}(x^k)}{\newalpha_{ij}(x^*)}\right\}\sum\limits_{j=1}^m\newalpha_{ij}(x^*)a_{ij}a_{ij}^\top = \frac{\beta^k_i}{m}\sum\limits_{j=1}^m\newalpha_{ij}(x^*)a_{ij}a_{ij}^\top. 
-	\end{eqnarray*}
-	Notice that $h_{ij}(x) \geq 0$, that's why $\beta_i^k \geq 0$ too. In consequence, $\mH_i^k \succeq \mathbf{0}, $and $\mH^k+\lambda\mI  \succeq \lambda\mI$. Then we have
-	\begin{eqnarray*}
-		\|x^{k+1}-x^*\| & = & \left\|x^k-x^*\left(\mH^k+\lambda\mI\right)^{-1}\left(\nabla f(x^k) + \lambda x^k\right)\right\|\\
-		&=&\left\|\left(\mH^k+\lambda\mI\right)^{-1}\left(\left(\mathbf{B}^k+\lambda\mathbf{I}\right)(x^k-x^*)-\nabla f(x^k) - \lambda x^k\right)\right\|\\
-		&\leq & \left\|\left(\mH^k+\lambda\mI\right)^{-1}\right\|\left\|\left(\mH^k+\lambda\mI\right)(x^k-x^*)-\nabla f(x^k) - \lambda x^k\right\|\\
-		&\leq & \frac{1}{\lambda}\left\|\left(\mH^k+\lambda\mI\right)(x^k-x^*)-\nabla f(x^k) - \lambda x^k\right)\|\\
-		&\overset{(\ref{eq:optx})}{=}& \frac{1}{\lambda}\left\|\mH^k(x^k-x^*) - (\nabla f(x^k) -\nabla f(x^*))\right\| \\
-		&\leq&\frac{1}{n\lambda}\sum\limits_{i=1}^n\left\|\mH_i^k(x^k-x^*) -(\nabla f_i(x^k) - \nabla f_i(x^*))\right\|\\
-		&\leq&\frac{1}{nm\lambda}\sum\limits_{i=1}^n\sum\limits_{j=1}^m\bigg\|\beta_i^k\newalpha_{ij}(x^*)a_{ij}a_{ij}^\top(x^k-x^*)\\
-		&&\quad -\int\limits_0^1\newalpha_{ij}(x^*+\tau(x^k-x^*))a_{ij}a_{ij}^\top(x^k-x^*) d\tau\bigg\|.
-	\end{eqnarray*}
-	Finally we obtain
-	\begin{equation}
-		\label{originalmaxnewton1}
-		\|x^{k+1}-x^*\| \leq  \frac{\|x^k-x^*\|}{nm\lambda}\sum\limits_{i=1}^n\sum\limits_{j=1}^m\left\|a_{ij}\right\|^2\newalpha_{ij}(x^*)\left|\beta_i^k-\int\limits_0^1\frac{\newalpha_{ij}(x^*+\tau(x^k-x^*))}{\newalpha_{ij}(x^*)}\right|.
-	\end{equation}
-	Now we want to upper bound the last term. We know that $\newalpha_{ij}(x)$ is $\nu\|a_{ij}\|$-Lipschitz function, then \begin{eqnarray*}
-		\newalpha_{ij}(x^*) - \nu\|a_{ij}\|\tau\|x^k-x^*\| &\leq& \newalpha_{ij}(x^*+\tau(x^k-x^*)) \leq \newalpha_{ij}(x^*)+\nu\|a_{ij}\|\tau\|x^k-x^*\|\\
-		1 - \frac{\nu\|a_{ij}\|}{\newalpha_{ij}(x^*)}\tau\|x^k-x^*\| &\leq& \frac{\newalpha_{ij}(x^*+\tau(x^k-x^*))}{\newalpha_{ij}(x^*)} \leq 1 + \frac{\nu\|a_{ij}\|}{\newalpha_{ij}(x^*)}\tau\|x^k-x^*\|.
-	\end{eqnarray*} 
-	We integrate these two inequalities and obtain
-	\begin{eqnarray*}
-		1 - \frac{\nu\|a_{ij}\|}{2\newalpha_{ij}(x^*)}\|x^k-x^*\| &\leq& \int\limits_0^1\frac{\newalpha_{ij}(x^*+\tau(x^k-x^*))}{\newalpha_{ij}(x^*)}d\tau \leq 1 + \frac{\nu\|a_{ij}\|}{2\newalpha_{ij}(x^*)}\|x^k-x^*\|.
-	\end{eqnarray*}
-	Let's denote $j_i^k =\arg \max\limits_{j\in[m]}\left\{\frac{\newalpha_{ij}(x^k)}{\newalpha_{ij}(x^*)}\right\}$, then $\beta_i^k = \frac{\newalpha_{ij^k_i}(x^k)}{\newalpha_{ij^k_i}(x^*)}.$ It means that for $\beta_i^k$ we can write the same two inequalities as above
-	\begin{eqnarray*}
-		1 - \frac{\nu\|a_{ij_i^k}\|}{2\newalpha_{ij_i^k}(x^*)}\|x^k-x^*\| \leq \beta_i^k \leq 1+ \frac{\nu\|a_{ij_i^k}\|}{2\newalpha_{ij_i^k}(x^*)}\|x^k-x^*\|.
-	\end{eqnarray*}
-	Taking minimum and maximum in two parts we get
-	\begin{eqnarray*}
-		1 - \frac{\nu\max\limits_{ij}\|a_{ij}\|}{2\min\limits_{ij}\newalpha_{ij}(x^*)}\|x^k-x^*\| \leq \beta_i^k \leq 1 + \frac{\nu\max\limits_{ij}\|a_{ij}\|}{2\min\limits_{ij}\newalpha_{ij}(x^*)}\|x^k-x^*\|.
-	\end{eqnarray*}
-	Using inequalities for $\beta_i^k$ and for the integral we obtain
-	\begin{eqnarray*}
-		\left|\beta_i^k-\newalpha_{ij}(x^k)\right| \leq \frac{\nu\|x^k-x^*\|}{2}\left[\frac{\max\limits_{ij}\|a_{ij}\|}{\min\limits_{ij}\newalpha_{ij}(x^*)}+ \frac{\|a_{ij}\|}{\newalpha_{ij}(x^*)}\right].
-	\end{eqnarray*}
-	Combining above and (\ref{originalmaxnewton1}) we get
-	\begin{eqnarray*}
-		\|x^{k+1}-x^*\| &\leq&  \frac{\nu\|x^k-x^*\|^2}{2nm\lambda}\sum\limits_{i=1}^n\sum\limits_{j=1}^m\left\|a_{ij}\right\|^2\newalpha_{ij}(x^*)\left[\frac{\max\limits_{ij}\|a_{ij}\|}{\min\limits_{ij}\newalpha_{ij}(x^*)}+ \frac{\|a_{ij}\|}{\newalpha_{ij}(x^*)}\right]\\
-		&\leq& \frac{\nu\|x^k-x^*\|^2}{2nm\lambda}\sum\limits_{i=1}^n\sum\limits_{j=1}^m\left\|a_{ij}\right\|^3\left[\frac{\newalpha_{ij}(x^*)\max\limits_{ij}\|a_{ij}\|}{\mu^*\|a_{ij}\|}+ 1\right],
-	\end{eqnarray*}
-	where we use inequality $\newalpha_{ij}(x^*) \geq \mu^*$.
-\end{proof}
-
-\noindent As we can see, the size of convergence area for {\sf NS} is larger than for {\sf MN}, because {\sf NS} depends on $\|a_{ij}\|^3$, while {\sf MN} depends on $\|a_{ij}\|^2\max\limits_{i,j}\|a_{ij}\|$. 
 
 
 
