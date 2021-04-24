@@ -288,12 +288,8 @@ Several distributed Newton-type methods can be found in recent literature. DANE 
 				\begin{tabular}{c} DINGO \\ \citep{DINGO2019}   \end{tabular}   & Linear &  \xmark & $O(d)$ & Centralized \\ \hline 
 				\begin{tabular}{c} DAN \\ \citep{DAN2020}   \end{tabular}   & Local quadratic${}^\dagger$ & \cmark & $O(nd^2)$ & Decentralized \\ \hline 
 				\begin{tabular}{c} DAN-LA \\ \citep{DAN2020}   \end{tabular}   & Superlinear & \cmark & $O(nd)$ & Decentralized \\ \hline 
-				\rowcolor{bgcolor} 
 				\begin{tabular}{c} {\sf NEWTON-STAR} \\ {\bf this work}  \end{tabular}   &Local  quadratic & \cmark & $O(d)$ & Centralized \\ \hline 
-				\rowcolor{bgcolor} 
-				\rowcolor{bgcolor} 
 				\begin{tabular}{c} {\sf NEWTON-LEARN} \\ {\bf this work}  \end{tabular}   &Local  superlinear & \cmark & $O(d)$ & Centralized \\ \hline 
-				\rowcolor{bgcolor} 
 				\bottomrule
 			\end{tabular}
 			\end{threeparttable}
@@ -569,14 +565,13 @@ In all experiments we use the theoretical parameters (e.g., stepsizes) for all t
 	\begin{center}
 		\begin{tabular}{|l|r|r|r|}
 			\hline
-			 {\bf Dtasets} & {\bf \# workers} $n$ &{\bf \# data points} $(=nm)$ & \bf\# features $d$ \\ \hline
+			 {\bf Datasets} & {\bf \# workers} $n$ &{\bf \# data points} $(=nm)$ & \bf\# features $d$ \\ \hline
 			{\tt a2a} & $15$ & $2~265$ & $123$\\ \hline
 			{\tt a7a} & $100$ & $16~100$ & $123$\\ \hline
 			{\tt a9a} & $80$ & $32~560$ & $123$\\ \hline
 			{\tt w8a} & $142$ & $49~700$ & $300$\\ \hline
 			{\tt phishing} & $100$ & $11~000$ & $68$\\ \hline
-			{\tt artificial} & $100$ & $1~000$ & $200$\\
-			\hline
+			{\tt artificial} & $100$ & $1~000$ & $200$\\ \hline
 		\end{tabular}
 	\end{center}
 \end{table}
@@ -659,40 +654,6 @@ According to the results summarized in  Figure~\ref{exp:NL1_NL2}, the best perfo
 
 In our next experiment we compare {\sf NL} using different values of $r$ for random-$r$ compression, with Newton's method; see Figure~\ref{a9a:alg1_alg2}. We clearly see that Newton's method performs better than {\sf NL} in terms of iteration complexity, as expected. However, our methods have better communication efficiency than Newton's method, by {\em several orders of magnitude}. Moreover, we see that the smaller $r$ is, the better {\sf NL} performs in terms of communication complexity. In  Figure~\ref{exp:newton} we perform a similar comparison for several more datasets, but focus on communication complexity only. The conclusions are unchanged: our methods  {\sf NL} have superior performance.
 
-
-
-
-
-
-
-\subsection{Comparison of {\sf NL} with BFGS}
-
-In our next test, we compare {\sf NL}  with BFGS in Figure~\ref{exp:bfgs}. As we can see, our methods have better communication efficiency than BFGS, by {\em several orders of magnitude}.
-
-
-
-
-
-
-
-
-
-
-\subsection{Comparison of {\sf NL} with ADIANA}
-
-Next, we compare {\sf NL}with ADIANA~\citep{ADIANA} using three different compression operators: natural compression (DIANA-NC),  random sparsification (DIANA-RS, $r = d/4$) and random dithering (DIANA-RD, $s = \sqrt{d}$); see Figure~\ref{exp:adiana}. Based on the experimental results, we can conclude that {\sf NL} outperforms all three versions ADIANA for all types of compression, often by {\em several degrees of magnitude.}
-
-
-
-
-
-
-
-
-\subsection{Comparison of {\sf NL}  with DINGO}
-
-In our next experiment, we compare {\sf NL} with DINGO~\citep{DINGO2019}. The results, presented  in Figure~\ref{exp:dingo}, show that our method are more communication efficient than DINGO  by {\em many orders of magnitude.} This is true for all  experiments.
-
 \begin{figure}[t]
 	\vskip 0.2in
 	\begin{center}
@@ -709,9 +670,7 @@ In our next experiment, we compare {\sf NL} with DINGO~\citep{DINGO2019}. The re
 	\end{center}
 \end{figure}
 
-
-
-\begin{figure}[t]
+\begin{figure}[ht]
 	\begin{center}
 		\centerline{\begin{tabular}{cccc}
 				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl_newton_bits_lmb=0_001.pdf}&
@@ -732,19 +691,28 @@ In our next experiment, we compare {\sf NL} with DINGO~\citep{DINGO2019}. The re
 		\label{exp:newton}
 	\end{center}
 \end{figure}
+
+
+
+
+
+\subsection{Comparison of {\sf NL} with BFGS}
+
+In our next test, we compare {\sf NL}  with BFGS in Figure~\ref{exp:bfgs}. As we can see, our methods have better communication efficiency than BFGS, by {\em several orders of magnitude}.
+
 \begin{figure}[t]
 	\begin{center}
 		\centerline{\begin{tabular}{cccc}
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl_bfgs_bits_lmb=0_001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl_bfgs_bits_lmb=0_0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl_bfgs_bits_lmb=0_001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl_bfgs_bits_lmb=0_00001.pdf}
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl_bfgs_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl_bfgs_bits_lmb=0_0001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl_bfgs_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl_bfgs_bits_lmb=0_00001.pdf}
 				\\
 				(a) {\tt a9a}, $\lambda=10^{-3}$ &(b) {\tt a9a}, $\lambda=10^{-4}$ & (c) {\tt w8a}, $\lambda=10^{-3}$ &(d) {\tt phishing}, $\lambda=10^{-5}$\\
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nl_bfgs_bits_lmb=0_001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_nl_bfgs_bits_lmb=0_0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_nl_bfgs_bits_lmb=0_001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_nl_bfgs_bits_lmb=0_0001.pdf}
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nl_bfgs_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_nl_bfgs_bits_lmb=0_0001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_nl_bfgs_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_nl_bfgs_bits_lmb=0_0001.pdf}
 				\\
 				(e) {\tt a7a}, $\lambda=10^{-3}$ &(f) {\tt a7a}, $\lambda=10^{-4}$ & (g) {\tt a2a}, $\lambda=10^{-3}$ &(h) {\tt a2a}, $\lambda=10^{-4}$
 		\end{tabular}}
@@ -753,19 +721,30 @@ In our next experiment, we compare {\sf NL} with DINGO~\citep{DINGO2019}. The re
 	\end{center}
 \end{figure}
 
+
+
+
+
+
+
+
+\subsection{Comparison of {\sf NL} with ADIANA}
+
+Next, we compare {\sf NL}with ADIANA~\citep{ADIANA} using three different compression operators: natural compression (DIANA-NC),  random sparsification (DIANA-RS, $r = d/4$) and random dithering (DIANA-RD, $s = \sqrt{d}$); see Figure~\ref{exp:adiana}. Based on the experimental results, we can conclude that {\sf NL} outperforms all three versions ADIANA for all types of compression, often by {\em several degrees of magnitude.}
+
 \begin{figure}[t]
 	\begin{center}
 		\centerline{\begin{tabular}{cccc}
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl_adiana_bits_lmb=0_001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl_adiana_bits_lmb=0_0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl_adiana_bits_lmb=0_001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl_adiana_bits_lmb=0_00001.pdf}
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl_adiana_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl_adiana_bits_lmb=0_0001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl_adiana_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl_adiana_bits_lmb=0_00001.pdf}
 				\\
 				(a) {\tt a9a}, $\lambda=10^{-3}$ &(b) {\tt a9a}, $\lambda=10^{-4}$ & (c) {\tt w8a}, $\lambda=10^{-3}$ &(d) {\tt phishing}, $\lambda=10^{-5}$\\
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nl_adiana_bits_lmb=0_001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_nl_adiana_bits_lmb=0_0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nl_adiana_bits_lmb=0_001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nl_adiana_bits_lmb=0_0001.pdf}
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a7a/Lambda=1e-3/a7a_nl_adiana_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a7a/Lambda=1e-4/a7a_nl_adiana_bits_lmb=0_0001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nl_adiana_bits_lmb=0_001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nl_adiana_bits_lmb=0_0001.pdf}
 				\\
 				(e) {\tt a7a}, $\lambda=10^{-3}$ &(f) {\tt a7a}, $\lambda=10^{-4}$ & (g) {\tt phishing}, $\lambda=10^{-3}$ &(h) {\tt phishing}, $\lambda=10^{-4}$
 		\end{tabular}}
@@ -774,19 +753,40 @@ In our next experiment, we compare {\sf NL} with DINGO~\citep{DINGO2019}. The re
 	\end{center}
 \end{figure}
 
-\begin{figure}[ht]
+
+
+
+
+
+\subsection{Comparison of {\sf NL}  with DINGO}
+
+In our next experiment, we compare {\sf NL} with DINGO~\citep{DINGO2019}. The results, presented  in Figure~\ref{exp:dingo}, show that our method are more communication efficient than DINGO  by {\em many orders of magnitude.} This is true for all  experiments.
+
+
+
+
+
+
+
+
+
+
+
+
+\clearpage
+\begin{figure}[th]
 	\begin{center}
 		\centerline{\begin{tabular}{cccc}
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl1_nl2_dingo_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl1_nl2_dingo_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl1_nl2_dingo_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl1_nl2_dingo_lmb=0.00001.pdf}
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a9a/Lambda=1e-3/a9a_nl1_nl2_dingo_lmb=0.001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a9a/Lambda=1e-4/a9a_nl1_nl2_dingo_lmb=0.0001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/w8a/Lambda=1e-3/w8a_nl1_nl2_dingo_lmb=0.001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/phishing/Lambda=1e-5/phishing_nl1_nl2_dingo_lmb=0.00001.pdf}
 				\\
 				(a) {\tt a9a}, $\lambda=10^{-3}$ &(b) {\tt a9a}, $\lambda=10^{-4}$ & (c) {\tt w8a}, $\lambda=10^{-3}$ &(d) {\tt phishing}, $\lambda=10^{-5}$\\
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_nl1_nl2_dingo_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_nl1_nl2_dingo_lmb=0.0001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nl1_nl2_dingo_lmb=0.001.pdf}&
-				\includegraphics[width = 0.23 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nl1_nl2_dingo_lmb=0.0001.pdf}
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a2a/Lambda=1e-3/a2a_nl1_nl2_dingo_lmb=0.001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/a2a/Lambda=1e-4/a2a_nl1_nl2_dingo_lmb=0.0001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/phishing/Lambda=1e-3/phishing_nl1_nl2_dingo_lmb=0.001.pdf}&
+				\includegraphics[width = 0.22 \textwidth]{LogReg/phishing/Lambda=1e-4/phishing_nl1_nl2_dingo_lmb=0.0001.pdf}
 				\\
 				(e) {\tt a2a}, $\lambda=10^{-3}$ &(f) {\tt a2a}, $\lambda=10^{-4}$ & (g) {\tt phishing}, $\lambda=10^{-3}$ &(h) {\tt phishing}, $\lambda=10^{-4}$
 		\end{tabular}}
