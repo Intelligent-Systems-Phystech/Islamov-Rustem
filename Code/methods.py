@@ -1,55 +1,78 @@
 import numpy as np
-import random
-import math
-import sys
 from scipy.stats import bernoulli
 from utils import random_k, positive_part, random_sparsification
-from utils import loss_logistic
-from utils import grad
+from utils import loss_logistic, grad
 from utils import compression_dic
 from utils import compute_bit, compute_omega
-import os
-import pandas as pd
-from scipy.stats import bernoulli
 
 
 ################################################################
 class Standard_Newton:
     def __init__(self, oracle):
+        '''
+        -------------------------------------------------
+        This class is created to simulate Newton's method
+        -------------------------------------------------
+        '''
         self.oracle = oracle
     
     def step(self, x):
         '''
+        -----------------------------------
+        perform one step of Newton's method
+        -----------------------------------
+        input:
         x - current model weights
-        return: next iterate of Standard Newton method
+        
+        return: 
+        numpy array - next iterate of Newton's method
         '''
         lmb = self.oracle.get_reg_coef()
         d = self.oracle.get_number_of_weights()
 
         g = self.oracle.full_gradient(x) + lmb*x
         H = self.oracle.full_Hessian(x) + lmb*np.eye(d)
-        return x - np.linalg.inv(H).dot(g) 
+        s = np.linalg.solve(H, g)
+        return x - s 
 
-    def find_optimum(self, x0, n_steps=10):
+    def find_optimum(self, x0, n_steps=10, verbose=True):
         '''
+        -------------------------------------------------------------------------------------
+        Implementation of Standard Newton method in order to find the solution of the problem
+        -------------------------------------------------------------------------------------
+        input:
         x0 - initial model weights
         n_steps - number of steps of the method 
-        Implementation of Standard Newton method when we don't know the solution of the problem
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        set the optimum to the problem
         '''
         iterates = []
         iterates.append(x0)
         for k in range(n_steps):
-            print(self.oracle.function_value(x0))
+            if verbose:
+                print(self.oracle.function_value(x0))
             x0 = self.step(x0)
             iterates.append(x0)
         self.oracle.set_optimum(iterates[-1])
         
  
-    def method(self, x0, tol=10**(-14), max_iter=10):
+    def method(self, x0, tol=10**(-14), max_iter=10, verbose=True):
         '''
-        x0 - initial model weights
-        max_iter - maximum number of steps of the method 
+        ----------------------------------------
         Implementation of Standard Newton method
+        ----------------------------------------
+        input:
+        x0 - initial model weights
+        tol - desired tolerance of the solution
+        max_iter - maximum number of iterations of the method 
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        func_value - numpy array containing function value in each iteration of the method
+        iterates - numpy array containing distances from current point to the solution
+        bits - numpy array containing transmitted bits by one node to the server
         '''
         x_opt = self.oracle.get_optimum()
         n = self.oracle.get_number_of_nodes()
@@ -57,85 +80,146 @@ class Standard_Newton:
         func_value = []
         iterates = []
         func_value.append(self.oracle.function_value(x0))
-        iterates.append(x0)
+        iterates.append(np.linalg.norm(x0-x_opt))
         bits = []
-        global_bit = 0
+        global_bit = 1
         bits.append(global_bit)
         n_steps = 0
+        
+        if verbose:
+            print(func_value[-1])
+            
         while func_value[-1] - self.oracle.function_value(x_opt) > tol and n_steps <= max_iter:
             n_steps += 1
-            global_bit += n*32*(d**2+d)
+            global_bit += 32*(d**2+d)
             bits.append(global_bit)
             
             x0 = self.step(x0)
             func_value.append(self.oracle.function_value(x0))
-            iterates.append(x0)
+            iterates.append(np.linalg.norm(x0-x_opt))
+            
+            if verbose:
+                print(func_value[-1])
             
         return np.array(func_value), np.array(iterates), np.array(bits)
     
 #############################################################################   
-class Basic_method:
+class Newton_Star:
     def __init__(self, oracle):
+        '''
+        ---------------------------------------------------------
+        This class is created to simulate NEWTON-STAR (NS) method 
+        ---------------------------------------------------------
+        '''
         self.oracle = oracle
         self.x_opt = oracle.get_optimum()
         self.H = oracle.full_Hessian(self.x_opt)+oracle.get_reg_coef()*np.eye(oracle.get_number_of_weights())
         
     def step(self, x):
         '''
+        ----------------------
+        perform one step of NS
+        ----------------------
+        input:
         x - current model weights
-        return: next iterate of Basic method
+        
+        return: 
+        numpy array - next iterate of NS
         '''
         lmb = self.oracle.get_reg_coef()
         d = self.oracle.get_number_of_weights()
         g = self.oracle.full_gradient(x) + lmb*x
         
+        
         return x - np.linalg.inv(self.H).dot(g) 
     
-    def method(self, x0, max_iter = 10, tol=10**(-12)):
+    def method(self, x0, max_iter = 10, tol=10**(-15), init_cost=True, verbose=True):
         '''
+        ---------------------------
+        Implementation of NS method
+        ---------------------------
+        input:
         x0 - initial model weights
-        max_iter - maximum number of steps of the method 
-        Implementation of Standard Newton method
+        max_iter - maximum number of steps of the method
+        tol - desired tolerance of the solution
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        func_value - numpy array containing function value in each iteration of the method
+        iterates - numpy array containing distances from current point to the solution
+        bits - numpy array containing transmitted bits by one node to the server
         '''
         x_opt = self.oracle.get_optimum()
         d = self.oracle.get_number_of_weights()
         n = self.oracle.get_number_of_nodes()
-        bits = []
-        iterates = []
         func_value = []
+        iterates = []
+        bits = []
         
-        global_bit = 0
-        bits.append(global_bit)  
-        global_bit += d*d*n
+        global_bit = 1
+        bits.append(global_bit)
+        iterates.append(np.linalg.norm(x0-x_opt))
         func_value.append(self.oracle.function_value(x0))
-        iterates.append(x0)
         
+        if init_cost:
+            global_bit = 32*d*(d+1)//2
+            bits.append(global_bit)
+            iterates.append(np.linalg.norm(x0-x_opt))
+            func_value.append(self.oracle.function_value(x0))
+        
+        if verbose:
+            print(func_value[-1])
+
+      
+            
         n_steps = 0
         while func_value[-1] - self.oracle.function_value(x_opt) > tol and n_steps <= max_iter:
             n_steps += 1
-            global_bit += n*32*d
+            global_bit += 32*d
             bits.append(global_bit)
             x0 = self.step(x0)
 
             func_value.append(self.oracle.function_value(x0))
-            iterates.append(x0)
+            iterates.append(np.linalg.norm(x0-x_opt))
+            if verbose:
+                print(func_value[-1])
+            
 
-        return np.array(func_value), np.array(iterates), np.array(bits)
+        return np.array(func_value), np.array(bits), np.array(iterates)
     
 ###########################################################################    
-class PositiveCase_method:
+class NL1:
     def __init__(self, oracle):
+        '''
+        -------------------------------------------------------------
+        This class is created to simulate NEWTON-LEARN 1 (NL1) method
+        -------------------------------------------------------------
+        '''
         self.oracle = oracle
         
-    def method(self, x, H, max_iter=100, k=1, eta=None, tol=10**(-14)):
+    def method(self, x, H, max_iter=100, k=1, eta=None, tol=10**(-14), init_cost=True,\
+               verbose=True):
         '''
-        x0 - initial model weights
+        ----------------------------
+        Implementation of NL1 method
+        ----------------------------
+        input:
+        x - initial model weightsn
+        H - list of vectors h_i^0
         max_iter - maximum number of iterations of the method
-        H - initial coefficient which will approximate alpha_ij(x)
-        eta - stepsize for update of H
-        k - define k in random_k operator
-        return: Implementation of the method for positive regularization coefficient
+        k - the parameter of Rand-K compression operator
+        eta - stepsize for update of vectors h_i's
+        (if eta is None, then eta is set as k/m)
+        tol - desired tolerance of the solution
+        init_cost - if True, then the communication cost of initalization is inclued
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        func_value - numpy array containing function value in each iteration of the method
+        bits - numpy array containing transmitted bits by one node to the server
+        iterates - numpy array containing distances from current point to the solution
         '''
+        
         x_opt = self.oracle.get_optimum()
         lmb = self.oracle.get_reg_coef()
         n = self.oracle.get_number_of_nodes()
@@ -149,7 +233,7 @@ class PositiveCase_method:
             for j in range(m):
                 l = i*m + j
                 B += 1/N*H_old[i][j]*self.oracle.A[l].reshape((d,1)).dot(self.oracle.A[l].reshape(1,d))
-        B = self.oracle.full_Hessian(x)
+                
         if eta is None:
             eta = k/m 
             
@@ -158,66 +242,87 @@ class PositiveCase_method:
         func_value = []
         iterates = []
         bits = []
-        global_bit = 0
+        global_bit = 1
         bits.append(global_bit)
-        global_bit = 32*min(d,m)*n
-        bits.append(global_bit)
-        iterates.append(x)
-        iterates.append(x)
-        func_value.append(self.oracle.function_value(x))
+        
+        iterates.append(np.linalg.norm(x-x_opt))
         func_value.append(self.oracle.function_value(x))
         
-        binom = np.zeros((m+1, m+1))
-        for i in range(m+1):
-            binom[i,0] = 1
-            binom[i,i] = 1
-        for i in range(2,m+1):
-            for j in range(1, i):
-                binom[i,j] = binom[i-1,j]+binom[i-1,j-1]
+        if init_cost:
+            global_bit = 32*d*(d+1)//2
+            bits.append(global_bit)
+            iterates.append(np.linalg.norm(x-x_opt))
+            func_value.append(self.oracle.function_value(x))
         
-        bit = 32*k + np.log2(binom[m, k])
-        bit = int(np.ceil(bit))
+        if verbose:
+            print(func_value[-1])
+
+        
 
         n_steps = 0
+        
         while func_value[-1] - f_opt > tol and n_steps <= max_iter:
             n_steps += 1
             
-            global_bit += ((d+1+k*d)*32+bit)*n
-            bits.append(global_bit)
-            global_grad = self.oracle.full_gradient(x)
+            global_bit += 32*d + k*d*32 + 32*k
+            
+            global_grad = self.oracle.full_gradient(x)+lmb*x
+            
             for i in range(n):
                 H_old[i] = H_new[i]
                 h = random_k(self.oracle.alphas(x, i) - H_old[i], k = k)
                 H_new[i] = positive_part(H_old[i] + eta*h)
-            x = x - np.linalg.inv(B + lmb*np.eye(d)).dot(global_grad + lmb*x)
             
+            D = - np.linalg.solve(B + lmb*np.eye(d), global_grad)
+            x = x + D
 
-            
-            iterates.append(x)
+            bits.append(global_bit)
+            iterates.append(np.linalg.norm(x-x_opt))
             func_value.append(self.oracle.function_value(x))
-
+            
+            if verbose:
+                print(func_value[-1])
 
             for i in range(n):
                 for j in range(m):
                     l = i*m+j
                     B += (H_new[i][j]-H_old[i][j])*self.oracle.A[l].reshape((d,1)).dot(self.oracle.A[l].reshape(1,d))/N
                 
-        return np.array(func_value), np.array(iterates), np.array(bits)
+        return np.array(func_value), np.array(bits), np.array(iterates)
     
 ########################################################################  
 
-class PositiveCase_methodP:
+class NL1_Bernoulli:
     def __init__(self, oracle):
+        '''
+        ---------------------------------------------------------------------------------------
+        This class is created to simulate NEWTON-LEARN 1 (NL1) method with bernoulli compressor
+        ---------------------------------------------------------------------------------------
+        '''
         self.oracle = oracle
         
-    def method(self, x, H, p, max_iter=100, k=1, eta=None, tol=10**(-14)):
+    def method(self, x, H, p, max_iter=100, k=1, eta=None, init_cost=True, tol=10**(-14), verbose=True):
         '''
-        x0 - initial model weights
+        ----------------------------
+        Implementation of NL1 method
+        ----------------------------
+        input:
+        x - initial model weights
+        H - list of vectors h_i^0
+        p - parameter of Bernoulli compressor
+        k - the parameter of Rand-K compression operator
         max_iter - maximum number of iterations of the method
-        H - initial coefficient which will approximate alpha_ij(x)
-        eta - stepsize for update of H
-        k - define k in random_k operator
-        return: Implementation of the method for positive regularization coefficient
+        eta - stepsize for update of vectors h_i's
+        init_cost - if True, then the communication cost of initalization is inclued
+        (if eta is None, then eta is set as kp/m)
+        tol - desired tolerance of the solution
+        init_cost - if True, then the communication cost of initalization is inclued
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        func_value - numpy array containing function value in each iteration of the method
+        bits - numpy array containing transmitted bits by one node to the server
+        iterates - numpy array containing distances from current point to the solution
         '''
         x_opt = self.oracle.get_optimum()
         lmb = self.oracle.get_reg_coef()
@@ -227,6 +332,7 @@ class PositiveCase_methodP:
         N = n*m
         H_new = H.copy()
         H_old = H.copy()
+        
         B = np.zeros((d,d))
         for i in range(n):
             for j in range(m):
@@ -241,40 +347,33 @@ class PositiveCase_methodP:
         func_value = []
         iterates = []
         bits = []
-        global_bit = 0
+        
+        global_bit = 1
         bits.append(global_bit)
-        global_bit = 32*min(d,m)*n
-        bits.append(global_bit)
-        iterates.append(x)
-        iterates.append(x)
-        func_value.append(self.oracle.function_value(x))
+        iterates.append(np.linalg.norm(x-x_opt))
         func_value.append(self.oracle.function_value(x))
         
-        binom = np.zeros((m+1, m+1))
-        for i in range(m+1):
-            binom[i,0] = 1
-            binom[i,i] = 1
-        for i in range(2,m+1):
-            for j in range(1, i):
-                binom[i,j] = binom[i-1,j]+binom[i-1,j-1]
         
-        bit = 32*k + np.log2(binom[m, k])
-        bit = int(np.ceil(bit))
+        if init_cost:
+            global_bit = 32*d*(d+1)//2
+            bits.append(global_bit)
+            iterates.append(np.linalg.norm(x-x_opt))
+            func_value.append(self.oracle.function_value(x))
+        
+        if verbose:
+            print(func_value[-1])
 
         n_steps = 0
         while func_value[-1] - f_opt > tol and n_steps <= max_iter:
-            if n_steps % 1 == 0:
-                print(n_steps, func_value[-1])
             n_steps += 1
             
-            global_bit += ((d+1+k*d)*32+bit)*n
+            global_bit += 32*d + 32*k*d + 32*k
             bits.append(global_bit)
             global_grad = self.oracle.full_gradient(x)
             for i in range(n):
                 H_old[i] = H_new[i]
                 if bernoulli.rvs(p):
                     h = eta*random_k(self.oracle.alphas(x, i) - H_old[i], k = k)
-                    global_bit += (32*k*d+bit)
                 else:
                     h = np.zeros(m)
                 H_new[i] = H_old[i] + h
@@ -285,6 +384,8 @@ class PositiveCase_methodP:
             iterates.append(x)
             func_value.append(self.oracle.function_value(x))
 
+            if verbose:
+                print(func_value[-1])
 
             for i in range(n):
                 for j in range(m):
@@ -294,18 +395,36 @@ class PositiveCase_methodP:
         return np.array(func_value), np.array(iterates), np.array(bits)
     
 ######################################################################## 
-class GeneralCase_method:
+class NL2:
     def __init__(self, oracle):
+        '''
+        -------------------------------------------------------------
+        This class is created to simulate NEWTON-LEARN 2 (NL2) method
+        -------------------------------------------------------------
+        '''
         self.oracle = oracle
         
-    def method(self, x, H, gamma, max_iter=100, k=1, eta=None,tol=10**(-14)):
+    def method(self, x, H, gamma, max_iter=100, k=1, eta=None,tol=10**(-14), init_cost=True, verbose=True):
         '''
-        x - initial model weights
+        ----------------------------
+        Implementation of NL2 method
+        ----------------------------
+        input:
+        x - initial model weightsn
+        H - list of vectors h_i^0
+        gamma - parameter of NL2
         max_iter - maximum number of iterations of the method
-        H - initial coefficient which will approximate alpha_ij(x)
-        eta - stepsize for update of H
-        k - define k in random_k operator
-        return: Implementation of the method for non-negative regularization coefficient
+        k - the parameter of Rand-K compression operator
+        eta - stepsize for update of vectors h_i's
+        (if eta is None, then eta is set as k/m)
+        tol - desired tolerance of the solution
+        init_cost - if True, then the communication cost of initalization is inclued
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        func_value - numpy array containing function value in each iteration of the method
+        bits - numpy array containing transmitted bits by one node to the server
+        iterates - numpy array containing distances from current point to the solution
         '''
         x_opt = self.oracle.get_optimum()
         lmb = self.oracle.get_reg_coef()
@@ -317,13 +436,7 @@ class GeneralCase_method:
         H_new = H.copy()
         H_old = H.copy()
         f_opt = self.oracle.function_value(x_opt)
-        binom = np.zeros((m+1, m+1))
-        for i in range(m+1):
-            binom[i,0] = 1
-            binom[i,i] = 1
-        for i in range(2,m+1):
-            for j in range(1, i):
-                binom[i,j] = binom[i-1,j]+binom[i-1,j-1]
+
 
         B = np.zeros((d,d))
         
@@ -342,22 +455,26 @@ class GeneralCase_method:
         func_value = []
         iterates = []
         bits = []
-        global_bit = 0
+
+        global_bit = 1
         bits.append(global_bit)
-        global_bit = 32*min(m, 2*d)*n
-        bits.append(global_bit)
-        iterates.append(x)
-        iterates.append(x)
-        func_value.append(self.oracle.function_value(x))
+        iterates.append(np.linalg.norm(x-x_opt))
         func_value.append(self.oracle.function_value(x))
         
-        bit = 32*k + np.log2(binom[m, k])
-        bit = int(np.ceil(bit))
-
+        if init_cost:
+            global_bit = 32*d*(d+1)//2
+            bits.append(global_bit)
+            iterates.append(np.linalg.norm(x-x_opt))
+            func_value.append(self.oracle.function_value(x))
+        
+        if verbose:
+            print(func_value[-1])
+        
         n_steps = 0
         while func_value[-1] - f_opt > tol and n_steps <= max_iter:
             n_steps += 1
-            global_bit += (32*d+32+32*k*d+bit)*n
+            
+            global_bit += 32*d+32+32*k*d+32*k
             bits.append(global_bit)
             
             global_grad = self.oracle.full_gradient(x)
@@ -375,7 +492,7 @@ class GeneralCase_method:
             B = beta_k*A_k - C
             
             x = x - np.linalg.inv(B + lmb*np.eye(d)).dot(global_grad + lmb*x)
-            iterates.append(x)
+            iterates.append(np.linalg.norm(x-x_opt))
             func_value.append(self.oracle.function_value(x))
             
             for i in range(n):
@@ -386,25 +503,48 @@ class GeneralCase_method:
                 for j in range(m):
                     l = i*m+j
                     A_k += (H_new[i][j]-H_old[i][j])*self.oracle.A[l].reshape((d,1)).dot(self.oracle.A[l].reshape(1,d))/N
+                    
+            if verbose:
+                print(func_value[-1])
             
             
-        return np.array(func_value), np.array(iterates), np.array(bits)
+        return np.array(func_value), np.array(bits), np.array(iterates)
     
 #################################################################################################    
     
     
-class GeneralCase_methodP:
+class NL2_Bernoulli:
     def __init__(self, oracle):
+        '''
+        -------------------------------------------------------------
+        This class is created to simulate NEWTON-LEARN 2 (NL2) method
+        with Bernoulli compressor
+        -------------------------------------------------------------
+        '''
         self.oracle = oracle
         
-    def method(self, x, H, p, gamma, max_iter=100, k=1, eta=None,tol=10**(-14)):
+    def method(self, x, H, p, gamma, max_iter=100, k=1, eta=None,tol=10**(-14), init_cost=True, verbose=True):
         '''
-        x - initial model weights
+        ----------------------------
+        Implementation of NL2 method
+        ----------------------------
+        input:
+        x - initial model weightsn
+        H - list of vectors h_i^0
+        p - parameter of Bernoulli compressor
+        gamma - parameter of NL2
         max_iter - maximum number of iterations of the method
-        H - initial coefficient which will approximate alpha_ij(x)
-        eta - stepsize for update of H
-        k - define k in random_k operator
-        return: Implementation of the method for non-negative regularization coefficient
+        k - the parameter of Rand-K compression operator
+        eta - stepsize for update of vectors h_i's
+        (if eta is None, then eta is set as k/m)
+        tol - desired tolerance of the solution
+        init_cost - if True, then the communication cost of initalization is inclued
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        func_value - numpy array containing function value in each iteration of the method
+        bits - numpy array containing transmitted bits by one node to the server
+        iterates - numpy array containing distances from current point to the solution
         '''
         x_opt = self.oracle.get_optimum()
         lmb = self.oracle.get_reg_coef()
@@ -416,13 +556,7 @@ class GeneralCase_methodP:
         H_new = H.copy()
         H_old = H.copy()
         f_opt = self.oracle.function_value(x_opt)
-        binom = np.zeros((m+1, m+1))
-        for i in range(m+1):
-            binom[i,0] = 1
-            binom[i,i] = 1
-        for i in range(2,m+1):
-            for j in range(1, i):
-                binom[i,j] = binom[i-1,j]+binom[i-1,j-1]
+
 
         B = np.zeros((d,d))
         
@@ -441,22 +575,26 @@ class GeneralCase_methodP:
         func_value = []
         iterates = []
         bits = []
-        global_bit = 0
+
+        global_bit = 1
         bits.append(global_bit)
-        global_bit = 32*min(m, 2*d)*n
-        bits.append(global_bit)
-        iterates.append(x)
-        iterates.append(x)
-        func_value.append(self.oracle.function_value(x))
+        iterates.append(np.linalg.norm(x-x_opt))
         func_value.append(self.oracle.function_value(x))
         
-        bit = 32*k + np.log2(binom[m, k])
-        bit = int(np.ceil(bit))
-
+        if init_cost:
+            global_bit = 32*d*(d+1)//2
+            bits.append(global_bit)
+            iterates.append(np.linalg.norm(x-x_opt))
+            func_value.append(self.oracle.function_value(x))
+        
+        if verbose:
+            print(func_value[-1])
+            
+            
         n_steps = 0
         while func_value[-1] - f_opt > tol and n_steps <= max_iter:
             n_steps += 1
-            global_bit += (32*d+32)*n
+            global_bit += 32*d + 32 + 32*d*k + 32*k
             
             
             global_grad = self.oracle.full_gradient(x)
@@ -474,14 +612,13 @@ class GeneralCase_methodP:
             B = beta_k*A_k - C
             
             x = x - np.linalg.inv(B + lmb*np.eye(d)).dot(global_grad + lmb*x)
-            iterates.append(x)
+            iterates.append(np.linalg.norm(x-x_opt))
             func_value.append(self.oracle.function_value(x))
             
             for i in range(n):
                 H_old[i] = H_new[i]
                 if bernoulli.rvs(p):
                     h = eta*random_k(self.oracle.alphas(x, i) - H_old[i], k = k)
-                    global_bit += (32*k*d+bit)
                 else:
                     h = np.zeros(m)
                 H_new[i] = H_old[i] + h
@@ -492,18 +629,29 @@ class GeneralCase_methodP:
                     
             bits.append(global_bit)
             
+            if verbose:
+                print(func_value[-1])
             
             
-        return np.array(func_value), np.array(iterates), np.array(bits)
+            
+        return np.array(func_value), np.array(bits), np.array(iterates)
     
 
 ############################################################################################################
-class CubicMaxNewton:
+class CNL:
     def __init__(self, oracle):
+        '''
+        -----------------------------------------------------------------
+        This class is created to simulate CUBIC-NEWTON-LEARN (CNL) method
+        -----------------------------------------------------------------
+        '''
         self.oracle = oracle
         
     def subproblem_solver(self, g, H, M, tol=10**(-15), max_iter=10000):
         '''
+        -------------------------------------------------------
+        Subproblem solver for <g,s> + 0.5*s^T*H*s + M/6*||s||^3
+        -------------------------------------------------------
         g - gradient of f at current point
         H - Hessian of f at current point
         M - cubic regularization coefficient
@@ -536,7 +684,9 @@ class CubicMaxNewton:
     
     def get_R(self):
         '''
+        ------------------------
         return: max_ij{\|a_ij\|}
+        ------------------------
         '''
         n = self.oracle.get_number_of_nodes()
         m = self.oracle.get_number_of_local_data_points()
@@ -547,16 +697,27 @@ class CubicMaxNewton:
             
         return R
         
-    def method(self, x, H, nu, gamma, max_iter = 5000, k=1, eta=None, tol=10**(-14)):
+    def method(self, x, H, nu, gamma, max_iter = 5000, k=1, eta=None, tol=10**(-14), init_cost=True, verbose=True):
         '''
-        x - initial model weights
+        ----------------------------
+        Implementation of CNL method
+        ----------------------------
+        input:
+        x - initial model weightsn
+        H - list of vectors h_i^0
+        nu, gamma - parameteres of CNL
         max_iter - maximum number of iterations of the method
-        nu - Lipschitz constant of \phi''_ij(x)
-        gamma - smooth constant of \phi_ij(x)
-        H - initial coefficient which will approximate alpha_ij(x)
-        eta - stepsize for update of H
-        k - define k in random_k operator
-        return: Implementation of the method for non-negative regularization coefficient
+        k - the parameter of Rand-K compression operator
+        eta - stepsize for update of vectors h_i's
+        (if eta is None, then eta is set as k/m)
+        tol - desired tolerance of the solution
+        init_cost - if True, then the communication cost of initalization is inclued
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        func_value - numpy array containing function value in each iteration of the method
+        bits - numpy array containing transmitted bits by one node to the server
+        iterates - numpy array containing distances from current point to the solution
         '''
         x_opt = self.oracle.get_optimum()
         d = self.oracle.get_number_of_weights()
@@ -566,17 +727,7 @@ class CubicMaxNewton:
         N = n*m
         H_new = H.copy()
         H_old = H.copy()
-        
-        binom = np.zeros((m+1, m+1))
-        for i in range(m+1):
-            binom[i,0] = 1
-            binom[i,i] = 1
-        for i in range(2,m+1):
-            for j in range(1, i):
-                binom[i,j] = binom[i-1,j]+binom[i-1,j-1]
-                
-        bit = 32*k + np.log2(binom[m, k])
-        bit = int(np.ceil(bit))
+
 
         if eta is None:
             eta = k/m
@@ -595,18 +746,29 @@ class CubicMaxNewton:
 
         func_value = []
         iterates = []
-        iterates.append(x)
-        func_value.append(self.oracle.function_value(x))
         bits = []
-        global_bit = 0
+
+        global_bit = 1
         bits.append(global_bit)
+        iterates.append(np.linalg.norm(x-x_opt))
+        func_value.append(self.oracle.function_value(x))
+        
+        if init_cost:
+            global_bit = 32*d*(d+1)//2
+            bits.append(global_bit)
+            iterates.append(np.linalg.norm(x-x_opt))
+            func_value.append(self.oracle.function_value(x))
+        
+        if verbose:
+            print(func_value[-1])
+            
 
         n_steps = 0
 
         while func_value[-1] - self.oracle.function_value(x_opt) > tol and n_steps <= max_iter:
             n_steps += 1
             
-            global_bit += (32*d+32+32*k*d+bit)*n
+            global_bit += 32*d+32+32*k*d+32*k
             bits.append(global_bit)
             
             global_grad = self.oracle.full_gradient(x)
@@ -627,7 +789,7 @@ class CubicMaxNewton:
                                        M=M)
             x = x + s
             
-            iterates.append(x)
+            iterates.append(np.linalg.norm(x-x_opt))
             func_value.append(self.oracle.function_value(x))
             
 
@@ -640,19 +802,31 @@ class CubicMaxNewton:
                 for j in range(m):
                     l = i*m+j
                     A_k += (H_new[i][j]-H_old[i][j])*self.oracle.A[l].reshape((d,1)).dot(self.oracle.A[l].reshape(1,d))/N
+                    
+            if verbose:
+                print(func_value[-1])
 
-        return np.array(func_value), np.array(iterates), np.array(bits)
+        return np.array(func_value), np.array(bits), np.array(iterates)
         
         
         
         
 ############################################################################################################
-class CubicMaxNewtonP:
+class CNL_Bernoulli:
     def __init__(self, oracle):
+        '''
+        -----------------------------------------------------------------
+        This class is created to simulate CUBIC-NEWTON-LEARN (CNL) method
+        with Bernoulli compressor
+        -----------------------------------------------------------------
+        '''
         self.oracle = oracle
         
     def subproblem_solver(self, g, H, M, tol=10**(-15), max_iter=100):
         '''
+        -------------------------------------------------------
+        Subproblem solver for <g,s> + 0.5*s^T*H*s + M/6*||s||^3
+        -------------------------------------------------------
         g - gradient of f at current point
         H - Hessian of f at current point
         M - cubic regularization coefficient
@@ -685,7 +859,9 @@ class CubicMaxNewtonP:
     
     def get_R(self):
         '''
+        ------------------------
         return: max_ij{\|a_ij\|}
+        ------------------------
         '''
         n = self.oracle.get_number_of_nodes()
         m = self.oracle.get_number_of_local_data_points()
@@ -696,16 +872,28 @@ class CubicMaxNewtonP:
             
         return R
         
-    def method(self, x, H, nu, gamma, p = 1/2, max_iter = 5000, k=1, eta=None, tol=10**(-14)):
+    def method(self, x, H, nu, gamma, p = 1/2, max_iter = 5000, k=1, eta=None, tol=10**(-14), init_cost=True, verbose=True):
         '''
-        x - initial model weights
+        ----------------------------
+        Implementation of CNL method
+        ----------------------------
+        input:
+        x - initial model weightsn
+        H - list of vectors h_i^0
+        nu, gamma - parameteres of CNL
+        p - parameter of Bernoulli compressor
         max_iter - maximum number of iterations of the method
-        nu - Lipschitz constant of \phi''_ij(x)
-        gamma - smooth constant of \phi_ij(x)
-        H - initial coefficient which will approximate alpha_ij(x)
-        eta - stepsize for update of H
-        k - define k in random_k operator
-        return: Implementation of Cubic MaxNewton
+        k - the parameter of Rand-K compression operator
+        eta - stepsize for update of vectors h_i's
+        (if eta is None, then eta is set as k/m)
+        tol - desired tolerance of the solution
+        init_cost - if True, then the communication cost of initalization is inclued
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        func_value - numpy array containing function value in each iteration of the method
+        bits - numpy array containing transmitted bits by one node to the server
+        iterates - numpy array containing distances from current point to the solution
         '''
         x_opt = self.oracle.get_optimum()
         d = self.oracle.get_number_of_weights()
@@ -716,16 +904,6 @@ class CubicMaxNewtonP:
         H_new = H.copy()
         H_old = H.copy()
         
-        binom = np.zeros((m+1, m+1))
-        for i in range(m+1):
-            binom[i,0] = 1
-            binom[i,i] = 1
-        for i in range(2,m+1):
-            for j in range(1, i):
-                binom[i,j] = binom[i-1,j]+binom[i-1,j-1]
-                
-        bit = 32*k + np.log2(binom[m, k])
-        bit = int(np.ceil(bit))
 
         if eta is None:
             eta = k*p/m
@@ -744,17 +922,28 @@ class CubicMaxNewtonP:
 
         func_value = []
         iterates = []
-        iterates.append(x)
-        func_value.append(self.oracle.function_value(x))
         bits = []
-        global_bit = 0
-        bits.append(global_bit)
 
+        global_bit = 1
+        bits.append(global_bit)
+        iterates.append(np.linalg.norm(x-x_opt))
+        func_value.append(self.oracle.function_value(x))
+        
+        if init_cost:
+            global_bit = 32*d*(d+1)//2
+            bits.append(global_bit)
+            iterates.append(np.linalg.norm(x-x_opt))
+            func_value.append(self.oracle.function_value(x))
+        
+        if verbose:
+            print(func_value[-1])
+            
+            
         n_steps = 0
         while func_value[-1] - self.oracle.function_value(x_opt) > tol and n_steps <= max_iter:
             n_steps += 1
             
-            global_bit += (32*d+32)*n
+            global_bit += 32*d + 32*k*d + 32 + 32*k
             
             
             global_grad = self.oracle.full_gradient(x)
@@ -783,7 +972,6 @@ class CubicMaxNewtonP:
                 H_old[i] = H_new[i]
                 if bernoulli.rvs(p):
                     h = eta*random_k(self.oracle.alphas(x, i) - H_old[i], k = k)
-                    global_bit += (32*k*d+bit)
                 else:
                     h = np.zeros(m)
                 H_new[i] = H_old[i] + h
@@ -793,9 +981,12 @@ class CubicMaxNewtonP:
                     A_k += (H_new[i][j]-H_old[i][j])*self.oracle.A[l].reshape((d,1)).dot(self.oracle.A[l].reshape(1,d))/N
                     
             bits.append(global_bit)
+            
+            if verbose:
+                print(func_value[-1])
                 
 
-        return np.array(func_value), np.array(iterates), np.array(bits)
+        return np.array(func_value), np.array(bits), np.array(iterates)
     
 ###############################################################################
 
@@ -803,15 +994,29 @@ class CubicMaxNewtonP:
 class DINGO:
     
     def __init__(self, oracle):
+        '''
+        ----------------------------------------------
+        This class is created to simulate DINGO method
+        ----------------------------------------------
+        '''
         self.oracle = oracle
         
-    def method(self, x, max_iter=200, tol=1e-15, phi=1e-6, theta=1e-4, rho=1e-4):
+    def method(self, x, max_iter=200, tol=1e-15, phi=1e-6, theta=1e-4, rho=1e-4, verbose=True):
         '''
+        -------------------------
+        Implementation of DINGO method
+        -------------------------
+        
+        input:
         x - initial point
-        max_iter - maximum number of iterations
-        tol - desired tolerance
+        max_iter - maximum iterations of the method
+        tol - desired tolerance of the solution
         phi, theta, rho - parameters of DINGO
-        return: implementation of DINGO
+        verbose - if True, then function values in each iteration are printed
+        
+        return:
+        func_value - numpy array containing function value in each iteration of the method
+        bits - numpy array containing transmitted bits by one node to the server
         '''
         x_opt = self.oracle.get_optimum()
         f_opt = self.oracle.function_value(x_opt)
@@ -823,17 +1028,22 @@ class DINGO:
         x = x.copy()
         func_value = []
         bits = []
-        global_bit = 0
+        global_bit = 1
         bits.append(global_bit)
         func_value.append(self.oracle.function_value(x))
         n_steps = 0
-        cases = np.array([0,0,0])
 
+        if verbose:
+            print(func_value[-1])
+        delta = self.oracle.function_value(x_opt+np.ones(d)*0.1) - f_opt
+        n_steps = 0
         while func_value[-1] - f_opt > tol and max_iter >= n_steps:
             
             
+            global_bit += 32*d # local gradient to the master
+            global_bit += 32*d # global gradient to the node
+            global_bit += 3*32*d # 3 types of steps
             
-            global_bit += 32*6*d*n
             n_steps += 1
             
             g = self.oracle.full_gradient(x) + lmb*x
@@ -847,13 +1057,15 @@ class DINGO:
             h_inv = np.zeros(d)
             h_hat = np.zeros(d)
             full_H = self.oracle.full_Hessian(x) + lmb*np.eye(d)
+            
+            
             for i in range(n):
                 B = self.oracle.local_Hessian(x, i)
                 B += lmb*np.eye(d)
 
                 H_i.append(B.dot(g))
                 h_i += 1/n*H_i[i]
-                H_inv.append(np.linalg.inv(B).dot(g))
+                H_inv.append(np.linalg.pinv(B).dot(g))
                 h_inv += 1/n*H_inv[i]
                 H = np.vstack((B, phi*np.eye(d)))
                 G = np.vstack((g.reshape(d,1), np.zeros((d,1))))
@@ -862,13 +1074,10 @@ class DINGO:
 
 
             if h_i.dot(h_inv) >= theta*g_norm:
-                cases[0] += 1
                 p = -h_inv
             elif h_i.dot(h_hat) >= theta*g_norm:
-                cases[1] += 1
                 p = -h_hat
             else:
-                cases[2] += 1
                 p = np.zeros(d)
                 for i in range(n):
                     B = self.oracle.local_Hessian(x, i)
@@ -885,129 +1094,54 @@ class DINGO:
 
                         p -= l*np.linalg.inv(H.T.dot(H)).dot(h_i)
                         p /= n
-            global_bit += 32*2*d*n
+                        
+            global_bit += 32*2*d # H_t*g_t to the node and p_i to the master
             a = 1
             g_next = self.oracle.full_gradient(x+a*p)+lmb*(x+a*p)
             g_next_norm = np.linalg.norm(g_next)**2
+            
             while g_next_norm > g_norm + 2*a*rho*p.dot(h_i):
-                global_bit += 32*2*d*n
+                global_bit += 32*2*d
                 a /= 2
                 g_next = self.oracle.full_gradient(x+a*p)+lmb*(x+a*p)
                 g_next_norm = np.linalg.norm(g_next)**2
-
+               
+            if n_steps < 5:
+                a = min(1e-2, a)
+            a = max(a, 2**(-10))
             x = x + a*p
             func_value.append(self.oracle.function_value(x))
             bits.append(global_bit)
+            
+            if verbose:
+                print(func_value[-1])
 
             
-        return np.array(func_value), np.array(bits), cases
- 
+        return np.array(func_value), np.array(bits)
+
 ####################################################################
 
-class CompressedDINGO:
-    
-    def __init__(self, oracle):
-        self.oracle = oracle
-        
-        
-    def comp_method(self, x):
-        dim = x.shape[0]
-        norm = np.linalg.norm(x, 1)
-        answer = norm/dim*np.sign(x)
-        return answer
-        
-    def method(self, x, a, max_iter=10000, tol=1e-15, phi=1e-6, theta=1e-2, rho=1e-6):
-        '''
-        x - initial point
-        max_iter - maximum number of iterations
-        a - stepsize
-        tol - desired tolerance
-        phi, theta, rho - parameters of DINGO
-        return: implementation of DINGO
-        '''
-        x_opt = self.oracle.get_optimum()
-        f_opt = self.oracle.function_value(x_opt)
-        d = self.oracle.get_number_of_weights()
-        lmb = self.oracle.get_reg_coef()
-        n = self.oracle.get_number_of_nodes()
-        m = self.oracle.get_number_of_local_data_points()
-        N = n*m
-        x = x.copy()
-        func_value = []
-        bits = []
-        global_bit = 0
-        bits.append(global_bit)
-        func_value.append(self.oracle.function_value(x))
-        n_steps = 0
-        cases = np.array([0,0,0])
-        bit = d + 32
-        print(func_value[-1])
-        g = self.oracle.full_gradient(x) + lmb*x
-        while func_value[-1] - f_opt > tol and max_iter >= n_steps:
-            
-            global_bit += 32*3*d*n
-            global_bit += 3*bit*n
-
-            n_steps += 1
-            g = self.oracle.full_gradient(x) + lmb*x
-            g_norm = np.linalg.norm(g)**2
-
-            H_i = []
-            H_inv = []
-            H_hat = []
-
-            h_i = np.zeros(d)
-            h_inv = np.zeros(d)
-            h_hat = np.zeros(d)
-            full_H = self.oracle.full_Hessian(x) + lmb*np.eye(d)
-            for i in range(n):
-                B = self.oracle.local_Hessian(x, i)
-                B += lmb*np.eye(d)
-
-                H_i.append(self.comp_method(B.dot(g)))
-                h_i += 1/n*H_i[i]
-                H_inv.append(self.comp_method(np.linalg.inv(B).dot(g)))
-                h_inv += 1/n*H_inv[i]
-                H = np.vstack((B, phi*np.eye(d)))
-                G = np.vstack((g.reshape(d,1), np.zeros((d,1))))
-                H_hat.append(self.comp_method(np.linalg.pinv(H).dot(G)))
-                h_hat += 1/n*H_hat[i].squeeze()
-
-
-            if h_i.dot(h_inv) >= theta*g_norm:
-                cases[0] += 1
-                p = -h_inv
-            elif h_i.dot(h_hat) >= theta*g_norm:
-                cases[1] += 1
-                p = -h_hat
-            else:
-                cases[2] += 1
-                p = np.zeros(d)
-                for i in range(n):
-                    global_bit += 2*bit
-
-                    B = self.oracle.local_Hessian(x, i)
-                    B += lmb*np.eye(d)
-                    H = np.vstack((B, phi*np.eye(d)))
-                    G = np.vstack((g.reshape(d,1), np.zeros((d,1))))
-
-                    p_i = -H_hat[i].squeeze()
-                    l = theta*g_norm - h_i.squeeze().dot(H_hat[i])
-                    l /= (h_i.reshape(1,d).dot(np.linalg.inv(H.T.dot(H))).dot(h_i).squeeze())
-                    p_i -= l*np.linalg.inv(H.T.dot(H)).dot(h_i)
-                    p += self.comp_method(p_i)/n
-
-            x = x + a*p
-            func_value.append(self.oracle.function_value(x))
-            bits.append(global_bit)
-        return np.array(func_value), np.array(bits), np.array(cases)
-    
-    
-###############################################################################################
     
     
     
-def dcgd(X, y, w, arg, f_opt, tol=1e-15):
+def dcgd(X, y, w, arg, f_opt, tol=1e-15, verbose=True):
+    '''
+    -----------------------------
+    Implementation of DCGD method
+    -----------------------------
+    X - data matrix
+    y - labels vectors 
+    w - initial point 
+    arg - class containing all parameters of method and comressor
+    f_opt - optimal function value
+    tol - desired tolerance of the solution
+    verbose - if True, then function values in each iteration are printed
+
+    return:
+    loss - numpy array containing function value in each iteration of the method
+    com_bits - numpy array containing transmitted bits by one node to the server
+    '''
+    
     alg = 'DCGD'
     arg.eta = 1 / arg.L
   
@@ -1021,7 +1155,8 @@ def dcgd(X, y, w, arg, f_opt, tol=1e-15):
     loss = []
     local_grad = np.zeros((arg.node, dim))
     loss_0 = loss_logistic(X, y, w, arg)
-    print('at iteration 0', 'loss =', loss_0)
+    if verbose:
+        print('at iteration 0', 'loss =', loss_0)
     loss.append(loss_0)
     
     com_bits = [0]
@@ -1044,24 +1179,41 @@ def dcgd(X, y, w, arg, f_opt, tol=1e-15):
         loss_k = loss_logistic(X, y, w, arg)
         loss.append(loss_k)
         com_bits.append(bits)
-        if k % 1000 == 0:
-            print('at iteration', k + 1, ' loss =', loss_k)
+        if verbose:
+            if k % 1000 == 0:
+                print('at iteration', k + 1, ' loss =', loss_k)
     loss = np.array(loss)
     com_bits = np.array(com_bits)
     return loss, com_bits
 
 
-def diana(X, y, w, arg, f_opt, tol=1e-15):
+def diana(X, y, w, arg, f_opt, tol=1e-15, verbose=True):
+    '''
+    -------------------------
+    Implementation of DIANA method
+    -------------------------
+    X - data matrix
+    y - labels vectors 
+    w - initial point 
+    arg - class containing all parameters of method and comressor
+    f_opt - optimal function value
+    tol - desired tolerance of the solution
+    verbose - if True, then function values in each iteration are printed
+
+    return:
+    loss - numpy array containing function value in each iteration of the method
+    com_bits - numpy array containing transmitted bits by one node to the server
+    '''
     alg = 'DIANA'
     dim = X.shape[1]
     
     omega = compute_omega(dim, arg)
     arg.alpha = 1 / (1 + omega)
     arg.eta = min(arg.alpha / (2 * arg.lamda), 2 / ((arg.L + arg.lamda) * (1 + 6 * omega / arg.node)))
-    
-    print('algorithm ' + alg + ' starts')
-    print('eta = ', arg.eta, 'compression: ', arg.comp_method)
-    print('f_opt = ', f_opt)
+    if verbose:
+        print('algorithm ' + alg + ' starts')
+        print('eta = ', arg.eta, 'compression: ', arg.comp_method)
+        print('f_opt = ', f_opt)
     
     num_data = y.shape[0]
     num_data_worker = int(np.floor(num_data / arg.node))
@@ -1074,11 +1226,12 @@ def diana(X, y, w, arg, f_opt, tol=1e-15):
     deltas = np.zeros((arg.node, dim))
     
     loss_0 = loss_logistic(X, y, w, arg)
-    print('at iteration 0', 'loss =', loss_0)
+    if verbose:
+        print('at iteration 0', 'loss =', loss_0)
     loss.append(loss_0)
     
-    com_bits = [0]
-    bits = 0
+    com_bits = [1]
+    bits = 1
     
     comp_method = compression_dic[arg.comp_method]
     com_round_bit = compute_bit(dim, arg)
@@ -1099,14 +1252,31 @@ def diana(X, y, w, arg, f_opt, tol=1e-15):
         loss_k = loss_logistic(X, y, w, arg)
         loss.append(loss_k)
         com_bits.append(bits)
-        if k % 1000 == 0:
-            print('at iteration', k + 1, ' loss =', loss_k)
+        if verbose:
+            if k % 1000 == 0:
+                print('at iteration', k + 1, ' loss =', loss_k)
     loss = np.array(loss)
     com_bits = np.array(com_bits)
     return loss, com_bits
 
 
-def adiana(X, y, w, arg, f_opt, tol=1e-15):
+def adiana(X, y, w, arg, f_opt, tol=1e-15, verbose=True):
+    '''
+    -------------------------
+    Implementation of DIANA method
+    -------------------------
+    X - data matrix
+    y - labels vectors 
+    w - initial point 
+    arg - class containing all parameters of method and comressor
+    f_opt - optimal function value
+    tol - desired tolerance of the solution
+    verbose - if True, then function values in each iteration are printed
+
+    return:
+    loss - numpy array containing function value in each iteration of the method
+    com_bits - numpy array containing transmitted bits by one node to the server
+    '''
     alg = 'ADIANA'
     dim = X.shape[1]
     
@@ -1123,9 +1293,10 @@ def adiana(X, y, w, arg, f_opt, tol=1e-15):
     arg.gamma = 0.5 * arg.eta / (arg.theta_1 + arg.eta * arg.lamda)
     arg.beta = 1 - arg.gamma * arg.lamda
     
-    print('algorithm ' + alg + ' starts')
-    print('eta = ', arg.eta, 'compression: ', arg.comp_method)
-    print('f_opt = ', f_opt)
+    if verbose:
+        print('algorithm ' + alg + ' starts')
+        print('eta = ', arg.eta, 'compression: ', arg.comp_method)
+        print('f_opt = ', f_opt)
     
     dim = X.shape[1]
     num_data = y.shape[0]
@@ -1144,12 +1315,14 @@ def adiana(X, y, w, arg, f_opt, tol=1e-15):
     deltas = np.zeros((arg.node, dim))
     deltasw = np.zeros((arg.node, dim))
     loss_0 = loss_logistic(X, y, yk, arg)
+
     
-    print('at iteration 0', 'loss =', loss_0)
+    if verbose:
+        print('at iteration 0', 'loss =', loss_0)
     loss.append(loss_0)
     
-    com_bits = [0]
-    bits = 0
+    com_bits = [1]
+    bits = 1
     comp_method = compression_dic[arg.comp_method]
     com_round_bit = compute_bit(dim, arg)
     k=0
@@ -1178,8 +1351,9 @@ def adiana(X, y, w, arg, f_opt, tol=1e-15):
         loss_k = loss_logistic(X, y, yk, arg)
         loss.append(loss_k)
         com_bits.append(bits)
-        if k % 1000 == 0:
-            print('at iteration', k + 1, ' loss =', loss_k)
+        if verbose:
+            if k % 1000 == 0:
+                print('at iteration', k + 1, ' loss =', loss_k)
     loss = np.array(loss)
     com_bits = np.array(com_bits)
     return loss, com_bits
