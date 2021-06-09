@@ -12,7 +12,7 @@ $ pip install -r Requirements.txt
 ```
 
 ###  Example Notebooks
-To run Newton type methods (NEWTON-LEARN and DINGO) see [example notebook](https://github.com/Rustem-Islamov/MaxNewton/blob/main/Code/NEWTON-LEARN/NL_DINGO_example_notebook.ipynb)     
+To run Newton type methods (NEWTON-LEARN and DINGO) see [example notebook](https://github.com/Intelligent-Systems-Phystech/Islamov-BS-Thesis/blob/main/Code/Example_notebook.ipynb)     
 To run BFGS see [example notebook](https://github.com/Rustem-Islamov/MaxNewton/blob/main/Code/BFGS/BFGS_example_notebook.ipynb)      
 To run gradient type methods see [example notebook](https://github.com/Rustem-Islamov/MaxNewton/blob/main/Code/Gradient-type-methods/gradient_type_methods_example_notebook.ipynb)
 
