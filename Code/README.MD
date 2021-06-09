@@ -2,7 +2,7 @@
 
 This implementation is based on Python (3.8). 
 
-It enables to run simulated distributed optimization with master node on any number of workers. Here you can find implementations of NL1, NL2, CNL, DINGO, BFGS, and gradient type methods (DCGD, DIANA, ADIANA).
+It enables to run simulated distributed optimization with master node on any number of workers. Here you can find implementations of NL1, DINGO, BFGS, and gradient type methods (DIANA, ADIANA).
 
 ### Installation
 
