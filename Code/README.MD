@@ -12,8 +12,8 @@ $ pip install -r Requirements.txt
 ```
 
 ###  Example Notebooks
-To run Newton type methods (NEWTON-LEARN, DINGO) and gradient type methods (DIANA, ADIANA) see [example notebook](https://github.com/Intelligent-Systems-Phystech/Islamov-BS-Thesis/blob/main/Code/Example_notebook.ipynb)     
-To run BFGS see [example notebook](https://github.com/Rustem-Islamov/MaxNewton/blob/main/Code/BFGS/BFGS_example_notebook.ipynb)      
+To run Newton type methods (NEWTON-LEARN, DINGO) and gradient type methods (DIANA, ADIANA) see [example notebook](https://github.com/Intelligent-Systems-Phystech/Islamov-BS-Thesis/blob/main/Code/Example%20notebook.ipynb)     
+To run BFGS see [example notebook](https://github.com/Intelligent-Systems-Phystech/Islamov-BS-Thesis/blob/main/Code/BFGS/BFGS_example_notebook.ipynb)      
 
 
 ### License
